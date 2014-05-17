@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<application xmlns="http://ns.adobe.com/air/application/4.0">
+  <id>alchemical.client.Alchemical</id>
+  <versionNumber>0.0.00</versionNumber>
+  <filename>Alchemical</filename>
+  <name>
+    <text xml:lang="en">Alchemical Online</text>
+  </name>
+  <copyright>Copyright 2014, Dylan Heyes</copyright>
+  <initialWindow>
+    <title>Alchemical Online</title>
+    <content>AlchemicalClient.swf</content>
+    <systemChrome>standard</systemChrome>
+    <transparent>false</transparent>
+    <visible>true</visible>
+    <minimizable>true</minimizable>
+    <maximizable>false</maximizable>
+    <resizable>false</resizable>
+  </initialWindow>
+  <!-- 
+	More options:
+	http://livedocs.adobe.com/flex/3/html/File_formats_1.html#1043413
+	-->
+  <description>
+    <text xml:lang="en">
+    </text>
+  </description>
+  <icon>
+    <image16x16>icons/Alchemical16.png</image16x16>
+    <image32x32>icons/Alchemical32.png</image32x32>
+    <image36x36>icons/Alchemical36.png</image36x36>
+    <image48x48>icons/Alchemical48.png</image48x48>
+    <image58x58>icons/Alchemical58.png</image58x58>
+    <image72x72>icons/Alchemical72.png</image72x72>
+    <image76x76>icons/Alchemical76.png</image76x76>
+    <image80x80>icons/Alchemical80.png</image80x80>
+    <image100x100>icons/Alchemical100.png</image100x100>
+    <image114x114>icons/Alchemical114.png</image114x114>
+    <image120x120>icons/Alchemical120.png</image120x120>
+    <image128x128>icons/Alchemical128.png</image128x128>
+    <image144x144>icons/Alchemical144.png</image144x144>
+    <image152x152>icons/Alchemical152.png</image152x152>
+    <image512x512>icons/Alchemical512.png</image512x512>
+  </icon>
+</application>

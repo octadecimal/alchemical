@@ -1,11 +1,19 @@
 # Build and Release Folders
+air/
 bin/
 bin-debug/
 bin-release/
 
+# Asset folders
+assets/
+
+# Scripts
+bat/CreateCertificate.bat
+
+# Build certificate
+AlchemicalClient.p12
+
 # Other files and folders
 .settings/
-
-# Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
-# should NOT be excluded as they contain compiler settings and other important
-# information for Eclipse / Flash Builder.
+AIR_readme.txt
+IDEAS.txt
