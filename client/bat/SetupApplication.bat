@@ -10,12 +10,6 @@ echo Setting up application...
 echo Application XML: %APP_XML%
 echo Application DIR: %APP_DIR%
 
-:: Your certificate information
-set CERT_NAME="AlchemicalClient"
-set CERT_PASS=fd
-set CERT_FILE="AlchemicalClient.p12"
-set SIGNING_OPTIONS=-storetype pkcs12 -keystore %CERT_FILE% -storepass %CERT_PASS%
-
 :: Application descriptor
 
 :: Files to package

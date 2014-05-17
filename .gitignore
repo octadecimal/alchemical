@@ -12,6 +12,7 @@ bat/CreateCertificate.bat
 
 # Build certificate
 AlchemicalClient.p12
+bat/SetupCertificate.bat
 
 # Other files and folders
 .settings/

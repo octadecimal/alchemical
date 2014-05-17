@@ -1,6 +1,8 @@
 @echo off
 cd..
 set PAUSE_ERRORS=1
+call bat\SetupPathsRun.bat
+call bat\SetupCertificate.bat
 call bat\SetupSDK.bat
 call bat\SetupApplication.bat
 
