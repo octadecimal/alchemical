@@ -1,3 +1,5 @@
+echo Setting up SDK...
+
 :user_configuration
 
 :: Path to Flex SDK
@@ -20,3 +22,6 @@ exit
 :succeed
 set PATH=%PATH%;%FLEX_SDK%\bin
 
+
+echo SDK setup.
+echo.

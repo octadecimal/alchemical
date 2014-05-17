@@ -6,6 +6,10 @@
 
 :: NOTICE: all paths are relative to project root
 
+echo Setting up application...
+echo Application XML: %APP_XML%
+echo Application DIR: %APP_DIR%
+
 :: Your certificate information
 set CERT_NAME="AlchemicalClient"
 set CERT_PASS=fd
@@ -13,10 +17,8 @@ set CERT_FILE="AlchemicalClient.p12"
 set SIGNING_OPTIONS=-storetype pkcs12 -keystore %CERT_FILE% -storepass %CERT_PASS%
 
 :: Application descriptor
-set APP_XML=../application.xml
 
 :: Files to package
-set APP_DIR=../bin
 set FILE_OR_DIR=-C %APP_DIR% .
 
 :: Your application ID (must match <id> of Application descriptor)
@@ -25,7 +27,6 @@ set APP_ID=alchemical.client.Alchemical
 :: Output
 set AIR_PATH=../air
 set AIR_NAME=AlchemicalOnline
-
 
 :validation
 %SystemRoot%\System32\find /C "<id>%APP_ID%</id>" "%APP_XML%" > NUL
@@ -41,4 +42,8 @@ echo.
 if %PAUSE_ERRORS%==1 pause
 exit
 
+echo Application setup.
+
 :end
+
+echo Application setup.
