@@ -8,6 +8,7 @@ package alchemical.client.subsystems.ui.mediator
 	import alchemical.client.core.enum.ComponentNames;
 	import alchemical.client.debugger.Debugger;
 	import alchemical.client.game.enum.GameNotes;
+	import alchemical.client.subsystems.network.enum.NetworkNotes;
 	import alchemical.client.subsystems.ui.enum.UINotes;
 	import alchemical.client.subsystems.ui.events.UIEvent;
 	import alchemical.client.subsystems.ui.UILayer;
@@ -41,6 +42,7 @@ package alchemical.client.subsystems.ui.mediator
 		{
 			var interests:Array = super.listNotificationInterests();
 			interests.push(ApplicationNotes.SYSTEM_READY);
+			interests.push(GameNotes.LAUNCH_GAME);
 			return interests;
 		}
 		
@@ -50,6 +52,10 @@ package alchemical.client.subsystems.ui.mediator
 			{
 				case ApplicationNotes.SYSTEM_READY:
 					handleSystemReady(notification);
+					break;
+				
+				case GameNotes.LAUNCH_GAME:
+					handleLaunchGame(notification);
 					break;
 			}
 			
@@ -67,6 +73,12 @@ package alchemical.client.subsystems.ui.mediator
 			sendNotification(UINotes.DISPLAY_LOGIN_SCREEN);
 		}
 		
+		private function handleLaunchGame(notification:INotification):void 
+		{
+			// Destroy login screen
+			_view.loginScreen.hide();
+		}
+		
 		
 		
 		// EVENT HANDLERS
@@ -74,7 +86,8 @@ package alchemical.client.subsystems.ui.mediator
 		
 		private function onPlayNowClicked(e:UIEvent):void 
 		{
-			sendNotification(GameNotes.LAUNCH_GAME);
+			//sendNotification(GameNotes.LAUNCH_GAME);
+			sendNotification(NetworkNotes.LOGIN, e.data);
 		}
 		
 		

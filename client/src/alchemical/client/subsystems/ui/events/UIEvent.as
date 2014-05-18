@@ -10,12 +10,9 @@ package alchemical.client.subsystems.ui.events
 	{
 		static public const PLAY_NOW_CLICKED:String = "playNowClicked";
 		
-		public function UIEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false) 
+		public function UIEvent(type:String, data:Object = null) 
 		{ 
-			super(type, true, cancelable);
-			
+			super(type, true, data);
 		} 
-		
 	}
-	
 }

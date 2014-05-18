@@ -1,6 +1,8 @@
 package alchemical.client.platforms
 {
 	import alchemical.client.core.ApplicationFacade;
+	import alchemical.client.core.model.vo.StartupVO;
+	import alchemical.client.subsystems.network.gateways.SimulatedGateway;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	
@@ -39,7 +41,7 @@ package alchemical.client.platforms
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			
-			_facade.startup(stage);
+			_facade.startup(new StartupVO(stage, new SimulatedGateway()));
 		}
 	
 	}

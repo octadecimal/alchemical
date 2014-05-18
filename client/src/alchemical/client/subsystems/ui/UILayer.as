@@ -22,6 +22,18 @@ package alchemical.client.subsystems.ui
 		{
 			super();
 		}
+		
+		
+		
+		// ACCESSORS
+		// =========================================================================================
+		
+		/**
+		 * Login screen.
+		 */
+		public function set loginScreen(a:LoginScreen):void	{ _loginScreen = a; }
+		public function get loginScreen():LoginScreen		{ return _loginScreen; }
+		private var _loginScreen:LoginScreen;
 	}
 
 }

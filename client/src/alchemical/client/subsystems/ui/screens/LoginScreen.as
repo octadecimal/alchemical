@@ -51,6 +51,16 @@ package alchemical.client.subsystems.ui.screens
 		
 		
 		
+		// API
+		// =========================================================================================
+		
+		public function hide():void 
+		{
+			dispose();
+		}
+		
+		
+		
 		// EVENTS
 		// =========================================================================================
 		
@@ -68,8 +78,9 @@ package alchemical.client.subsystems.ui.screens
 		{
 			if (e.getTouch(_button, TouchPhase.ENDED))
 			{
-				dispatchEvent(new UIEvent(UIEvent.PLAY_NOW_CLICKED));
-				dispose();
+				dispatchEvent(new UIEvent(UIEvent.PLAY_NOW_CLICKED, {user: "test", pass: "test"}));
+				//dispose();
+				_button.enabled = false;
 			}
 		}
 		

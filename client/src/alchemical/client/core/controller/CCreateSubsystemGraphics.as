@@ -4,6 +4,7 @@
 package alchemical.client.core.controller 
 {
 	import alchemical.client.core.enum.ComponentNames;
+	import alchemical.client.core.model.vo.StartupVO;
 	import alchemical.client.game.Game;
 	import alchemical.client.debugger.Debugger;
 	import alchemical.client.subsystems.graphics.mediator.GraphicsMediator;
@@ -27,14 +28,14 @@ package alchemical.client.core.controller
 			var starlingRootCreated:Boolean = false;
 			
 			// Get flash stage
-			var flashStage:Stage = notification.getBody() as Stage;
+			var startupVO:StartupVO = notification.getBody() as StartupVO;
 			
 			// Create starling
-			var starling:Starling = new Starling(Game, flashStage);
+			var starling:Starling = new Starling(Game, startupVO.nativeStage);
 			
 			// Start starling
 			starling.showStats = true;
-			starling.stage.color = 0x000000;
+			starling.stage.color = 0x141414;
 			starling.start();
 			
 			// Register

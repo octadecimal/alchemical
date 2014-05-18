@@ -49,8 +49,8 @@ package alchemical.client.subsystems.ui.controller
 					var button:UIButton = new UIButton(uiProxy.atlasControls.getTexture("button_128-64_out"), "PLAY NOW", uiProxy.atlasControls.getTexture("button_128-64_down"));
 					
 					// Add to UI layer
-					var loginScreen:LoginScreen = new LoginScreen(texture, button);
-					uiLayer.addChild(loginScreen);
+					uiLayer.loginScreen = new LoginScreen(texture, button);
+					uiLayer.addChild(uiLayer.loginScreen);
 				}
 			});
 		}

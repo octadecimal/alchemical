@@ -5,6 +5,7 @@ package alchemical.client.core
 {
 	import alchemical.client.core.controller.MStartup;
 	import alchemical.client.core.enum.ApplicationNotes;
+	import alchemical.client.core.model.vo.StartupVO;
 	import alchemical.client.debugger.Debugger;
 	import alchemical.client.game.controller.CLaunchGame;
 	import alchemical.client.game.enum.GameNotes;
@@ -35,10 +36,10 @@ package alchemical.client.core
 		/**
 		 * Starts the application.
 		 */
-		public function startup(stage:Stage):void
+		public function startup(vo:StartupVO):void
 		{
 			//Debugger.log(this, "Starting up...");
-			sendNotification(ApplicationNotes.STARTUP, stage);
+			sendNotification(ApplicationNotes.STARTUP, vo);
 			//Debugger.log(this, "Started up.");
 		}
 		
