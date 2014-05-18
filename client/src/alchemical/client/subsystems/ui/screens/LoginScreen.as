@@ -35,15 +35,24 @@ package alchemical.client.subsystems.ui.screens
 			_button.addEventListener(TouchEvent.TOUCH, onButtonTouch);
 		}
 		
+		/**
+		 * Disposer.
+		 */
 		override public function dispose():void 
 		{
 			super.dispose();
 			
 			_button.dispose();
 			_button = null;
+			
 			removeChildren();
 			removeFromParent();
 		}
+		
+		
+		
+		// EVENTS
+		// =========================================================================================
 		
 		private function onAddedToStage(e:Event):void 
 		{
@@ -64,6 +73,10 @@ package alchemical.client.subsystems.ui.screens
 			}
 		}
 		
+		
+		
+		// PRIVATE
+		// =========================================================================================
 		
 		private var _button:UIButton;
 	}

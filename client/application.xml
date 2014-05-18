@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <application xmlns="http://ns.adobe.com/air/application/4.0">
   <id>alchemical.client.Alchemical</id>
-  <versionNumber>0.0.00</versionNumber>
+  <versionNumber>0.0.01</versionNumber>
   <filename>Alchemical</filename>
   <name>
     <text xml:lang="en">Alchemical Online</text>
