@@ -16,6 +16,7 @@
     <minimizable>true</minimizable>
     <maximizable>false</maximizable>
     <resizable>false</resizable>
+    <renderMode>direct</renderMode>
   </initialWindow>
   <!-- 
 	More options:
@@ -42,4 +43,5 @@
     <image152x152>icons/Alchemical152.png</image152x152>
     <image512x512>icons/Alchemical512.png</image512x512>
   </icon>
+  <supportedLanguages>en</supportedLanguages>
 </application>

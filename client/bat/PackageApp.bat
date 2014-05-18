@@ -1,7 +1,7 @@
 @echo off
 set PAUSE_ERRORS=1
-call SetupPathsPackage.bat
 call SetupCertificate.bat
+call SetupPathsPackage.bat
 call SetupSDK.bat
 call SetupApplication.bat
 

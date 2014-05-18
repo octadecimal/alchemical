@@ -11,7 +11,7 @@
     <movie version="4" />
     <movie minorVersion="0" />
     <movie platform="AIR" />
-    <movie background="#000000" />
+    <movie background="#C0C0C0" />
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
@@ -52,7 +52,9 @@
   </includeLibraries>
   <!-- SWC Libraries -->
   <libraryPaths>
-    <!-- example: <element path="..." /> -->
+    <element path="lib\PureMVC_AS3_2_0_4.swc" />
+    <element path="lib\starling.swc" />
+    <element path="lib\Utility_AS3_AsyncCommand_1_0.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>
