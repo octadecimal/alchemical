@@ -2,7 +2,7 @@ package alchemical.client.platforms
 {
 	import alchemical.client.core.ApplicationFacade;
 	import alchemical.client.core.model.vo.StartupVO;
-	import alchemical.client.subsystems.network.gateways.SimulatedGateway;
+	import alchemical.client.subsystems.network.gateways.InternetGateway;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	
@@ -41,7 +41,11 @@ package alchemical.client.platforms
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			
-			_facade.startup(new StartupVO(stage, new SimulatedGateway()));
+			stage.nativeWindow.x = stage.fullScreenWidth / 2 - stage.nativeWindow.width / 2;
+			stage.nativeWindow.y = stage.fullScreenHeight / 2 - stage.nativeWindow.height / 2;
+			
+			//_facade.startup(new StartupVO(stage, new SimulatedGateway()));
+			_facade.startup(new StartupVO(stage, new InternetGateway("localhost", 1337)));
 		}
 	
 	}

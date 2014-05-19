@@ -14,6 +14,9 @@ bat/CreateCertificate.bat
 AlchemicalClient.p12
 bat/SetupCertificate.bat
 
+# Server passwords
+Passwords.hx
+
 # Other files and folders
 .settings/
 AIR_readme.txt

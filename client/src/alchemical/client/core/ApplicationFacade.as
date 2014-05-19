@@ -7,7 +7,8 @@ package alchemical.client.core
 	import alchemical.client.core.enum.ApplicationNotes;
 	import alchemical.client.core.model.vo.StartupVO;
 	import alchemical.client.debugger.Debugger;
-	import alchemical.client.game.controller.CLaunchGame;
+	import alchemical.client.game.controller.MLaunchGame;
+	import alchemical.client.subsystems.graphics.controller.CApplyDisplaySettings;
 	import alchemical.client.game.enum.GameNotes;
 	import alchemical.client.subsystems.ui.controller.CDisplayScreenLogin;
 	import alchemical.client.subsystems.ui.enum.UINotes;
@@ -59,7 +60,7 @@ package alchemical.client.core
 			registerCommand(ApplicationNotes.STARTUP, MStartup);
 			
 			// Game
-			registerCommand(GameNotes.LAUNCH_GAME, CLaunchGame);
+			registerCommand(GameNotes.LAUNCH_GAME, MLaunchGame);
 			
 			// UI
 			registerCommand(UINotes.DISPLAY_LOGIN_SCREEN, CDisplayScreenLogin);

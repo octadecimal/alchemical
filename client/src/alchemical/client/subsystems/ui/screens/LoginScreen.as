@@ -33,6 +33,8 @@ package alchemical.client.subsystems.ui.screens
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			
 			_button.addEventListener(TouchEvent.TOUCH, onButtonTouch);
+			
+			//disableLoginButton();
 		}
 		
 		/**
@@ -57,6 +59,16 @@ package alchemical.client.subsystems.ui.screens
 		public function hide():void 
 		{
 			dispose();
+		}
+		
+		public function enableLoginButton():void
+		{
+			_button.enabled = true;
+		}
+		
+		public function disableLoginButton():void
+		{
+			_button.enabled = false;
 		}
 		
 		

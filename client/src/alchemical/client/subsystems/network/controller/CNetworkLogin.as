@@ -3,6 +3,7 @@
  */
 package alchemical.client.subsystems.network.controller 
 {
+	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.AsyncCommand;
 	
 	/**
@@ -11,7 +12,10 @@ package alchemical.client.subsystems.network.controller
 	 */
 	public class CNetworkLogin extends AsyncCommand 
 	{
-		
+		override public function execute(notification:INotification):void 
+		{
+			commandComplete();
+		}
 	}
 
 }

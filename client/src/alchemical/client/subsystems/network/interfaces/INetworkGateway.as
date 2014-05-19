@@ -1,5 +1,6 @@
 package alchemical.client.subsystems.network.interfaces 
 {
+	import alchemical.client.subsystems.network.model.packets.Packet;
 	import flash.utils.ByteArray;
 	
 	/**
@@ -10,7 +11,7 @@ package alchemical.client.subsystems.network.interfaces
 	{
 		function addEventListener(type:String, listener:Function):void
 		
-		function send(bytes:ByteArray):void;
+		function send(packet:Packet):void;
 	}
 	
 }

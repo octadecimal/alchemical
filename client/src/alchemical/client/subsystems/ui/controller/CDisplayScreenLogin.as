@@ -4,6 +4,7 @@
 package alchemical.client.subsystems.ui.controller 
 {
 	import alchemical.client.core.enum.ComponentNames;
+	import alchemical.client.debugger.Debugger;
 	import alchemical.client.subsystems.ui.controls.UIButton;
 	import alchemical.client.subsystems.ui.mediator.UIMediator;
 	import alchemical.client.subsystems.ui.model.UIProxy;
@@ -24,6 +25,8 @@ package alchemical.client.subsystems.ui.controller
 	{
 		override public function execute(notification:INotification):void 
 		{
+			Debugger.log(this, "Displaying login screen...");
+			
 			// Get UI
 			var uiProxy:UIProxy = facade.retrieveProxy(ComponentNames.UI) as UIProxy;
 			var uiMediator:UIMediator = facade.retrieveMediator(ComponentNames.UI) as UIMediator;
@@ -51,6 +54,9 @@ package alchemical.client.subsystems.ui.controller
 					// Add to UI layer
 					uiLayer.loginScreen = new LoginScreen(texture, button);
 					uiLayer.addChild(uiLayer.loginScreen);
+					
+					Debugger.log(this, "Displayed login screen.");
+					//commandComplete();
 				}
 			});
 		}

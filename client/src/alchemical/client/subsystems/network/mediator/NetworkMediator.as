@@ -70,7 +70,7 @@ package alchemical.client.subsystems.network.mediator
 			
 			_proxy.writeLoginRequest(user, pass);
 			
-			trace("Logging in with: " + user + "," + pass);
+			Debugger.log(this, "Logging in with: " + user + "," + pass);
 		}
 		
 		

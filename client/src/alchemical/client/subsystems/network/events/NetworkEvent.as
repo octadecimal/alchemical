@@ -3,7 +3,7 @@
  */
 package alchemical.client.subsystems.network.events 
 {
-	import flash.utils.ByteArray;
+	import flash.utils.IDataInput;
 	import starling.events.Event;
 	
 	/**
@@ -14,9 +14,9 @@ package alchemical.client.subsystems.network.events
 	{
 		static public const DATA_RECEIVED:String = "dataReceived";
 		
-		public var bytes:ByteArray;
+		public var bytes:IDataInput;
 		
-		public function NetworkEvent(type:String, bytes:ByteArray) 
+		public function NetworkEvent(type:String, bytes:IDataInput) 
 		{
 			this.bytes = bytes;
 			super(type, false, bytes);

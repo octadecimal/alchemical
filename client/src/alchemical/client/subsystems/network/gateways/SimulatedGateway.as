@@ -103,14 +103,12 @@ package alchemical.client.subsystems.network.gateways
 			_outBytes.writeShort(ENetcode.DEFINE_WORLD);
 			_outBytes.writeShort(0);	// World id
 			_outBytes.writeUTF("debug");	// World name
-			//_outBytes.writeShort(16);	// World width
-			//_outBytes.writeShort(16);	// World height
-			//_outBytes.writeShort(0);	// Sky layer: 1
-			//_outBytes.writeShort(4);	// Sky layer: 2
-			//_outBytes.writeShort(6);	// Sky layer: 3
-			//_outBytes.writeShort(8);	// Sky layer: 4
-			//_outBytes.writeFloat(0);	// Player position: x
-			//_outBytes.writeFloat(0);	// Player position: y
+			_outBytes.writeShort(16);	// World width
+			_outBytes.writeShort(16);	// World height
+			_outBytes.writeShort(7);	// Sky layer: 1
+			_outBytes.writeShort(1);	// Sky layer: 2
+			_outBytes.writeShort(3);	// Sky layer: 3
+			_outBytes.writeShort(1);	// Sky layer: 4
 		}
 		
 		private function handleDefineWorldRequest():void 

@@ -1,7 +1,7 @@
 /**
  * Copyright 2014, Dylan Heyes
  */
-package alchemical.client.game.controller 
+package alchemical.client.subsystems.graphics.controller 
 {
 	import alchemical.client.core.enum.ComponentNames;
 	import alchemical.client.game.Game;
@@ -16,7 +16,7 @@ package alchemical.client.game.controller
 	 * CLaunchGame
 	 * @author Dylan Heyes
 	 */
-	public class CLaunchGame extends AsyncCommand 
+	public class CApplyDisplaySettings extends AsyncCommand 
 	{
 		override public function execute(notification:INotification):void 
 		{
@@ -30,6 +30,8 @@ package alchemical.client.game.controller
 			graphics.viewPort = new Rectangle(0, 0, graphics.nativeStage.stageWidth, graphics.nativeStage.stageHeight);
 			graphics.stage.stageWidth = graphics.nativeStage.stageWidth;
 			graphics.stage.stageHeight = graphics.nativeStage.stageHeight;
+			
+			commandComplete();
 		}
 	}
 

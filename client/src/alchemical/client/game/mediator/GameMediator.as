@@ -61,7 +61,7 @@ package alchemical.client.game.mediator
 		private function handleNetworkLoginSuccessful(notification:INotification):void 
 		{
 			// Login success, launch game
-			sendNotification(GameNotes.LAUNCH_GAME);
+			sendNotification(GameNotes.LAUNCH_GAME, notification.getBody());
 		}
 	}
 

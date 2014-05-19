@@ -5,13 +5,16 @@ package alchemical.client.subsystems.network.model
 {
 	import alchemical.client.core.enum.ComponentNames;
 	import alchemical.client.debugger.Debugger;
-	import alchemical.client.game.enum.GameNotes;
 	import alchemical.client.subsystems.network.enum.ENetcode;
 	import alchemical.client.subsystems.network.enum.NetworkNotes;
 	import alchemical.client.subsystems.network.events.NetworkEvent;
 	import alchemical.client.subsystems.network.interfaces.INetworkGateway;
+	import alchemical.client.subsystems.network.model.packets.Packet;
+	import alchemical.client.subsystems.world.model.vo.WorldVO;
 	import flash.events.TimerEvent;
 	import flash.utils.ByteArray;
+	import flash.utils.Endian;
+	import flash.utils.IDataInput;
 	import flash.utils.Timer;
 	import org.puremvc.as3.patterns.proxy.Proxy;
 	
@@ -37,32 +40,14 @@ package alchemical.client.subsystems.network.model
 			_commandMap = new Vector.<Function>(ENetcode.TOTAL_COMMANDS);
 			buildResponseMap();
 			
-			_bytes = new ByteArray();
+			//_bytes = new ByteArray();
+			_packet = new Packet();
 			
 			_timer = new Timer(FLUSH_RATE);
 			_timer.addEventListener(TimerEvent.TIMER, onTimerTick);
 			_timer.start();
 			
 			Debugger.log(this, "Created.");
-		}
-		
-		
-		
-		// API
-		// =========================================================================================
-		
-		public function flush():void
-		{
-			_bytes.position = 0;
-			_gateway.send(_bytes);
-			_bytes = new ByteArray();
-		}
-		
-		public function writeLoginRequest(user:String, pass:String):void
-		{
-			_bytes.writeShort(ENetcode.LOGIN);
-			_bytes.writeUTF(user);
-			_bytes.writeUTF(pass);
 		}
 		
 		
@@ -76,35 +61,69 @@ package alchemical.client.subsystems.network.model
 			_commandMap[ENetcode.DEFINE_WORLD] = handleDefineWorldResponse;
 		}
 		
+		private function flush():void
+		{
+			Debugger.log(this, "Flushing " + _packet.bytes.length + " bytes.");
+			
+			_packet.bytes.position = 0;
+			_gateway.send(_packet);
+			_packet = new Packet();
+		}
+		
+		
+		
+		// REQUEST WRITERS
+		// =========================================================================================
+		
+		public function writeLoginRequest(user:String, pass:String):void
+		{
+			_packet.writeCommand(ENetcode.LOGIN);
+			_packet.writeString(user);
+			_packet.writeString(pass);
+		}
+		
 		
 		
 		// RESPONSE HANDLERS
 		// =========================================================================================
 		
-		private function handleLoginResponse(bytes:ByteArray):void 
+		private function handleLoginResponse(bytes:IDataInput):void 
 		{
 			var success:Boolean = bytes.readBoolean();
 			
 			if (success)
 			{
 				Debugger.log(this, "Login success.");
-				sendNotification(NetworkNotes.LOGIN_SUCCESSFUL);
+				//sendNotification(NetworkNotes.LOGIN_SUCCESSFUL);
 			}
 			else
 			{
 				Debugger.log(this, "Login failure.");
-				sendNotification(NetworkNotes.LOGIN_SUCCESSFUL);
+				sendNotification(NetworkNotes.LOGIN_FAILURE);
 			}
 		}
 		
-		private function handleDefineWorldResponse(bytes:ByteArray):void 
+		private function handleDefineWorldResponse(bytes:IDataInput):void 
 		{
+			var byte:int;
+			
 			Debugger.log(this, "Defining world...");
 			
-			var worldID:int = bytes.readShort();
-			var worldName:String = bytes.readUTF();
+			var vo:WorldVO = new WorldVO();
+			vo.id = bytes.readShort();
+			vo.name = bytes.readUTF();
+			vo.width = bytes.readShort();
+			vo.height = bytes.readShort();
+			vo.layer0 = bytes.readShort();
+			vo.layer1 = bytes.readShort();
+			vo.layer2 = bytes.readShort();
+			vo.layer3 = bytes.readShort();
 			
-			Debugger.log(this, "World defined id=" + worldID + " name=" + worldName);
+			Debugger.log(this, "World defined id=" + vo.id + " name=" + vo.name);
+			
+			sendNotification(NetworkNotes.WORLD_DEFINED, vo);
+			
+			sendNotification(NetworkNotes.LOGIN_SUCCESSFUL, vo);
 		}
 		
 		
@@ -114,7 +133,7 @@ package alchemical.client.subsystems.network.model
 		
 		private function onTimerTick(e:TimerEvent):void 
 		{
-			if (_bytes.length > 0)
+			if (_packet.bytes.length > 0)
 			{
 				flush();
 			}
@@ -122,9 +141,15 @@ package alchemical.client.subsystems.network.model
 		
 		private function onDataReceived(e:NetworkEvent):void 
 		{
+			var command:int;
+			var bytes:IDataInput = e.bytes;
+			
 			while (e.bytes.bytesAvailable > 0)
 			{
-				_commandMap[e.bytes.readShort()](e.bytes);
+				command = bytes.readShort();
+				
+				Debugger.log(this, "Executing command: " + command);
+				_commandMap[command](bytes);
 			}
 		}
 		
@@ -134,7 +159,8 @@ package alchemical.client.subsystems.network.model
 		// =========================================================================================
 		
 		private var _gateway:INetworkGateway;
-		private var _bytes:ByteArray;
+		//private var _bytes:ByteArray;
+		private var _packet:Packet;
 		private var _timer:Timer;
 		private var _commandMap:Vector.<Function>;
 	}
