@@ -38,7 +38,7 @@ class Server extends ThreadServer<Client, Message>
 	private var _numConnectedClients:UInt;
 	private var _nextValidID:Int = -1;
 	
-	private var _commandMap:Array<Dynamic>;
+	private var _commandMap:Array<Client -> InPacket -> Void>;
 	private var _clientMap:Array<Client>;
 	private var _worldMap:Array<World>;
 	
