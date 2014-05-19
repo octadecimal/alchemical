@@ -88,7 +88,7 @@ class Server extends ThreadServer<Client, Message>
 		
 		Debugger.server("Client connected: " + id + " = " + s.peer());
 		Debugger.server("Total connections: " + _numConnectedClients);
-		Debugger.server("Total clients: " + _clientMap.length);
+		Debugger.server("Clients buffer: " + _clientMap.length);
 		
 		return client;
 	}
@@ -102,7 +102,7 @@ class Server extends ThreadServer<Client, Message>
 		
 		Debugger.server("Client disconnected: " + Std.string(c.id));
 		Debugger.server("Total connections: " + _numConnectedClients);
-		Debugger.server("Total clients: " + _clientMap.length);
+		Debugger.server("Clients buffer: " + _clientMap.length);
 	}
 	
 	override public function readClientMessage(c:Client, buf:Bytes, pos:Int, len:Int):{msg:Message, bytes:Int} 
@@ -166,7 +166,7 @@ class Server extends ThreadServer<Client, Message>
 	{
 		var outBytes:Bytes = packet.getBytes();
 		
-		Debugger.server("Sending " + outBytes.length + " bytes to client " + client.id);
+		Debugger.server("Sending " + outBytes.length + " bytes to client: " + client.id);
 		
 		client.sock.output.writeBytes(outBytes, 0, outBytes.length);
 		client.sock.output.flush();
