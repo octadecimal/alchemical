@@ -1,5 +1,6 @@
 package alchemical.server.db;
 import alchemical.server.const.Passwords;
+import alchemical.server.Server.World;
 import alchemical.server.util.Debugger;
 import neko.Lib;
 import sys.db.Connection;
@@ -62,6 +63,41 @@ class Database
 	
 	// QUERIES
 	// =========================================================================================
+	
+	public function getWorlds():Array<World>
+	{
+		var output:Array<World> = [];
+		
+		var result:ResultSet = query(new Query().select("*").from("worlds").getQuery());
+		
+		for (row in result)
+		{
+			var world:World = { 
+				id: row.id,
+				name: row.name,
+				width: row.width,
+				height: row.height,
+				numSkyLayers: row.numskylayers,
+				skyLayers: parseSkyLayers(row.skylayers)
+			};
+			
+			Debugger.database(world.id + " -> " + world.name);
+			output.push(world);
+		}
+		
+		return output;
+	}
+	
+	function parseSkyLayers(input:String):Array<Int> 
+	{
+		var output:Array<Int> = [];
+		var ids:Array<String> = input.split(",");
+		for (id in ids)
+		{
+			output.push(Std.parseInt(id));
+		}
+		return output;
+	}
 	
 	public function isValidUser(user:String, pass:String):Bool
 	{

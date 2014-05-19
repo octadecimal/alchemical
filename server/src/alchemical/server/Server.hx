@@ -19,6 +19,15 @@ typedef Message = {
 	var packet:InPacket;
 }
 
+typedef World = {
+	var id:UInt;
+	var name:String;
+	var width:Int;
+	var height:Int;
+	var numSkyLayers:Int;
+	var skyLayers:Array<Int>;
+}
+
 /**
  * ...
  * @author Dylan Heyes
@@ -26,10 +35,12 @@ typedef Message = {
 class Server extends ThreadServer<Client, Message>
 {
 	private var _database:Database;
-	private var _commandMap:Array<Dynamic>;
 	private var _numConnectedClients:UInt;
 	private var _nextValidID:Int = -1;
+	
+	private var _commandMap:Array<Dynamic>;
 	private var _clientMap:Array<Client>;
+	private var _worldMap:Array<World>;
 	
 	/**
 	 * Constructor.
@@ -60,6 +71,8 @@ class Server extends ThreadServer<Client, Message>
 	
 	override public function run(host:String, port:Int) 
 	{
+		_worldMap = _database.getWorlds();
+		
 		Debugger.server("Server started. host=" + host + " port=" + port);
 		super.run(host, port);
 	}
@@ -121,6 +134,15 @@ class Server extends ThreadServer<Client, Message>
 		Debugger.server("EXEC: " + c.id + " -> " + command);
 		
 		_commandMap[command](c, msg.packet);
+	}
+	
+	
+	
+	// INITIALIZERS
+	// =========================================================================================
+	
+	function initializeWorlds():Void
+	{
 	}
 	
 	
