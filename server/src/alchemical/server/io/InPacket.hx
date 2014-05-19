@@ -1,4 +1,4 @@
-package alchemical.server;
+package alchemical.server.io;
 import haxe.io.Bytes;
 import haxe.io.BytesInput;
 
@@ -6,7 +6,7 @@ import haxe.io.BytesInput;
  * ...
  * @author Dylan Heyes
  */
-class InputPacket
+class InPacket
 {
 	/**
 	 * Constructor.

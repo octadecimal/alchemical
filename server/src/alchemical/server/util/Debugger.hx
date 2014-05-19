@@ -1,4 +1,4 @@
-package alchemical.server;
+package alchemical.server.util;
 import neko.Lib;
 
 /**

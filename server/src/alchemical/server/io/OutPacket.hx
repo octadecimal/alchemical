@@ -1,4 +1,4 @@
-package alchemical.server;
+package alchemical.server.io;
 import haxe.io.Bytes;
 import haxe.io.BytesOutput;
 
@@ -6,7 +6,7 @@ import haxe.io.BytesOutput;
  * ...
  * @author Dylan Heyes
  */
-class OutputPacket
+class OutPacket
 {
 	private var _bytes:BytesOutput;
 	

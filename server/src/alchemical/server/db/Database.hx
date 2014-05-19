@@ -1,4 +1,6 @@
-package alchemical.server;
+package alchemical.server.db;
+import alchemical.server.const.Passwords;
+import alchemical.server.util.Debugger;
 import neko.Lib;
 import sys.db.Connection;
 import sys.db.Mysql;

@@ -1,6 +1,10 @@
 package alchemical.server;
 
+import alchemical.server.db.Database;
+import alchemical.server.io.InPacket;
+import alchemical.server.io.OutPacket;
 import alchemical.server.Server.Client;
+import alchemical.server.util.Debugger;
 import haxe.io.Bytes;
 import haxe.io.BytesOutput;
 import neko.net.ThreadServer;
@@ -12,7 +16,7 @@ typedef Client = {
 }
 
 typedef Message = {
-	var packet:InputPacket;
+	var packet:InPacket;
 }
 
 /**
@@ -102,7 +106,7 @@ class Server extends ThreadServer<Client, Message>
 		
 		if (completeMessage)
 		{
-			return { msg: { packet: new InputPacket(buf) }, bytes: buf.length};
+			return { msg: { packet: new InPacket(buf) }, bytes: buf.length};
 		}
 		else
 		{
@@ -136,7 +140,7 @@ class Server extends ThreadServer<Client, Message>
 		}
 	}
 	
-	private function sendToClient(client:Client, packet:OutputPacket):Void
+	private function sendToClient(client:Client, packet:OutPacket):Void
 	{
 		var outBytes:Bytes = packet.getBytes();
 		
@@ -146,7 +150,7 @@ class Server extends ThreadServer<Client, Message>
 		client.sock.output.flush();
 	}
 	
-	private function sendToAllClients(packet:OutputPacket):Void
+	private function sendToAllClients(packet:OutPacket):Void
 	{
 		for (client in _clientMap)
 		{
@@ -161,7 +165,7 @@ class Server extends ThreadServer<Client, Message>
 	{
 		Debugger.server("MSG ALL: " + message);
 		
-		var packet:OutputPacket = new OutputPacket();
+		var packet:OutPacket = new OutPacket();
 		packet.writeString(message);
 		sendToAllClients(packet);
 	}
@@ -171,7 +175,7 @@ class Server extends ThreadServer<Client, Message>
 	// REQUEST HANDLERS
 	// =========================================================================================
 	
-	private function handleLoginRequest(client:Client, packet:InputPacket):Void
+	private function handleLoginRequest(client:Client, packet:InPacket):Void
 	{
 		var user:String = packet.readString();
 		var pass:String = packet.readString();
@@ -180,7 +184,7 @@ class Server extends ThreadServer<Client, Message>
 		{
 			Debugger.server("Valid user logged in: " + user);
 			
-			var outPacket:OutputPacket = new OutputPacket();
+			var outPacket:OutPacket = new OutPacket();
 			
 			outPacket.writeCommand(2);		// Login command
 			outPacket.writeBool(1);			// Success
