@@ -42,7 +42,7 @@ typedef Player = {
 }
 
 /**
- * ...
+ * Alchimcal Server.
  * @author Dylan Heyes
  */
 class Server extends ThreadServer<Client, Message>
@@ -89,7 +89,7 @@ class Server extends ThreadServer<Client, Message>
 	{
 		_worldMap = _database.getWorlds();
 		
-		Debugger.server("Server started. host=" + host + " port=" + port);
+		Debugger.info("Server started. host=" + host + " port=" + port);
 		super.run(host, port);
 	}
 	
@@ -103,8 +103,8 @@ class Server extends ThreadServer<Client, Message>
 		_clientMap[id] = client;
 		
 		Debugger.server("Client connected: " + id + " = " + s.peer());
-		Debugger.server("Total connections: " + _numConnectedClients);
-		Debugger.server("Clients buffer: " + _clientMap.length);
+		Debugger.data("Total connections: " + _numConnectedClients);
+		Debugger.data("Clients buffer: " + _clientMap.length);
 		
 		return client;
 	}
@@ -117,8 +117,8 @@ class Server extends ThreadServer<Client, Message>
 		_clientMap[c.id] = null;
 		
 		Debugger.server("Client disconnected: " + Std.string(c.id));
-		Debugger.server("Total connections: " + _numConnectedClients);
-		Debugger.server("Clients buffer: " + _clientMap.length);
+		Debugger.data("Total connections: " + _numConnectedClients);
+		Debugger.data("Clients buffer: " + _clientMap.length);
 	}
 	
 	override public function readClientMessage(c:Client, buf:Bytes, pos:Int, len:Int):{msg:Message, bytes:Int} 
@@ -147,7 +147,7 @@ class Server extends ThreadServer<Client, Message>
 	{
 		var command:Int = msg.packet.readCommand();
 		
-		Debugger.server("EXEC: " + c.id + " -> " + command);
+		Debugger.data("EXEC: " + c.id + " -> " + command);
 		
 		_commandMap[command](c, msg.packet);
 	}
@@ -173,7 +173,7 @@ class Server extends ThreadServer<Client, Message>
 	{
 		var outBytes:Bytes = packet.getBytes();
 		
-		Debugger.server("Sending " + outBytes.length + " bytes to client: " + client.id);
+		Debugger.data("Sending " + outBytes.length + " bytes to client: " + client.id);
 		
 		client.sock.output.writeBytes(outBytes, 0, outBytes.length);
 		client.sock.output.flush();
@@ -215,7 +215,7 @@ class Server extends ThreadServer<Client, Message>
 		
 		if (userID > 0)
 		{
-			Debugger.server("Valid user logged in: " + user + " " + userID);
+			Debugger.info("Valid user logged in: " + user + " " + userID);
 			
 			client.player = _database.registerPlayer(userID);
 			var world:World = _worldMap[client.player.world];
