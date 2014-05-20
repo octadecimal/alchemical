@@ -11,7 +11,7 @@ package alchemical.client.core
 	import alchemical.client.subsystems.graphics.controller.CApplyDisplaySettings;
 	import alchemical.client.game.enum.GameNotes;
 	import alchemical.client.subsystems.ui.controller.CDisplayScreenLogin;
-	import alchemical.client.subsystems.ui.enum.UINotes;
+	import alchemical.client.core.enum.UINotes;
 	import flash.display.Stage;
 	import org.puremvc.as3.patterns.facade.Facade;
 	

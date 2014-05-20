@@ -1,7 +1,7 @@
 /**
  * Copyright 2014, Dylan Heyes
  */
-package alchemical.client.subsystems.input.enum 
+package alchemical.client.core.enum
 {
 	/**
 	 * InputNotes

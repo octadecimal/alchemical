@@ -8,11 +8,11 @@ package alchemical.client.subsystems.ui.mediator
 	import alchemical.client.core.enum.ComponentNames;
 	import alchemical.client.debugger.Debugger;
 	import alchemical.client.game.enum.GameNotes;
-	import alchemical.client.subsystems.network.enum.NetworkNotes;
-	import alchemical.client.subsystems.ui.enum.UINotes;
+	import alchemical.client.core.enum.NetworkNotes;
+	import alchemical.client.core.enum.UINotes;
 	import alchemical.client.subsystems.ui.events.UIEvent;
 	import alchemical.client.subsystems.ui.UILayer;
-	import alchemical.client.subsystems.world.enum.WorldNotes;
+	import alchemical.client.core.enum.WorldNotes;
 	import org.puremvc.as3.interfaces.INotification;
 	import starling.animation.Tween;
 	import starling.core.Starling;
