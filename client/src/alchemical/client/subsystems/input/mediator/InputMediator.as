@@ -5,7 +5,7 @@ package alchemical.client.subsystems.input.mediator
 {
 	import alchemical.client.core.enum.ComponentNames;
 	import alchemical.client.debugger.Debugger;
-	import alchemical.client.core.enum.InputNotes;
+	import alchemical.client.core.notes.InputNotes;
 	import alchemical.client.subsystems.input.model.InputProxy;
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	import starling.display.Stage;

@@ -1,7 +1,7 @@
 /**
  * Copyright 2014, Dylan Heyes
  */
-package alchemical.client.core.enum 
+package alchemical.client.core.notes 
 {
 	/**
 	 * Application notifications.

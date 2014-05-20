@@ -6,7 +6,7 @@ package alchemical.client.subsystems.network.model
 	import alchemical.client.core.enum.ComponentNames;
 	import alchemical.client.debugger.Debugger;
 	import alchemical.client.subsystems.network.enum.ENetcode;
-	import alchemical.client.core.enum.NetworkNotes;
+	import alchemical.client.core.notes.NetworkNotes;
 	import alchemical.client.subsystems.network.events.NetworkEvent;
 	import alchemical.client.subsystems.network.interfaces.INetworkGateway;
 	import alchemical.client.subsystems.network.model.packets.Packet;

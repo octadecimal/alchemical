@@ -1,7 +1,7 @@
 /**
  * Copyright 2014, Dylan Heyes
  */
-package alchemical.client.game.enum 
+package alchemical.client.core.notes 
 {
 	/**
 	 * GameNotes

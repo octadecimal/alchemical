@@ -3,7 +3,7 @@
  */
 package alchemical.client.subsystems.world.controller 
 {
-	import alchemical.client.core.enum.WorldNotes;
+	import alchemical.client.core.notes.WorldNotes;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.AsyncCommand;
 	

@@ -6,7 +6,7 @@ package alchemical.client.subsystems.network.mediator
 	import alchemical.client.core.architecture.SubsystemMediator;
 	import alchemical.client.core.enum.ComponentNames;
 	import alchemical.client.debugger.Debugger;
-	import alchemical.client.core.enum.NetworkNotes;
+	import alchemical.client.core.notes.NetworkNotes;
 	import alchemical.client.subsystems.network.events.NetworkEvent;
 	import alchemical.client.subsystems.network.interfaces.INetworkGateway;
 	import alchemical.client.subsystems.network.model.NetworkProxy;

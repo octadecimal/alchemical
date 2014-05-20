@@ -4,14 +4,14 @@
 package alchemical.client.core 
 {
 	import alchemical.client.core.controller.MStartup;
-	import alchemical.client.core.enum.ApplicationNotes;
+	import alchemical.client.core.notes.ApplicationNotes;
 	import alchemical.client.core.model.vo.StartupVO;
 	import alchemical.client.debugger.Debugger;
 	import alchemical.client.game.controller.MLaunchGame;
 	import alchemical.client.subsystems.graphics.controller.CApplyDisplaySettings;
-	import alchemical.client.game.enum.GameNotes;
+	import alchemical.client.core.notes.GameNotes;
 	import alchemical.client.subsystems.ui.controller.CDisplayScreenLogin;
-	import alchemical.client.core.enum.UINotes;
+	import alchemical.client.core.notes.UINotes;
 	import flash.display.Stage;
 	import org.puremvc.as3.patterns.facade.Facade;
 	

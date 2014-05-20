@@ -3,7 +3,7 @@
  */
 package alchemical.client.core.controller 
 {
-	import alchemical.client.core.enum.ApplicationNotes;
+	import alchemical.client.core.notes.ApplicationNotes;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.AsyncCommand;
 	
