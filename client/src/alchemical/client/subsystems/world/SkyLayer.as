@@ -24,8 +24,8 @@ package alchemical.client.subsystems.world
 		
 		private function onUpdate(e:EnterFrameEvent):void 
 		{
-			scrollX += TEMP;
-			scrollY += TEMP;
+			//scrollX += TEMP;
+			//scrollY += TEMP;
 		}
 		
 	}

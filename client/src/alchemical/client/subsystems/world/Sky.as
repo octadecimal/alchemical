@@ -4,6 +4,7 @@
 package alchemical.client.subsystems.world 
 {
 	import starling.display.Sprite;
+	import starling.events.EnterFrameEvent;
 	import starling.textures.Texture;
 	
 	/**
@@ -18,6 +19,34 @@ package alchemical.client.subsystems.world
 			super();
 			
 			refresh(4);
+			
+			// Temp
+			addEventListener(EnterFrameEvent.ENTER_FRAME, onUpdate);
+		}
+		
+		private function onUpdate(e:EnterFrameEvent):void 
+		{
+			for (var i:int = 0; i < _layers.length; i++)
+			{
+				if (_layers[i])
+				{
+					if (i == 0)
+					{
+						_layers[i].scrollX += 0.1;
+						_layers[i].scrollY += 0.1;
+					}
+					else if (i == _layers.length - 1)
+					{
+						_layers[i].scrollX += (_layers.length - i) * 0.75;
+						_layers[i].scrollY += (_layers.length - i) * 0.75;
+					}
+					else
+					{
+						_layers[i].scrollX += (_layers.length - i) * 0.6;
+						_layers[i].scrollY += (_layers.length - i) * 0.6;
+					}
+				}
+			}
 		}
 		
 		

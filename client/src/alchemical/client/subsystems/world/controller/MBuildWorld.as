@@ -14,6 +14,7 @@ package alchemical.client.subsystems.world.controller
 		override protected function initializeAsyncMacroCommand():void 
 		{
 			addSubCommand(CBuildSky);
+			addSubCommand(CNotifyWorldReady);
 		}
 	}
 

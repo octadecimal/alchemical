@@ -12,7 +12,11 @@ package alchemical.client.subsystems.ui.mediator
 	import alchemical.client.subsystems.ui.enum.UINotes;
 	import alchemical.client.subsystems.ui.events.UIEvent;
 	import alchemical.client.subsystems.ui.UILayer;
+	import alchemical.client.subsystems.world.enum.WorldNotes;
 	import org.puremvc.as3.interfaces.INotification;
+	import starling.animation.Tween;
+	import starling.core.Starling;
+	import starling.display.Quad;
 	
 	/**
 	 * UIMediator
@@ -45,6 +49,7 @@ package alchemical.client.subsystems.ui.mediator
 			interests.push(NetworkNotes.DISCONNECTED);
 			interests.push(ApplicationNotes.SYSTEM_READY);
 			interests.push(GameNotes.LAUNCH_GAME);
+			interests.push(WorldNotes.WORLD_READY);
 			return interests;
 		}
 		
@@ -66,6 +71,10 @@ package alchemical.client.subsystems.ui.mediator
 				
 				case GameNotes.LAUNCH_GAME:
 					handleLaunchGame(notification);
+					break;
+				
+				case WorldNotes.WORLD_READY:
+					handleWorldReady(notification);
 					break;
 			}
 			
@@ -95,16 +104,27 @@ package alchemical.client.subsystems.ui.mediator
 		
 		private function handleSystemReady(notification:INotification):void 
 		{
-			// Display login screen
 			sendNotification(UINotes.DISPLAY_LOGIN_SCREEN);
 		}
 		
 		private function handleLaunchGame(notification:INotification):void 
 		{
-			// Destroy login screen
 			_view.loginScreen.hide();
 			_view.loginScreen = null;
+			
+			_overlay = new Quad(1920, 1080, 0);
+			_view.addChild(_overlay);
 		}
+		
+		private function handleWorldReady(notification:INotification):void 
+		{
+			var tween:Tween = new Tween(_overlay, 2);
+			tween.fadeTo(0);
+			
+			Starling.juggler.add(tween);
+		}
+		
+		private var _overlay:Quad;	// Test
 		
 		
 		

@@ -64,11 +64,13 @@ package alchemical.client.subsystems.ui.screens
 		public function showConnectedState():void 
 		{
 			_button.enabled = true;
+			_button.text = "ONLINE";
 		}
 		
 		public function showDisconnectedState():void 
 		{
 			_button.enabled = false;
+			_button.text = "OFFLINE";
 		}
 		
 		
