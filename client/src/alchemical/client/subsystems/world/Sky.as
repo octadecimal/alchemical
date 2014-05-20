@@ -32,18 +32,18 @@ package alchemical.client.subsystems.world
 				{
 					if (i == 0)
 					{
-						_layers[i].scrollX += 0.1;
-						_layers[i].scrollY += 0.1;
+						//_layers[i].scrollX += 0.1;
+						//_layers[i].scrollY += 0.1;
 					}
-					else if (i == _layers.length - 1)
-					{
-						_layers[i].scrollX += (_layers.length - i) * 0.75;
-						_layers[i].scrollY += (_layers.length - i) * 0.75;
-					}
+					//else if (i == _layers.length - 1)
+					//{
+						//_layers[i].scrollX += (_layers.length - i) * 0.75;
+						//_layers[i].scrollY += (_layers.length - i) * 0.75;
+					//}
 					else
 					{
-						_layers[i].scrollX += (_layers.length - i) * 0.6;
-						_layers[i].scrollY += (_layers.length - i) * 0.6;
+						_layers[i].scrollX += (_layers.length - i) * 0.4;
+						_layers[i].scrollY += (_layers.length - i) * 0.4;
 					}
 				}
 			}

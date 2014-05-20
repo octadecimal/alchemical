@@ -4,15 +4,15 @@
 package alchemical.client.subsystems.ui.mediator 
 {
 	import alchemical.client.core.architecture.SubsystemMediator;
-	import alchemical.client.core.notes.ApplicationNotes;
 	import alchemical.client.core.enum.ComponentNames;
-	import alchemical.client.debugger.Debugger;
+	import alchemical.client.core.notes.ApplicationNotes;
 	import alchemical.client.core.notes.GameNotes;
 	import alchemical.client.core.notes.NetworkNotes;
 	import alchemical.client.core.notes.UINotes;
+	import alchemical.client.core.notes.WorldNotes;
+	import alchemical.client.debugger.Debugger;
 	import alchemical.client.subsystems.ui.events.UIEvent;
 	import alchemical.client.subsystems.ui.UILayer;
-	import alchemical.client.core.notes.WorldNotes;
 	import org.puremvc.as3.interfaces.INotification;
 	import starling.animation.Tween;
 	import starling.core.Starling;
