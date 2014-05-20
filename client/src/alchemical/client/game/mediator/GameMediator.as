@@ -7,7 +7,7 @@ package alchemical.client.game.mediator
 	import alchemical.client.debugger.Debugger;
 	import alchemical.client.game.enum.GameNotes;
 	import alchemical.client.game.Game;
-	import alchemical.client.subsystems.network.enum.NetworkNotes;
+	import alchemical.client.core.enum.NetworkNotes;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
