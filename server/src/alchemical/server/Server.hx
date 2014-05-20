@@ -8,39 +8,8 @@ import alchemical.server.io.PacketBuilder;
 import alchemical.server.Server.Client;
 import alchemical.server.util.Debugger;
 import haxe.io.Bytes;
-import haxe.io.BytesOutput;
 import neko.net.ThreadServer;
 import sys.net.Socket;
-
-typedef Client = {
-	var id:Int;
-	var sock:Socket;
-	var player:Player;
-}
-
-typedef Message = {
-	var packet:InPacket;
-}
-
-typedef World = {
-	var id:UInt;
-	var name:String;
-	var width:Int;
-	var height:Int;
-	var numSkyLayers:Int;
-	var skyLayers:Array<Int>;
-	var players:Array<Player>;
-}
-
-typedef Player = {
-	var id:UInt;
-	var user:UInt;
-	var name:String;
-	var world:UInt;
-	var entity:UInt;
-	var x:Float;
-	var y:Float;
-}
 
 /**
  * Alchimcal Server.
@@ -48,15 +17,23 @@ typedef Player = {
  */
 class Server extends ThreadServer<Client, Message>
 {
+	// Database connection
 	private var _database:Database;
+	
+	// Number of currently connected clients
 	private var _numConnectedClients:UInt;
+	
+	// Next available client id
 	private var _nextValidID:Int = -1;
 	
+	// Maps
 	private var _commandMap:Array<Client -> InPacket -> Void>;
 	private var _clientMap:Array<Client>;
 	private var _worldMap:Array<World>;
 	
+	// Packet handlers
 	private var _builder:PacketBuilder;
+	
 	
 	/**
 	 * Constructor.
@@ -86,6 +63,9 @@ class Server extends ThreadServer<Client, Message>
 	// INTERNAL OVERRIDES
 	// =========================================================================================
 	
+	/**
+	 * Starts the server.
+	 */
 	override public function run(host:String, port:Int) 
 	{
 		_worldMap = _database.getWorlds();
@@ -94,6 +74,9 @@ class Server extends ThreadServer<Client, Message>
 		super.run(host, port);
 	}
 	
+	/**
+	 * Client has connected.
+	 */
 	override public function clientConnected(s:Socket):Client 
 	{
 		var id:UInt = generateClientId();
@@ -110,6 +93,9 @@ class Server extends ThreadServer<Client, Message>
 		return client;
 	}
 	
+	/**
+	 * Client has disconnected.
+	 */
 	override public function clientDisconnected(c:Client) 
 	{
 		_numConnectedClients--;
@@ -122,6 +108,9 @@ class Server extends ThreadServer<Client, Message>
 		Debugger.server("Clients buffer: " + _clientMap.length);
 	}
 	
+	/**
+	 * Reads the incoming client message in realtime, searching for a full completed message.
+	 */
 	override public function readClientMessage(c:Client, buf:Bytes, pos:Int, len:Int):{msg:Message, bytes:Int} 
 	{
 		var completeMessage:Bool = false;
@@ -129,8 +118,7 @@ class Server extends ThreadServer<Client, Message>
 		
 		while (currentPosition < (pos + len) && !completeMessage)
 		{
-			//Debugger.server("Current: " + buf.get(currentPosition));
-			completeMessage = (buf.get(currentPosition) == 1);
+			completeMessage = (buf.get(currentPosition) == Commands.END);
 			currentPosition++;
 		}
 		
@@ -138,12 +126,14 @@ class Server extends ThreadServer<Client, Message>
 		{
 			return { msg: { packet: new InPacket(buf) }, bytes: buf.length};
 		}
-		else
-		{
-			return null;
-		}
+		
+		return null;
 	}
 	
+	/**
+	 * Called when a complete message has been found by readClientMessage. Reads incomiing commands
+	 * and calls the relevant command request handler as specified in _commandMap.
+	 */
 	override function clientMessage(c:Client, msg:Message) 
 	{
 		var command:Int = msg.packet.readCommand();
@@ -158,6 +148,9 @@ class Server extends ThreadServer<Client, Message>
 	// INTERNAL
 	// =========================================================================================
 	
+	/**
+	 * Generates an optimal unique client id.
+	 */
 	private function generateClientId():UInt
 	{
 		if (_nextValidID == -1)
@@ -170,6 +163,9 @@ class Server extends ThreadServer<Client, Message>
 		}
 	}
 	
+	/**
+	 * Sends a packet to the specified client.
+	 */
 	private function sendToClient(client:Client, packet:OutPacket):Void
 	{
 		var outBytes:Bytes = packet.getBytes();
@@ -177,10 +173,12 @@ class Server extends ThreadServer<Client, Message>
 		Debugger.data("Sending " + outBytes.length + " bytes to client: " + client.id);
 		
 		client.sock.output.writeBytes(outBytes, 0, outBytes.length);
-		//client.sock.output.writeInt16(Commands.END);
 		client.sock.output.flush();
 	}
 	
+	/**
+	 * Sends a packet to all connected clients.
+	 */
 	private function sendToAllClients(packet:OutPacket):Void
 	{
 		for (client in _clientMap)
@@ -192,20 +190,14 @@ class Server extends ThreadServer<Client, Message>
 		}
 	}
 	
-	private function sendMessageToAllClients(message:String):Void
-	{
-		Debugger.server("MSG ALL: " + message);
-		
-		var packet:OutPacket = new OutPacket();
-		packet.writeString(message);
-		sendToAllClients(packet);
-	}
-	
 	
 	
 	// REQUEST HANDLERS
 	// =========================================================================================
 	
+	/**
+	 * request: LOGIN
+	 */
 	private function handleLoginRequest(client:Client, packet:InPacket):Void
 	{
 		var user:String = packet.readString();
@@ -234,4 +226,42 @@ class Server extends ThreadServer<Client, Message>
 		
 		sendToClient(client, outPacket);
 	}
+}
+
+
+// Client type
+typedef Client = {
+	var id:Int;
+	var sock:Socket;
+	var player:Player;
+}
+
+
+// Socket message type
+typedef Message = {
+	var packet:InPacket;
+}
+
+
+// World type
+typedef World = {
+	var id:UInt;
+	var name:String;
+	var width:Int;
+	var height:Int;
+	var numSkyLayers:Int;
+	var skyLayers:Array<Int>;
+	var players:Array<Player>;
+}
+
+
+// Player type
+typedef Player = {
+	var id:UInt;
+	var user:UInt;
+	var name:String;
+	var world:UInt;
+	var entity:UInt;
+	var x:Float;
+	var y:Float;
 }
