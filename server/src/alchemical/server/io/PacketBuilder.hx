@@ -46,8 +46,13 @@ class PacketBuilder
 	}
 	
 	
-	/*public function definePlayer(packet:OutPacket, player:Player) 
+	public function definePlayer(packet:OutPacket, player:Player) 
 	{
-		//packet.writeCommand
-	}*/
+		packet.writeCommand(Commands.DEFINE_PLAYER);
+		packet.writeInt16(player.id);
+		packet.writeString(player.name);
+		packet.writeInt16(player.entity);
+		packet.writeInt16(Std.int(player.x));
+		packet.writeInt16(Std.int(player.y));
+	}
 }

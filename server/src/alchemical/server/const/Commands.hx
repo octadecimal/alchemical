@@ -8,4 +8,5 @@ class Commands
 {
 	static public inline var LOGIN:Int = 2;
 	static public inline var DEFINE_WORLD:Int = 4;
+	static public inline var DEFINE_PLAYER:Int = 5;
 }

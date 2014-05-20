@@ -222,6 +222,7 @@ class Server extends ThreadServer<Client, Message>
 			
 			_builder.loginSuccess(outPacket);
 			_builder.defineWorld(outPacket, world);
+			_builder.definePlayer(outPacket, client.player);
 		}
 		else
 		{
