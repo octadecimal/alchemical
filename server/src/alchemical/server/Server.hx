@@ -3,6 +3,7 @@ package alchemical.server;
 import alchemical.server.db.Database;
 import alchemical.server.io.InPacket;
 import alchemical.server.io.OutPacket;
+import alchemical.server.io.PacketBuilder;
 import alchemical.server.Server.Client;
 import alchemical.server.util.Debugger;
 import haxe.io.Bytes;
@@ -54,6 +55,8 @@ class Server extends ThreadServer<Client, Message>
 	private var _clientMap:Array<Client>;
 	private var _worldMap:Array<World>;
 	
+	private var _builder:PacketBuilder;
+	
 	/**
 	 * Constructor.
 	 */
@@ -62,6 +65,7 @@ class Server extends ThreadServer<Client, Message>
 		super();
 		
 		_database = new Database();
+		_builder = new PacketBuilder();
 		
 		_numConnectedClients = 0;
 		
@@ -207,30 +211,21 @@ class Server extends ThreadServer<Client, Message>
 		
 		var userID:UInt = _database.getUserIDByCredentials(user, pass);
 		
+		var outPacket:OutPacket = new OutPacket();
+		
 		if (userID > 0)
 		{
 			Debugger.server("Valid user logged in: " + user + " " + userID);
 			
 			client.player = _database.registerPlayer(userID);
+			var world:World = _worldMap[client.player.world];
 			
-			var outPacket:OutPacket = new OutPacket();
-			outPacket.writeCommand(2);		// LOGIN
-			outPacket.writeBool(1);			// success
-			outPacket.writeCommand(4);		// DEFINE_WORLD
-			outPacket.writeInt16(0);		// world id
-			outPacket.writeString("debug");	// world name
-			outPacket.writeInt16(16);		// world width
-			outPacket.writeInt16(16);		// world height
-			outPacket.writeInt16(7);		// sky layer 1
-			outPacket.writeInt16(1);		// sky layer 2
-			outPacket.writeInt16(3);		// sky layer 3
-			outPacket.writeInt16(1);		// sky layer 4
-			
-			sendMessageToAllClients(user + " logged in.");
+			_builder.loginSuccess(outPacket);
+			_builder.defineWorld(outPacket, world);
 		}
 		else
 		{
-			outPacket.writeBool(0);			// success
+			outPacket.writeBool(0);			// fail
 			Debugger.server("Invalid user attempted log in: " + user);
 		}
 		
