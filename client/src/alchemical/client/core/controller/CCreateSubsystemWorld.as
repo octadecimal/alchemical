@@ -7,7 +7,7 @@ package alchemical.client.core.controller
 	import alchemical.client.debugger.Debugger;
 	import alchemical.client.subsystems.world.Camera;
 	import alchemical.client.subsystems.world.mediator.WorldMediator;
-	import alchemical.client.subsystems.world.proxy.WorldProxy;
+	import alchemical.client.subsystems.world.model.WorldProxy;
 	import alchemical.client.subsystems.world.Sky;
 	import alchemical.client.subsystems.world.World;
 	import org.puremvc.as3.interfaces.INotification;

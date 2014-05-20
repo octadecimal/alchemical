@@ -5,7 +5,7 @@ package alchemical.client.subsystems.world.controller
 {
 	import alchemical.client.core.enum.ComponentNames;
 	import alchemical.client.subsystems.world.model.vo.WorldVO;
-	import alchemical.client.subsystems.world.proxy.WorldProxy;
+	import alchemical.client.subsystems.world.model.vo.WorldProxy;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.AsyncCommand;
 	

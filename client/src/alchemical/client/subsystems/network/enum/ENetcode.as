@@ -17,7 +17,8 @@ package alchemical.client.subsystems.network.enum
 		
 		// Command codes
 		static public const LOGIN:uint = 2;
-		static public const LOGIN_OK:uint = 3;
+		//static public const LOGIN_OK:uint = 3;	// NOT USED
 		static public const DEFINE_WORLD:uint = 4;
+		static public const DEFINE_PLAYER:uint = 5;
 	}
 }

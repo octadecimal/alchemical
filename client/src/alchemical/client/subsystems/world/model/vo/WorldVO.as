@@ -13,10 +13,8 @@ package alchemical.client.subsystems.world.model.vo
 		public var name:String;
 		public var width:int;
 		public var height:int;
-		public var layer0:int;
-		public var layer1:int;
-		public var layer2:int;
-		public var layer3:int;
+		public var numSkyLayers:int;
+		public var skyLayers:Vector.<int> = new Vector.<int>();
 	}
 
 }

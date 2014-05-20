@@ -1,7 +1,4 @@
-/**
- * Copyright 2014, Dylan Heyes
- */
-package alchemical.client.subsystems.world.proxy 
+package alchemical.client.subsystems.world.model
 {
 	import alchemical.client.core.enum.ComponentNames;
 	import alchemical.client.debugger.Debugger;

@@ -9,7 +9,7 @@ class Debugger
 {
 	static public function server(msg:Dynamic):Void
 	{
-		Lib.println("--> SRV: "+msg);
+		Lib.println("    SRV: "+msg);
 	}
 	
 	static public function database(msg:Dynamic):Void

@@ -10,10 +10,9 @@ package alchemical.client.subsystems.network.model
 	import alchemical.client.subsystems.network.events.NetworkEvent;
 	import alchemical.client.subsystems.network.interfaces.INetworkGateway;
 	import alchemical.client.subsystems.network.model.packets.Packet;
+	import alchemical.client.subsystems.world.model.vo.PlayerVO;
 	import alchemical.client.subsystems.world.model.vo.WorldVO;
 	import flash.events.TimerEvent;
-	import flash.utils.ByteArray;
-	import flash.utils.Endian;
 	import flash.utils.IDataInput;
 	import flash.utils.Timer;
 	import org.puremvc.as3.patterns.proxy.Proxy;
@@ -24,8 +23,13 @@ package alchemical.client.subsystems.network.model
 	 */
 	public class NetworkProxy extends Proxy 
 	{
-		// Outoing queue flush rate
 		static public const FLUSH_RATE:Number = 16;
+		
+		private var _reader:PacketReader;
+		private var _gateway:INetworkGateway;
+		private var _packet:Packet;
+		private var _timer:Timer;
+		private var _commandMap:Vector.<Function>;
 		
 		/**
 		 * Constructor.
@@ -34,13 +38,16 @@ package alchemical.client.subsystems.network.model
 		{
 			super(ComponentNames.NETWORK, _gateway);
 			
+			_reader = new PacketReader();
+			
 			_gateway = gateway;
 			_gateway.addEventListener(NetworkEvent.DATA_RECEIVED, onDataReceived);
 			
 			_commandMap = new Vector.<Function>(ENetcode.TOTAL_COMMANDS);
-			buildResponseMap();
+			_commandMap[ENetcode.LOGIN] = handleLoginResponse;
+			_commandMap[ENetcode.DEFINE_WORLD] = handleDefineWorldResponse;
+			_commandMap[ENetcode.DEFINE_PLAYER] = handleDefinePlayerResponse;
 			
-			//_bytes = new ByteArray();
 			_packet = new Packet();
 			
 			_timer = new Timer(FLUSH_RATE);
@@ -54,12 +61,6 @@ package alchemical.client.subsystems.network.model
 		
 		// INTERNAL
 		// =========================================================================================
-		
-		private function buildResponseMap():void
-		{
-			_commandMap[ENetcode.LOGIN] = handleLoginResponse;
-			_commandMap[ENetcode.DEFINE_WORLD] = handleDefineWorldResponse;
-		}
 		
 		private function flush():void
 		{
@@ -105,25 +106,23 @@ package alchemical.client.subsystems.network.model
 		
 		private function handleDefineWorldResponse(bytes:IDataInput):void 
 		{
-			var byte:int;
-			
 			Debugger.log(this, "Defining world...");
 			
-			var vo:WorldVO = new WorldVO();
-			vo.id = bytes.readShort();
-			vo.name = bytes.readUTF();
-			vo.width = bytes.readShort();
-			vo.height = bytes.readShort();
-			vo.layer0 = bytes.readShort();
-			vo.layer1 = bytes.readShort();
-			vo.layer2 = bytes.readShort();
-			vo.layer3 = bytes.readShort();
+			var vo:WorldVO = _reader.defineWorld(bytes);
 			
-			Debugger.log(this, "World defined id=" + vo.id + " name=" + vo.name);
+			Debugger.log(this, "World defined id=" + vo.id + " name=" + vo.name + " layers="+vo.skyLayers);
 			
 			sendNotification(NetworkNotes.WORLD_DEFINED, vo);
-			
 			sendNotification(NetworkNotes.LOGIN_SUCCESSFUL, vo);
+		}
+		
+		private function handleDefinePlayerResponse(bytes:IDataInput):void 
+		{
+			Debugger.log(this, "Defining player...");
+			
+			var vo:PlayerVO = _reader.definePlayer(bytes);
+			
+			Debugger.log(this, "Player defined=" + vo.id + " name=" + vo.name);
 		}
 		
 		
@@ -152,17 +151,6 @@ package alchemical.client.subsystems.network.model
 				_commandMap[command](bytes);
 			}
 		}
-		
-		
-		
-		// PRIVATE
-		// =========================================================================================
-		
-		private var _gateway:INetworkGateway;
-		//private var _bytes:ByteArray;
-		private var _packet:Packet;
-		private var _timer:Timer;
-		private var _commandMap:Vector.<Function>;
 	}
 
 }

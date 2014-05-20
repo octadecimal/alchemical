@@ -30,7 +30,7 @@ package alchemical.client.subsystems.world.controller
 			
 			for (var i:int = 0; i < 4; i++)
 			{
-				resources.enqueue(File.applicationDirectory.resolvePath(path + worldVO["layer"+i] + ".png"));
+				resources.enqueue(File.applicationDirectory.resolvePath(path + worldVO.skyLayers[i] + ".png"));
 			}
 			
 			resources.loadQueue(function (ratio:Number):void
@@ -39,7 +39,7 @@ package alchemical.client.subsystems.world.controller
 				{
 					for (i = 0; i < 4; i++)
 					{
-						sky.setLayerAt(i, resources.getTexture(worldVO["layer" + i]));
+						sky.setLayerAt(i, resources.getTexture(worldVO.skyLayers[i].toString()));
 					}
 					
 					commandComplete();

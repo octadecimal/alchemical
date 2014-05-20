@@ -1,5 +1,6 @@
 package alchemical.server;
 
+import alchemical.server.const.Commands;
 import alchemical.server.db.Database;
 import alchemical.server.io.InPacket;
 import alchemical.server.io.OutPacket;
@@ -103,8 +104,8 @@ class Server extends ThreadServer<Client, Message>
 		_clientMap[id] = client;
 		
 		Debugger.server("Client connected: " + id + " = " + s.peer());
-		Debugger.data("Total connections: " + _numConnectedClients);
-		Debugger.data("Clients buffer: " + _clientMap.length);
+		Debugger.server("Total connections: " + _numConnectedClients);
+		Debugger.server("Clients buffer: " + _clientMap.length);
 		
 		return client;
 	}
@@ -117,8 +118,8 @@ class Server extends ThreadServer<Client, Message>
 		_clientMap[c.id] = null;
 		
 		Debugger.server("Client disconnected: " + Std.string(c.id));
-		Debugger.data("Total connections: " + _numConnectedClients);
-		Debugger.data("Clients buffer: " + _clientMap.length);
+		Debugger.server("Total connections: " + _numConnectedClients);
+		Debugger.server("Clients buffer: " + _clientMap.length);
 	}
 	
 	override public function readClientMessage(c:Client, buf:Bytes, pos:Int, len:Int):{msg:Message, bytes:Int} 
@@ -176,6 +177,7 @@ class Server extends ThreadServer<Client, Message>
 		Debugger.data("Sending " + outBytes.length + " bytes to client: " + client.id);
 		
 		client.sock.output.writeBytes(outBytes, 0, outBytes.length);
+		//client.sock.output.writeInt16(Commands.END);
 		client.sock.output.flush();
 	}
 	
