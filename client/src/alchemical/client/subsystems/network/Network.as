@@ -10,12 +10,14 @@ package alchemical.client.subsystems.network
 	 */
 	public class Network 
 	{
+		public var gateway:INetworkGateway;
+		
 		/**
 		 * Constructor.
 		 */
 		public function Network(gateway:INetworkGateway) 
 		{
-			
+			this.gateway = gateway;
 		}
 		
 	}

@@ -17,6 +17,8 @@ package alchemical.client.subsystems.network.model
 		
 		public function NetworkSocket(host:String=null, port:int=0) 
 		{
+			timeout = 3500;
+			
 			super(host, port);
 			
 			endian = Endian.LITTLE_ENDIAN;

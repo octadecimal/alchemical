@@ -13,6 +13,7 @@ package alchemical.client.subsystems.network.gateways
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
 	import flash.events.SecurityErrorEvent;
+	import flash.utils.setTimeout;
 	import starling.events.EventDispatcher;
 	
 	/**
@@ -21,11 +22,17 @@ package alchemical.client.subsystems.network.gateways
 	 */
 	public class InternetGateway extends EventDispatcher implements INetworkGateway
 	{
+		private var _host:String;
+		private var _port:uint;
+		
 		/**
 		 * Constructor.
 		 */
 		public function InternetGateway(host:String, port:uint) 
 		{
+			_host = host;
+			_port = port;
+			
 			_socket = new NetworkSocket(host, port);
 			
 			_socket.addEventListener(Event.CONNECT, onSocketConnected);
@@ -34,7 +41,7 @@ package alchemical.client.subsystems.network.gateways
 			_socket.addEventListener(SecurityErrorEvent.SECURITY_ERROR, onSocketSecurityError);
 			_socket.addEventListener(ProgressEvent.SOCKET_DATA, onSocketDataReceived);
 			
-			_socket.connect(host, port);
+			connect();
 		}
 		
 		
@@ -42,16 +49,28 @@ package alchemical.client.subsystems.network.gateways
 		// API
 		// =========================================================================================
 		
+		public function connect():void
+		{
+			_socket.connect(_host, _port);
+		}
+		
 		public function send(packet:Packet):void 
 		{
-			Debugger.log(this, "Sending " + packet.bytes.length + " bytes.");
-			
-			_socket.writeBytes(packet.bytes);
-			_socket.writeShort(ENetcode.END);
-			fillSocket(_socket);
-			
-			Debugger.log(this, "Flushing " + _socket.bytesPending+ " bytes");
-			_socket.flush();
+			if (_socket.connected)
+			{
+				Debugger.log(this, "Sending " + packet.bytes.length + " bytes.");
+				
+				_socket.writeBytes(packet.bytes);
+				_socket.writeShort(ENetcode.END);
+				fillSocket(_socket);
+				
+				Debugger.log(this, "Flushing " + _socket.bytesPending+ " bytes");
+				_socket.flush();
+			}
+			else
+			{
+				Debugger.log(this, "Not connected, ignored sending.");
+			}
 		}
 		
 		private function fillSocket(socket:NetworkSocket):void 
@@ -71,12 +90,14 @@ package alchemical.client.subsystems.network.gateways
 		{
 			Debugger.log(this, "Socket connected.");
 			
-			dispatchEvent(new starling.events.Event(Event.CONNECT));
+			dispatchEvent(new NetworkEvent(NetworkEvent.CONNECTED));
 		}
 		
 		private function onSocketClosed(e:Event):void 
 		{
 			Debugger.log(this, "Socket disconnected.");
+			
+			dispatchEvent(new NetworkEvent(NetworkEvent.DISCONNECTED));
 		}
 		
 		private function onSocketDataReceived(e:ProgressEvent):void 
@@ -94,6 +115,13 @@ package alchemical.client.subsystems.network.gateways
 		private function onSocketIOError(e:IOErrorEvent):void 
 		{
 			Debugger.log(this, "IO Error: " + e.errorID);
+			
+			if (e.errorID == 2031)
+			{
+				Debugger.log(this, "Server unreachable, reconnecting...");
+				
+				setTimeout(connect, 50);
+			}
 		}
 		
 		private function onSocketSecurityError(e:SecurityErrorEvent):void 

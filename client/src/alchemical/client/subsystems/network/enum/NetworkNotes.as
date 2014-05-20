@@ -14,6 +14,8 @@ package alchemical.client.subsystems.network.enum
 		static public const LOGIN_SUCCESSFUL:String = "loginSuccessful";
 		static public const LOGIN_FAILURE:String = "loginFailure";
 		static public const WORLD_DEFINED:String = "worldDefined";
+		static public const DISCONNECTED:String = "disconnected";
+		static public const CONNECTED:String = "connected";
 	}
 
 }

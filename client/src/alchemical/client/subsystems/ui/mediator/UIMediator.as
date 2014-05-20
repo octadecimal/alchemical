@@ -41,6 +41,8 @@ package alchemical.client.subsystems.ui.mediator
 		override public function listNotificationInterests():Array 
 		{
 			var interests:Array = super.listNotificationInterests();
+			interests.push(NetworkNotes.CONNECTED);
+			interests.push(NetworkNotes.DISCONNECTED);
 			interests.push(ApplicationNotes.SYSTEM_READY);
 			interests.push(GameNotes.LAUNCH_GAME);
 			return interests;
@@ -50,6 +52,14 @@ package alchemical.client.subsystems.ui.mediator
 		{
 			switch(notification.getName())
 			{
+				case NetworkNotes.CONNECTED:
+					handleNetworkConnected(notification);
+					break;
+				
+				case NetworkNotes.DISCONNECTED:
+					handleNetworkDisconnected(notification);
+					break;
+				
 				case ApplicationNotes.SYSTEM_READY:
 					handleSystemReady(notification);
 					break;
@@ -67,6 +77,22 @@ package alchemical.client.subsystems.ui.mediator
 		// NOTIFICATION HANDLERS
 		// =========================================================================================
 		
+		private function handleNetworkConnected(notification:INotification):void 
+		{
+			if (_view.loginScreen)
+			{
+				_view.loginScreen..showConnectedState();
+			}
+		}
+		
+		private function handleNetworkDisconnected(notification:INotification):void 
+		{
+			if (_view.loginScreen)
+			{
+				_view.loginScreen.showDisconnectedState();
+			}
+		}
+		
 		private function handleSystemReady(notification:INotification):void 
 		{
 			// Display login screen
@@ -77,6 +103,7 @@ package alchemical.client.subsystems.ui.mediator
 		{
 			// Destroy login screen
 			_view.loginScreen.hide();
+			_view.loginScreen = null;
 		}
 		
 		

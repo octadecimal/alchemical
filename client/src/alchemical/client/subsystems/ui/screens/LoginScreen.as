@@ -34,7 +34,7 @@ package alchemical.client.subsystems.ui.screens
 			
 			_button.addEventListener(TouchEvent.TOUCH, onButtonTouch);
 			
-			//disableLoginButton();
+			showDisconnectedState();
 		}
 		
 		/**
@@ -61,12 +61,12 @@ package alchemical.client.subsystems.ui.screens
 			dispose();
 		}
 		
-		public function enableLoginButton():void
+		public function showConnectedState():void 
 		{
 			_button.enabled = true;
 		}
 		
-		public function disableLoginButton():void
+		public function showDisconnectedState():void 
 		{
 			_button.enabled = false;
 		}

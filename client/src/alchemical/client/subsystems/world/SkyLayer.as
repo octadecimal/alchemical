@@ -13,7 +13,7 @@ package alchemical.client.subsystems.world
 	 */
 	public class SkyLayer extends ScrollableImage
 	{
-		private var TEMP:Number = Math.random() * 1 + 0.15;
+		private var TEMP:Number = Math.random() * 1 + 0.35;
 		
 		public function SkyLayer(texture:Texture) 
 		{

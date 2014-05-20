@@ -7,6 +7,7 @@ package alchemical.client.core.controller
 	import alchemical.client.core.model.vo.StartupVO;
 	import alchemical.client.debugger.Debugger;
 	import alchemical.client.subsystems.network.gateways.SimulatedGateway;
+	import alchemical.client.subsystems.network.interfaces.INetworkGateway;
 	import alchemical.client.subsystems.network.mediator.NetworkMediator;
 	import alchemical.client.subsystems.network.model.NetworkProxy;
 	import alchemical.client.subsystems.network.Network;
@@ -25,8 +26,11 @@ package alchemical.client.core.controller
 			
 			var startupVO:StartupVO = notification.getBody() as StartupVO;
 			
-			facade.registerProxy(new NetworkProxy(startupVO.gateway));
-			facade.registerMediator(new NetworkMediator(new Network(startupVO.gateway)));
+			var gateway:INetworkGateway = startupVO.gateway;
+			var network:Network = new Network(gateway);
+			
+			facade.registerProxy(new NetworkProxy(gateway));
+			facade.registerMediator(new NetworkMediator(network));
 			
 			Debugger.log(this, "Created: " + ComponentNames.NETWORK);
 			commandComplete();
