@@ -13,6 +13,7 @@ import sys.net.Socket;
 typedef Client = {
 	var id:Int;
 	var sock:Socket;
+	var player:Player;
 }
 
 typedef Message = {
@@ -26,6 +27,17 @@ typedef World = {
 	var height:Int;
 	var numSkyLayers:Int;
 	var skyLayers:Array<Int>;
+	var players:Array<Player>;
+}
+
+typedef Player = {
+	var id:UInt;
+	var user:UInt;
+	var name:String;
+	var world:UInt;
+	var entity:UInt;
+	var x:Float;
+	var y:Float;
 }
 
 /**
@@ -82,7 +94,7 @@ class Server extends ThreadServer<Client, Message>
 		var id:UInt = generateClientId();
 		_numConnectedClients++;
 		
-		var client:Client = { id: id, sock: s };
+		var client:Client = { id: id, sock: s , player: null};
 		
 		_clientMap[id] = client;
 		
@@ -134,15 +146,6 @@ class Server extends ThreadServer<Client, Message>
 		Debugger.server("EXEC: " + c.id + " -> " + command);
 		
 		_commandMap[command](c, msg.packet);
-	}
-	
-	
-	
-	// INITIALIZERS
-	// =========================================================================================
-	
-	function initializeWorlds():Void
-	{
 	}
 	
 	
@@ -202,32 +205,35 @@ class Server extends ThreadServer<Client, Message>
 		var user:String = packet.readString();
 		var pass:String = packet.readString();
 		
-		if (_database.isValidUser(user, pass))
+		var userID:UInt = _database.getUserIDByCredentials(user, pass);
+		
+		if (userID > 0)
 		{
-			Debugger.server("Valid user logged in: " + user);
+			Debugger.server("Valid user logged in: " + user + " " + userID);
+			
+			client.player = _database.registerPlayer(userID);
 			
 			var outPacket:OutPacket = new OutPacket();
-			
-			outPacket.writeCommand(2);		// Login command
-			outPacket.writeBool(1);			// Success
-			
-			outPacket.writeInt16(4);		// Define world
-			outPacket.writeInt16(0);		// World id
-			outPacket.writeString("debug");	// World name
-			outPacket.writeInt16(16);		// World width
-			outPacket.writeInt16(16);		// World height
-			outPacket.writeInt16(7);		// Sky layer 1
-			outPacket.writeInt16(1);		// Sky layer 2
-			outPacket.writeInt16(3);		// Sky layer 3
-			outPacket.writeInt16(1);		// Sky layer 4
-			
-			sendToClient(client, outPacket);
+			outPacket.writeCommand(2);		// LOGIN
+			outPacket.writeBool(1);			// success
+			outPacket.writeCommand(4);		// DEFINE_WORLD
+			outPacket.writeInt16(0);		// world id
+			outPacket.writeString("debug");	// world name
+			outPacket.writeInt16(16);		// world width
+			outPacket.writeInt16(16);		// world height
+			outPacket.writeInt16(7);		// sky layer 1
+			outPacket.writeInt16(1);		// sky layer 2
+			outPacket.writeInt16(3);		// sky layer 3
+			outPacket.writeInt16(1);		// sky layer 4
 			
 			sendMessageToAllClients(user + " logged in.");
 		}
 		else
 		{
+			outPacket.writeBool(0);			// success
 			Debugger.server("Invalid user attempted log in: " + user);
 		}
+		
+		sendToClient(client, outPacket);
 	}
 }

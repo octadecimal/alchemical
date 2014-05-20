@@ -1,7 +1,9 @@
 package alchemical.server.db;
 import alchemical.server.const.Passwords;
+import alchemical.server.Server.Player;
 import alchemical.server.Server.World;
 import alchemical.server.util.Debugger;
+import haxe.ds.Vector;
 import neko.Lib;
 import sys.db.Connection;
 import sys.db.Mysql;
@@ -78,10 +80,11 @@ class Database
 				width: row.width,
 				height: row.height,
 				numSkyLayers: row.numskylayers,
-				skyLayers: parseSkyLayers(row.skylayers)
+				skyLayers: parseSkyLayers(row.skylayers),
+				players: []
 			};
 			
-			Debugger.database(world.id + " -> " + world.name);
+			Debugger.database(world.id + " -> " + world.name + " "+world.width+","+world.height+","+world.numSkyLayers);
 			output.push(world);
 		}
 		
@@ -99,20 +102,43 @@ class Database
 		return output;
 	}
 	
-	public function isValidUser(user:String, pass:String):Bool
+	public function getUserIDByCredentials(user:String, pass:String):UInt
 	{
 		var q:String = new Query().select("*").from("users").where("name", user).and("pass", pass).getQuery();
 		var result:ResultSet = query(q);
 		
 		if (result.length == 0)
-			return false;
+			return 0;
 		
 		for (row in result)
 		{
 			if (row.name == user && row.pass == pass)
-				return true;
+				return row.id;
 		}
 		
-		return false;
+		return 0;
+	}
+	
+	public function registerPlayer(id:UInt):Player
+	{
+		var result:ResultSet = query(new Query().select("*").from("players").where("user", id).getQuery());
+		var player:Player;
+		
+		for (row in result)
+		{
+			player = { 
+				id: row.id, 
+				user: row.user, 
+				name: row.name, 
+				world: row.world, 
+				entity: row.entity, 
+				x: row.x, 
+				y: row.y 
+			};
+		}
+		
+		Debugger.database("PLAYER: " + player.id + " -> " + player.name);
+		
+		return player;
 	}
 }
