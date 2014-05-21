@@ -11,6 +11,7 @@ package alchemical.client.subsystems.network.model
 	import alchemical.client.subsystems.network.interfaces.INetworkGateway;
 	import alchemical.client.subsystems.network.model.packets.Packet;
 	import alchemical.client.subsystems.world.model.vo.PlayerVO;
+	import alchemical.client.subsystems.world.model.vo.ShipVO;
 	import alchemical.client.subsystems.world.model.vo.WorldVO;
 	import flash.events.TimerEvent;
 	import flash.utils.IDataInput;
@@ -47,6 +48,7 @@ package alchemical.client.subsystems.network.model
 			_commandMap[ENetcode.LOGIN] = handleLoginResponse;
 			_commandMap[ENetcode.DEFINE_WORLD] = handleDefineWorldResponse;
 			_commandMap[ENetcode.DEFINE_PLAYER] = handleDefinePlayerResponse;
+			_commandMap[ENetcode.DEFINE_PLAYER_SHIP] = handleDefinePlayerShipResponse;
 			
 			_packet = new Packet();
 			
@@ -106,24 +108,28 @@ package alchemical.client.subsystems.network.model
 		private function handleDefineWorldResponse(bytes:IDataInput):void 
 		{
 			Debugger.log(this, "Defining world...");
-			
 			var vo:WorldVO = _reader.defineWorld(bytes);
 			
-			Debugger.log(this, "World defined id=" + vo.id + " name=" + vo.name + " layers="+vo.skyLayers);
-			
 			sendNotification(NetworkNotes.WORLD_DEFINED, vo);
-			sendNotification(NetworkNotes.LOGIN_SUCCESSFUL, vo);
 		}
 		
 		private function handleDefinePlayerResponse(bytes:IDataInput):void 
 		{
 			Debugger.log(this, "Defining player...");
-			
 			var vo:PlayerVO = _reader.definePlayer(bytes);
-			
-			Debugger.log(this, "Player defined=" + vo.id + " name=" + vo.name);
+			Debugger.log(this, "Player defined: " + vo.id + " -> " + vo.name);
 			
 			sendNotification(NetworkNotes.PLAYER_DEFINED, vo);
+		}
+		
+		private function handleDefinePlayerShipResponse(bytes:IDataInput):void 
+		{
+			Debugger.log(this, "Defining player ship...");
+			var vo:ShipVO = _reader.defineShip(bytes);
+			Debugger.log(this, "Player ship defined: " + vo.id);
+			
+			sendNotification(NetworkNotes.PLAYER_SHIP_DEFINED, vo);
+			sendNotification(NetworkNotes.LOGIN_SUCCESSFUL, vo);
 		}
 		
 		
@@ -149,6 +155,7 @@ package alchemical.client.subsystems.network.model
 				command = bytes.readShort();
 				
 				Debugger.log(this, "Executing command: " + command);
+				
 				_commandMap[command](bytes);
 			}
 		}

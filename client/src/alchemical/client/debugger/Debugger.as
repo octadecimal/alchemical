@@ -3,6 +3,7 @@
  */
 package alchemical.client.debugger 
 {
+	import alchemical.client.subsystems.network.model.NetworkProxy;
 	/**
 	 * Debugger
 	 * @author Dylan Heyes
@@ -43,6 +44,12 @@ package alchemical.client.debugger
 			{
 				trace(prefixWithWhitespace("~ ", 46), notification);
 			}
+		}
+		
+		static public function error(caller:*, message:*, args:*=null):void 
+		{
+			
+			trace(prefixWithWhitespace(caller.toString(), 40), " !!!  ERROR: ", message);
 		}
 		
 		/**

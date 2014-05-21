@@ -5,25 +5,28 @@ package alchemical.client.subsystems.world.controller
 {
 	import alchemical.client.core.enum.ComponentNames;
 	import alchemical.client.debugger.Debugger;
-	import alchemical.client.subsystems.world.model.vo.WorldVO;
+	import alchemical.client.subsystems.world.model.vo.ShipVO;
 	import alchemical.client.subsystems.world.model.WorldProxy;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.SimpleCommand;
 	
 	/**
-	 * CDefineWorld
+	 * CDefinePlayerShip
 	 * @author Dylan Heyes
 	 */
-	public class CDefineWorld extends SimpleCommand 
+	public class CDefinePlayerShip extends SimpleCommand
 	{
 		override public function execute(notification:INotification):void 
 		{
-			var vo:WorldVO = notification.getBody() as WorldVO;
+			Debugger.log(this, "Defining player ship...");
+			
+			var vo:ShipVO = notification.getBody() as ShipVO;
+			
 			var worldProxy:WorldProxy = facade.retrieveProxy(ComponentNames.WORLD) as WorldProxy;
 			
-			worldProxy.worldDefinition = vo;
+			worldProxy.playerShipDefinition = vo;
 			
-			Debugger.log(this, "Defined world. id=" + vo.id + " name=" + vo.name + " layers="+vo.skyLayers);
+			Debugger.log(this, "Defined player ship. id=" + vo.id + " type=" + vo.type+" hull=" + vo.hull);
 		}
 	}
 
