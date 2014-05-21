@@ -1,6 +1,7 @@
 package alchemical.server.db;
 import alchemical.server.const.Passwords;
 import alchemical.server.Server.Player;
+import alchemical.server.Server.Ship;
 import alchemical.server.Server.World;
 import alchemical.server.util.Debugger;
 import haxe.ds.Vector;
@@ -104,8 +105,7 @@ class Database
 	
 	public function getUserIDByCredentials(user:String, pass:String):UInt
 	{
-		var q:String = new Query().select("*").from("users").where("name", user).and("pass", pass).getQuery();
-		var result:ResultSet = query(q);
+		var result:ResultSet = query(new Query().select("*").from("users").where("name", user).and("pass", pass).getQuery());
 		
 		if (result.length == 0)
 			return 0;
@@ -119,10 +119,10 @@ class Database
 		return 0;
 	}
 	
-	public function registerPlayer(id:UInt):Player
+	public function getPlayer(id:UInt):Player
 	{
-		var result:ResultSet = query(new Query().select("*").from("players").where("user", id).getQuery());
 		var player:Player;
+		var result:ResultSet = query(new Query().select("*").from("players").where("user", id).getQuery());
 		
 		for (row in result)
 		{
@@ -131,14 +131,31 @@ class Database
 				user: row.user, 
 				name: row.name, 
 				world: row.world, 
-				entity: row.entity, 
+				ship: row.ship, 
 				x: row.x, 
-				y: row.y 
+				y: row.y
 			};
 		}
 		
-		Debugger.database("PLAYER: " + player.id + " -> " + player.name);
-		
+		Debugger.database("PLAYER: " + player.id + " -> " + player.name + " (" + player.x + "," + player.y+")");
 		return player;
+	}
+	
+	public function getPlayerShip(id:UInt):Ship
+	{
+		var ship:Ship;
+		var result:ResultSet = query(new Query().select("*").from("ships").where("id", id).getQuery());
+		
+		for (row in result)
+		{
+			ship = {
+				id: row.id,
+				type: row.id,
+				hull: row.hull
+			};
+		}
+		
+		Debugger.database("SHIP: " + id + " -> " + ship.id);
+		return ship;
 	}
 }

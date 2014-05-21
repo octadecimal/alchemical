@@ -16,6 +16,7 @@ package alchemical.client.core.notes
 		static public const WORLD_DEFINED:String = "worldDefined";
 		static public const DISCONNECTED:String = "disconnected";
 		static public const CONNECTED:String = "connected";
+		static public const PLAYER_DEFINED:String = "playerDefined";
 	}
 
 }

@@ -95,7 +95,6 @@ package alchemical.client.subsystems.network.model
 			if (success)
 			{
 				Debugger.log(this, "Login success.");
-				//sendNotification(NetworkNotes.LOGIN_SUCCESSFUL);
 			}
 			else
 			{
@@ -123,6 +122,8 @@ package alchemical.client.subsystems.network.model
 			var vo:PlayerVO = _reader.definePlayer(bytes);
 			
 			Debugger.log(this, "Player defined=" + vo.id + " name=" + vo.name);
+			
+			sendNotification(NetworkNotes.PLAYER_DEFINED, vo);
 		}
 		
 		

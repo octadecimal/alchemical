@@ -28,4 +28,22 @@ class Debugger
 		Lib.println("--> SRV: "+msg);
 		Lib.println("");
 	}
+	
+	static public function raw(msg:String) 
+	{
+		Lib.println("   "+msg);
+	}
+	
+	static public function rawCommand(msg:Dynamic) 
+	{
+		Lib.println("");
+		Lib.println("-- [CMD] " + msg);
+	}
+	
+	static public function exec(msg:String) 
+	{
+		Lib.println("");
+		Lib.println("=== EXE: "+msg);
+		Lib.println("");
+	}
 }

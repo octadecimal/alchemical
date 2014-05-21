@@ -32,8 +32,8 @@ package alchemical.client.subsystems.world
 				{
 					if (i == 0)
 					{
-						//_layers[i].scrollX += 0.1;
-						//_layers[i].scrollY += 0.1;
+						_layers[i].scrollX += 0.01;
+						_layers[i].scrollY += 0.01;
 					}
 					//else if (i == _layers.length - 1)
 					//{
@@ -42,8 +42,8 @@ package alchemical.client.subsystems.world
 					//}
 					else
 					{
-						_layers[i].scrollX += (_layers.length - i) * 0.4;
-						_layers[i].scrollY += (_layers.length - i) * 0.4;
+						_layers[i].scrollX += (i+1) * 0.05;
+						_layers[i].scrollY += (i+1) * 0.05;
 					}
 				}
 			}

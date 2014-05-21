@@ -138,7 +138,7 @@ class Server extends ThreadServer<Client, Message>
 	{
 		var command:Int = msg.packet.readCommand();
 		
-		Debugger.data("EXEC: " + c.id + " -> " + command);
+		Debugger.exec("client: "+c.id + " -> command: " + command);
 		
 		_commandMap[command](c, msg.packet);
 	}
@@ -211,12 +211,19 @@ class Server extends ThreadServer<Client, Message>
 		{
 			Debugger.info("Valid user logged in: " + user + " " + userID);
 			
-			client.player = _database.registerPlayer(userID);
+			// Get player
+			client.player = _database.getPlayer(userID);
+			
+			// Get world player exists in
 			var world:World = _worldMap[client.player.world];
+			
+			// Get player ship
+			var ship:Ship = _database.getPlayerShip(client.player.ship);
 			
 			_builder.loginSuccess(outPacket);
 			_builder.defineWorld(outPacket, world);
 			_builder.definePlayer(outPacket, client.player);
+			_builder.definePlayerShip(outPacket, client.player, ship);
 		}
 		else
 		{
@@ -261,7 +268,13 @@ typedef Player = {
 	var user:UInt;
 	var name:String;
 	var world:UInt;
-	var entity:UInt;
+	var ship:Int;
 	var x:Float;
 	var y:Float;
+}
+
+typedef Ship = {
+	var id:Int;
+	var type:UInt;
+	var hull:UInt;
 }

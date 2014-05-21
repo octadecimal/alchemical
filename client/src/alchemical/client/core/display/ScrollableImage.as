@@ -55,24 +55,24 @@ package alchemical.client.core.display
 			onVertexDataChanged();
 		}
 		
-		public function get scrollX():int
+		public function get scrollX():Number
 		{
 			return _scrollX;
 		}
 		
-		public function set scrollX(value:int):void
+		public function set scrollX(value:Number):void
 		{
 			_scrollX = value % texture.width;
 			
 			updateUVs();
 		}
 		
-		public function get scrollY():int
+		public function get scrollY():Number
 		{
 			return _scrollY;
 		}
 		
-		public function set scrollY(value:int):void
+		public function set scrollY(value:Number):void
 		{
 			_scrollY = value % texture.height;
 			

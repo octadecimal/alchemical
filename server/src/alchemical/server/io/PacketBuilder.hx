@@ -1,6 +1,7 @@
 package alchemical.server.io;
 import alchemical.server.const.Commands;
 import alchemical.server.Server.Player;
+import alchemical.server.Server.Ship;
 import alchemical.server.Server.World;
 import alchemical.server.io.OutPacket;
 
@@ -51,8 +52,16 @@ class PacketBuilder
 		packet.writeCommand(Commands.DEFINE_PLAYER);
 		packet.writeInt16(player.id);
 		packet.writeString(player.name);
-		packet.writeInt16(player.entity);
+		packet.writeInt16(player.ship);
 		packet.writeInt16(Std.int(player.x));
 		packet.writeInt16(Std.int(player.y));
+	}
+	
+	public function definePlayerShip(packet:OutPacket, player:Player, ship:Ship) 
+	{
+		packet.writeCommand(Commands.DEFINE_PLAYER_SHIP);
+		packet.writeInt16(ship.id);
+		packet.writeInt16(ship.type);
+		packet.writeInt16(ship.hull);
 	}
 }
