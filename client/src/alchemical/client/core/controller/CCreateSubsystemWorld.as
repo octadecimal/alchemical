@@ -5,6 +5,7 @@ package alchemical.client.core.controller
 {
 	import alchemical.client.core.enum.ComponentNames;
 	import alchemical.client.debugger.Debugger;
+	import alchemical.client.subsystems.world.controller.animation.DirectionalAnimationController;
 	import alchemical.client.subsystems.world.entities.Camera;
 	import alchemical.client.subsystems.world.mediator.WorldMediator;
 	import alchemical.client.subsystems.world.model.WorldProxy;
@@ -23,14 +24,19 @@ package alchemical.client.core.controller
 		{
 			Debugger.log(this, "Creating: " + ComponentNames.WORLD);
 			
+			// Create world
 			var view:World = new World();
-			view.sky = new Sky();
-			view.camera = new Camera();
+			var proxy:WorldProxy = new WorldProxy(); 
+			facade.registerProxy(proxy);
+			facade.registerMediator(new WorldMediator(view));
 			
+			// Create sky
+			view.sky = new Sky();
 			view.addChild(view.sky);
 			
-			facade.registerProxy(new WorldProxy());
-			facade.registerMediator(new WorldMediator(view));
+			// Create camera
+			view.camera = new Camera();
+			proxy.animationControllers.push(new DirectionalAnimationController(view.camera));
 			
 			Debugger.log(this, "Created: " + ComponentNames.WORLD);
 			commandComplete();

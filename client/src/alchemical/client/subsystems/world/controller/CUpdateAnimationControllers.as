@@ -21,7 +21,7 @@ package alchemical.client.subsystems.world.controller
 			
 			var animationControllers:Vector.<AnimationController> = worldProxy.animationControllers;
 			
-			for (var i:int = animationControllers.length - 1; i >= 0; i--)
+			for (var i:int = 0, c:int = animationControllers.length; i < animationControllers.length; i++)
 			{
 				animationControllers[i].update();
 			}

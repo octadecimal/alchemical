@@ -3,6 +3,8 @@
  */
 package alchemical.client.subsystems.world 
 {
+	import alchemical.client.subsystems.world.entities.Camera;
+	import alchemical.client.subsystems.world.entities.Entity;
 	import starling.display.Sprite;
 	import starling.events.EnterFrameEvent;
 	import starling.textures.Texture;
@@ -11,7 +13,7 @@ package alchemical.client.subsystems.world
 	 * Sky
 	 * @author Dylan Heyes
 	 */
-	public class Sky extends Sprite 
+	public class Sky extends Entity 
 	{
 		
 		public function Sky() 
@@ -19,34 +21,6 @@ package alchemical.client.subsystems.world
 			super();
 			
 			refresh(4);
-			
-			// Temp
-			addEventListener(EnterFrameEvent.ENTER_FRAME, onUpdate);
-		}
-		
-		private function onUpdate(e:EnterFrameEvent):void 
-		{
-			for (var i:int = 0; i < _layers.length; i++)
-			{
-				if (_layers[i])
-				{
-					if (i == 0)
-					{
-						_layers[i].scrollX += 0.01;
-						_layers[i].scrollY += 0.01;
-					}
-					//else if (i == _layers.length - 1)
-					//{
-						//_layers[i].scrollX += (_layers.length - i) * 0.75;
-						//_layers[i].scrollY += (_layers.length - i) * 0.75;
-					//}
-					else
-					{
-						_layers[i].scrollX += (i+1) * 0.025;
-						_layers[i].scrollY += (i+1) * 0.025;
-					}
-				}
-			}
 		}
 		
 		
@@ -69,6 +43,20 @@ package alchemical.client.subsystems.world
 			else
 			{
 				_layers[index].texture = texture;
+			}
+		}
+		
+		override public function project(camera:Camera):void
+		{
+			var layer:SkyLayer;
+			
+			for (var i:int = 0; i < _layers.length; i++)
+			{
+				if (_layers[i])
+				{
+					_layers[i].scrollX = camera.transform.x * i;
+					_layers[i].scrollY = camera.transform.y * i;
+				}
 			}
 		}
 		

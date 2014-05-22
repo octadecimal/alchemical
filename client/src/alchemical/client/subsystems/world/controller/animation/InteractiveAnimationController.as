@@ -14,11 +14,8 @@ package alchemical.client.subsystems.world.controller.animation
 	 */
 	public class InteractiveAnimationController extends AnimationController
 	{
-		// Controlled entity
-		private var _entity:MovableEntity;
-		
 		// Action handler map
-		private var _actionDownStates:Vector.<Boolean>;
+		protected static var _actionDownStates:Vector.<Boolean>;
 		
 		/**
 		 * Constrcutor.
@@ -26,7 +23,7 @@ package alchemical.client.subsystems.world.controller.animation
 		 */
 		public function InteractiveAnimationController(entity:MovableEntity) 
 		{
-			_entity = entity;
+			super(entity);
 			
 			_actionDownStates = new Vector.<Boolean>(EActions.NUM_ACTIONS);
 		}
@@ -74,9 +71,9 @@ package alchemical.client.subsystems.world.controller.animation
 			
 			const offset:Number = Math.PI / 2;
 			
-			entity.x += Math.cos(offset + entity.rotation) * dynamics.acceleration;
-			entity.y += Math.sin(offset + entity.rotation) * dynamics.acceleration;
-			entity.rotation += dynamics.angularAcceleration;
+			entity.transform.x += Math.cos(offset + entity.rotation) * dynamics.acceleration;
+			entity.transform.y += Math.sin(offset + entity.rotation) * dynamics.acceleration;
+			entity.transform.rotation += dynamics.angularAcceleration;
 			
 			super.update();
 		}

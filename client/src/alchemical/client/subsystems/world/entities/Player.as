@@ -10,7 +10,7 @@ package alchemical.client.subsystems.world.entities
 	 * Player
 	 * @author Dylan Heyes
 	 */
-	public class Player extends Sprite 
+	public class Player extends MovableEntity 
 	{
 		public function Player() 
 		{
@@ -30,13 +30,6 @@ package alchemical.client.subsystems.world.entities
 		public function set ship(a:Ship):void	{ _ship = a; }
 		public function get ship():Ship			{ return _ship; }
 		private var _ship:Ship;
-		
-		/**
-		 * Animation controller.
-		 */
-		public function set animationController(a:InteractiveAnimationController):void	{ _animationController = a; }
-		public function get animationController():InteractiveAnimationController		{ return _animationController; }
-		private var _animationController:InteractiveAnimationController;
 	}
 
 }
