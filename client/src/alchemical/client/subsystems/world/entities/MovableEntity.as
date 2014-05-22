@@ -6,6 +6,7 @@ package alchemical.client.subsystems.world.entities
 	import alchemical.client.subsystems.world.controller.animation.InteractiveAnimationController;
 	import alchemical.client.subsystems.world.model.DynamicsNode;
 	import starling.display.Sprite;
+	
 	/**
 	 * MovableEntity
 	 * @author Dylan Heyes
@@ -15,8 +16,9 @@ package alchemical.client.subsystems.world.entities
 		/**
 		 * Constructor.
 		 */
-		public function MovableEntity() 
+		public function MovableEntity(view:Sprite = null) 
 		{
+			super(view);
 			_dynamics = new DynamicsNode();
 		}
 		
@@ -35,8 +37,8 @@ package alchemical.client.subsystems.world.entities
 		/**
 		 * Dynamics.
 		 */
-		public function set dynamics(a:DynamicsNode):void	{ _dynamics = a; }
-		public function get dynamics():DynamicsNode			{ return _dynamics; }
+		public function set dynamics(a:DynamicsNode):void								{ _dynamics = a; }
+		public function get dynamics():DynamicsNode										{ return _dynamics; }
 		private var _dynamics:DynamicsNode;
 	}
 

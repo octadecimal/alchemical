@@ -25,18 +25,18 @@ package alchemical.client.core.controller
 			Debugger.log(this, "Creating: " + ComponentNames.WORLD);
 			
 			// Create world
-			var view:World = new World();
+			var world:World = new World();
 			var proxy:WorldProxy = new WorldProxy(); 
 			facade.registerProxy(proxy);
-			facade.registerMediator(new WorldMediator(view));
+			facade.registerMediator(new WorldMediator(world));
 			
 			// Create sky
-			view.sky = new Sky();
-			view.addChild(view.sky);
+			world.sky = new Sky();
+			world.addChild(world.sky.view);
 			
 			// Create camera
-			view.camera = new Camera();
-			proxy.animationControllers.push(new DirectionalAnimationController(view.camera));
+			world.camera = new Camera();
+			proxy.animationControllers.push(new DirectionalAnimationController(world.camera));
 			
 			Debugger.log(this, "Created: " + ComponentNames.WORLD);
 			commandComplete();

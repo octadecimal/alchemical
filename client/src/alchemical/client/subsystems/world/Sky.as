@@ -16,9 +16,9 @@ package alchemical.client.subsystems.world
 	public class Sky extends Entity 
 	{
 		
-		public function Sky() 
+		public function Sky(view:Sprite = null) 
 		{
-			super();
+			super(view);
 			
 			refresh(4);
 		}
@@ -38,7 +38,7 @@ package alchemical.client.subsystems.world
 			if (_layers[index] == null)
 			{
 				_layers[index] = new SkyLayer(texture);
-				addChild(_layers[index]);
+				view.addChild(_layers[index]);
 			}
 			else
 			{

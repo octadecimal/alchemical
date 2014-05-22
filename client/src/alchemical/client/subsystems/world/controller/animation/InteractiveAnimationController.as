@@ -64,15 +64,15 @@ package alchemical.client.subsystems.world.controller.animation
 				dynamics.angularAcceleration += Math.min(dynamics.torque, dynamics.maxAngularAcceleration);
 			}
 			
-			var mag:Number = Math.atan(entity.rotation);
+			var mag:Number = Math.atan(entity.transform.rotation);
 			
 			dynamics.acceleration *= dynamics.friction;
 			dynamics.angularAcceleration *= dynamics.angularFriction;
 			
 			const offset:Number = Math.PI / 2;
 			
-			entity.transform.x += Math.cos(offset + entity.rotation) * dynamics.acceleration;
-			entity.transform.y += Math.sin(offset + entity.rotation) * dynamics.acceleration;
+			entity.transform.x += Math.cos(offset + entity.transform.rotation) * dynamics.acceleration;
+			entity.transform.y += Math.sin(offset + entity.transform.rotation) * dynamics.acceleration;
 			entity.transform.rotation += dynamics.angularAcceleration;
 			
 			super.update();

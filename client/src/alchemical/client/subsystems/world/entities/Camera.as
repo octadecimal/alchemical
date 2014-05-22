@@ -29,8 +29,8 @@ package alchemical.client.subsystems.world.entities
 		{
 			if (target)
 			{
-				this.x = (target.x - this.x) / 2;
-				this.y = (target.x - this.y) / 2;
+				//transform.x = (target.transform.x - transform.x) / 2;
+				//transform.y = (target.transform.y - transform.y) / 2;
 			}
 		}
 		

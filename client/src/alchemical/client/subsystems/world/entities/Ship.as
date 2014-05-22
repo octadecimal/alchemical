@@ -21,37 +21,9 @@ package alchemical.client.subsystems.world.entities
 		/**
 		 * Constructor.
 		 */
-		public function Ship(vo:ShipVO) 
+		public function Ship(vo:ShipVO, view:Sprite = null) 
 		{
-			super();
-			
-			// Temp
-			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-			//addEventListener(EnterFrameEvent.ENTER_FRAME, onUpdate);
-		}
-		
-		private function onAddedToStage(e:Event):void 
-		{
-			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-			
-			pivotX = width / 2;
-			pivotY = width / 2;
-			
-			x = stage.stageWidth / 2;
-			y = stage.stageHeight / 2;
-			
-			rotation = Math.random() * Math.PI * 2;
-		}
-		
-		private var _r:Number = Math.random() * 0.01 - 0.005;
-		private var _rx:Number = Math.random() * .25 - 0.125;
-		private var _ry:Number = Math.random() * .25 - 0.125;
-		
-		private function onUpdate(e:EnterFrameEvent):void 
-		{
-			rotation += _r;
-			x + _rx;
-			y += _ry;
+			super(view);
 		}
 		
 		
@@ -64,7 +36,7 @@ package alchemical.client.subsystems.world.entities
 			if (_hull == null)
 			{
 				_hull = new Image(texture);
-				addChild(_hull);
+				view.addChild(_hull);
 			}
 			else
 			{

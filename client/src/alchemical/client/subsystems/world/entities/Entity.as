@@ -10,13 +10,14 @@ package alchemical.client.subsystems.world.entities
 	 * Entity
 	 * @author Dylan Heyes
 	 */
-	public class Entity extends Sprite
+	public class Entity
 	{
 		/**
 		 * Constructor.
 		 */
-		public function Entity() 
+		public function Entity(view:Sprite = null) 
 		{
+			_view = view ? view : new Sprite();
 			_transform = new TransformNode();
 		}
 		
@@ -27,16 +28,22 @@ package alchemical.client.subsystems.world.entities
 		
 		public function project(camera:Camera):void 
 		{
-			trace(camera.x, camera.y);
-			this.x = transform.x - camera.x;
-			this.y = transform.y - camera.y;
-			this.rotation = transform.rotation;
+			view.x = transform.x - camera.transform.x;
+			view.y = transform.y - camera.transform.y;
+			view.rotation = transform.rotation;
 		}
 		
 		
 		
 		// ACCESSORS
 		// =========================================================================================
+		
+		/**
+		 * Entity view.
+		 */
+		public function set view(a:Sprite):void				{ _view = a; }
+		public function get view():Sprite					{ return _view; }
+		private var _view:Sprite; 
 		
 		/**
 		 * Entity transform node.
