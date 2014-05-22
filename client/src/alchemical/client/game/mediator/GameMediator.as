@@ -4,12 +4,14 @@
 package alchemical.client.game.mediator 
 {
 	import alchemical.client.core.enum.ComponentNames;
+	import alchemical.client.core.notes.ApplicationNotes;
 	import alchemical.client.debugger.Debugger;
 	import alchemical.client.core.notes.GameNotes;
 	import alchemical.client.game.Game;
 	import alchemical.client.core.notes.NetworkNotes;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;
+	import starling.events.EnterFrameEvent;
 	
 	/**
 	 * GameMediator
@@ -17,14 +19,20 @@ package alchemical.client.game.mediator
 	 */
 	public class GameMediator extends Mediator 
 	{
+		private var _view:Game;
+		
 		/**
 		 * Constructor.
 		 * @param	viewComponent
 		 */
 		public function GameMediator(viewComponent:Game) 
 		{
+			_view = Game(viewComponent);
+			
 			super(ComponentNames.GAME, viewComponent);	
 			Debugger.log(this, "Created.");
+			
+			_view.addEventListener(EnterFrameEvent.ENTER_FRAME, onGameUpdate);
 		}
 		
 		
@@ -51,6 +59,16 @@ package alchemical.client.game.mediator
 			}
 			
 			super.handleNotification(notification);
+		}
+		
+		
+		
+		// EVENTS
+		// =========================================================================================
+		
+		private function onGameUpdate(e:EnterFrameEvent):void 
+		{
+			sendNotification(ApplicationNotes.UPDATE_TICK, e.passedTime);
 		}
 		
 		

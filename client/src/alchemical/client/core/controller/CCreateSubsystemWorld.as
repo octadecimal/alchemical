@@ -5,7 +5,7 @@ package alchemical.client.core.controller
 {
 	import alchemical.client.core.enum.ComponentNames;
 	import alchemical.client.debugger.Debugger;
-	import alchemical.client.subsystems.world.Camera;
+	import alchemical.client.subsystems.world.entities.Camera;
 	import alchemical.client.subsystems.world.mediator.WorldMediator;
 	import alchemical.client.subsystems.world.model.WorldProxy;
 	import alchemical.client.subsystems.world.Sky;

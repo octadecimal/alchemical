@@ -1,8 +1,9 @@
 /**
  * Copyright 2014, Dylan Heyes
  */
-package alchemical.client.subsystems.world 
+package alchemical.client.subsystems.world
 {
+	import alchemical.client.subsystems.world.entities.Camera;
 	import starling.display.Sprite;
 	
 	/**

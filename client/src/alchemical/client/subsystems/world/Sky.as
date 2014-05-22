@@ -42,8 +42,8 @@ package alchemical.client.subsystems.world
 					//}
 					else
 					{
-						_layers[i].scrollX += (i+1) * 0.05;
-						_layers[i].scrollY += (i+1) * 0.05;
+						_layers[i].scrollX += (i+1) * 0.025;
+						_layers[i].scrollY += (i+1) * 0.025;
 					}
 				}
 			}

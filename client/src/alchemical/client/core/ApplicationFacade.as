@@ -4,6 +4,7 @@
 package alchemical.client.core 
 {
 	import alchemical.client.core.controller.MStartup;
+	import alchemical.client.core.controller.MUpdateTick;
 	import alchemical.client.core.model.vo.StartupVO;
 	import alchemical.client.core.notes.ApplicationNotes;
 	import alchemical.client.core.notes.GameNotes;
@@ -59,6 +60,7 @@ package alchemical.client.core
 			
 			// Core
 			registerCommand(ApplicationNotes.STARTUP, MStartup);
+			registerCommand(ApplicationNotes.UPDATE_TICK, MUpdateTick);
 			
 			// Game
 			registerCommand(GameNotes.LAUNCH_GAME, MLaunchGame);
@@ -79,7 +81,7 @@ package alchemical.client.core
 		 */
 		override public function sendNotification(notificationName:String, body:Object = null, type:String = null):void 
 		{
-			Debugger.note(notificationName, body, type);
+			//Debugger.note(notificationName, body, type);
 			
 			super.sendNotification(notificationName, body, type);
 		}

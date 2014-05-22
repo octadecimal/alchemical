@@ -2,6 +2,7 @@ package alchemical.client.subsystems.world.model
 {
 	import alchemical.client.core.enum.ComponentNames;
 	import alchemical.client.debugger.Debugger;
+	import alchemical.client.subsystems.world.controller.animation.AnimationController;
 	import alchemical.client.subsystems.world.model.vo.PlayerVO;
 	import alchemical.client.subsystems.world.model.vo.ShipVO;
 	import alchemical.client.subsystems.world.model.vo.WorldVO;
@@ -19,6 +20,9 @@ package alchemical.client.subsystems.world.model
 		public function WorldProxy() 
 		{
 			super(ComponentNames.WORLD, data);
+			
+			_animationControllers = new Vector.<AnimationController>();
+			
 			Debugger.log(this, "Created.");
 		}
 		
@@ -48,6 +52,13 @@ package alchemical.client.subsystems.world.model
 		public function set playerShipDefinition(a:ShipVO):void	{ _playerShipDefinition = a; }
 		public function get playerShipDefinition():ShipVO		{ return _playerShipDefinition; }
 		private var _playerShipDefinition:ShipVO;
+		
+		/**
+		 * Animation controllers.
+		 */
+		public function set animationControllers(a:Vector.<AnimationController>):void	{ _animationControllers = a; }
+		public function get animationControllers():Vector.<AnimationController>			{ return _animationControllers; }
+		private var _animationControllers:Vector.<AnimationController>;
 	}
 
 }

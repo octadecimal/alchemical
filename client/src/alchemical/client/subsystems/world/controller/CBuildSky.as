@@ -19,20 +19,20 @@ package alchemical.client.subsystems.world.controller
 	 */
 	public class CBuildSky extends AsyncCommand 
 	{
+		private static const PATH_PREFIX:String = "textures/skies/";
+		private static const FILE_PREFIX:String = "sky_";
+		
 		override public function execute(notification:INotification):void 
 		{
-			//var worldVO:WorldVO = notification.getBody() as WorldVO;
-			
 			var resources:AssetManager = facade.retrieveMediator(ComponentNames.RESOURCES).getViewComponent() as AssetManager;
+			
 			var worldProxy:WorldProxy = facade.retrieveProxy(ComponentNames.WORLD) as WorldProxy;
 			var worldMediator:World = facade.retrieveMediator(ComponentNames.WORLD).getViewComponent() as World;
 			var sky:Sky = worldMediator.sky;
 			
-			const path:String = "textures/skies/";
-			
 			for (var i:int = 0; i < 4; i++)
 			{
-				resources.enqueue(File.applicationDirectory.resolvePath(path + worldProxy.worldDefinition.skyLayers[i] + ".png"));
+				resources.enqueue(File.applicationDirectory.resolvePath(PATH_PREFIX + FILE_PREFIX + worldProxy.worldDefinition.skyLayers[i] + ".png"));
 			}
 			
 			resources.loadQueue(function (ratio:Number):void
@@ -41,7 +41,7 @@ package alchemical.client.subsystems.world.controller
 				{
 					for (i = 0; i < 4; i++)
 					{
-						sky.setLayerAt(i, resources.getTexture(worldProxy.worldDefinition.skyLayers[i].toString()));
+						sky.setLayerAt(i, resources.getTexture(FILE_PREFIX + worldProxy.worldDefinition.skyLayers[i].toString()));
 					}
 					
 					commandComplete();

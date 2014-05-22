@@ -1,7 +1,7 @@
 /**
  * Copyright 2014, Dylan Heyes
  */
-package alchemical.client.subsystems.world 
+package alchemical.client.subsystems.world.entities
 {
 	import flash.geom.Point;
 	
