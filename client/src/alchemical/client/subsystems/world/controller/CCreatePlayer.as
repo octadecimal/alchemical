@@ -35,8 +35,8 @@ package alchemical.client.subsystems.world.controller
 			player.ship = ship;
 			player.view.addChild(ship.view);
 			
-			//player.animationController = new InteractiveAnimationController(player.ship);
-			//worldProxy.animationControllers.push(player.animationController);
+			player.animationController = new InteractiveAnimationController(player.ship);
+			worldProxy.animationControllers.push(player.animationController);
 			
 			var assets:AssetManager = facade.retrieveMediator(ComponentNames.RESOURCES).getViewComponent() as AssetManager;
 			ship.setHullTexture(assets.getTextureAtlas("ships_01").getTexture("ship_0001"));

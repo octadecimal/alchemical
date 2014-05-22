@@ -24,7 +24,7 @@ package alchemical.client.subsystems.graphics.controller
 			var graphics:Starling = facade.retrieveMediator(ComponentNames.GRAPHICS).getViewComponent() as Starling;
 			
 			// Enter full screen
-			//graphics.nativeStage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
+			graphics.nativeStage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
 			
 			// Resize game buffer
 			graphics.viewPort = new Rectangle(0, 0, graphics.nativeStage.stageWidth, graphics.nativeStage.stageHeight);

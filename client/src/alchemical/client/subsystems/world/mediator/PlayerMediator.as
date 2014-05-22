@@ -46,12 +46,12 @@ package alchemical.client.subsystems.world.mediator
 			switch(notification.getName())
 			{
 				case(InputNotes.KEY_DOWN):
-					if (_view.animationController)
+					//if (_view.animationController)
 						_view.animationController.handleKeyDown(uint(notification.getBody()));
 					break;
 				
 				case(InputNotes.KEY_UP):
-					if (_view.animationController)
+					//if (_view.animationController)
 						_view.animationController.handleKeyUp(uint(notification.getBody()));
 					break;
 			}
