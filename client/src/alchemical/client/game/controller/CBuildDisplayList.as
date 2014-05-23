@@ -29,6 +29,8 @@ package alchemical.client.game.controller
 			game.addChild(world);
 			game.addChild(uiLayer);
 			
+			world.addChild(world.sky.view);
+			
 			commandComplete();
 		}
 	}

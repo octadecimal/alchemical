@@ -12,6 +12,8 @@ package alchemical.client.subsystems.world.entities
 	 */
 	public class Entity
 	{
+		private static const HALF_PI:Number = Math.PI / 2;
+		
 		/**
 		 * Constructor.
 		 */
@@ -30,7 +32,7 @@ package alchemical.client.subsystems.world.entities
 		{
 			view.x = transform.x - camera.transform.x;
 			view.y = transform.y - camera.transform.y;
-			view.rotation = transform.rotation;
+			view.rotation = transform.rotation + HALF_PI;
 		}
 		
 		

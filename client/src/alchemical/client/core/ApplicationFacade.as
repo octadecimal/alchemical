@@ -84,7 +84,10 @@ package alchemical.client.core
 		 */
 		override public function sendNotification(notificationName:String, body:Object = null, type:String = null):void 
 		{
-			Debugger.note(notificationName, body, type);
+			if (notificationName != "updateTick")
+			{
+				Debugger.note(notificationName, body, type);
+			}
 			
 			super.sendNotification(notificationName, body, type);
 		}

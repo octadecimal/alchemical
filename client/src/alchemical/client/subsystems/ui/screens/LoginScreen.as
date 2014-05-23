@@ -58,6 +58,7 @@ package alchemical.client.subsystems.ui.screens
 		
 		public function hide():void 
 		{
+			removeFromParent();
 			dispose();
 		}
 		

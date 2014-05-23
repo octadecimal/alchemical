@@ -42,29 +42,20 @@ package alchemical.client.subsystems.world.mediator
 		
 		override public function onRegister():void
 		{
-			_view.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			_view.addEventListener(TouchEvent.TOUCH, onTouch);
 		}
 		
 		override public function listNotificationInterests():Array 
 		{
 			var interests:Array = super.listNotificationInterests();
-			interests.push(NetworkNotes.WORLD_DEFINED);
-			interests.push(NetworkNotes.PLAYER_DEFINED);
+			interests.push(WorldNotes.WORLD_READY);
 			return interests;
 		}
 		
 		override public function handleNotification(notification:INotification):void
 		{
-			switch(notification.getName())
-			{
-				case NetworkNotes.WORLD_DEFINED:
-					handleNetworkDefinedWorld(notification);
-					break;
-				
-				case NetworkNotes.PLAYER_DEFINED:
-					handleNetworkDefinedPlayer(notification);
-					break;
-			}
+			
+			super.handleNotification(notification);
 		}
 		
 		
@@ -72,15 +63,9 @@ package alchemical.client.subsystems.world.mediator
 		// EVENTS
 		// =========================================================================================
 		
-		private function onAddedToStage(e:Event):void 
-		{
-			_view.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-			_view.stage.addEventListener(TouchEvent.TOUCH, onTouch);
-		}
-		
 		private function onTouch(e:TouchEvent):void 
 		{
-			var touchEnded:Touch = e.getTouch(_view.stage, TouchPhase.ENDED);
+			var touchEnded:Touch = e.getTouch(_view, TouchPhase.ENDED);
 			
 			if (touchEnded)
 			{
@@ -90,22 +75,7 @@ package alchemical.client.subsystems.world.mediator
 		
 		private function onViewClicked(e:TouchEvent, touch:Touch):void 
 		{
-			sendNotification(WorldNotes.WORLD_CLICKED, touch.getLocation(_view.stage));
-		}
-		
-		
-		
-		// NOTIFICATIONS
-		// =========================================================================================
-		
-		private function handleNetworkDefinedWorld(notification:INotification):void 
-		{
-			
-		}
-		
-		private function handleNetworkDefinedPlayer(notification:INotification):void 
-		{
-			
+			sendNotification(WorldNotes.WORLD_CLICKED, touch.getLocation(_view));
 		}
 	}
 

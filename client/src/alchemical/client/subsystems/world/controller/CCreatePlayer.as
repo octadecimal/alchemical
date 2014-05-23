@@ -5,7 +5,8 @@ package alchemical.client.subsystems.world.controller
 {
 	import alchemical.client.core.enum.ComponentNames;
 	import alchemical.client.debugger.Debugger;
-	import alchemical.client.subsystems.world.controller.animation.InteractiveAnimationController;
+	import alchemical.client.subsystems.world.controller.animation.FollowAnimationController;
+	import alchemical.client.subsystems.world.controller.animation.ForwardAnimationController;
 	import alchemical.client.subsystems.world.entities.Ship;
 	import alchemical.client.subsystems.world.factories.WorldFactory;
 	import alchemical.client.subsystems.world.mediator.PlayerMediator;
@@ -35,7 +36,7 @@ package alchemical.client.subsystems.world.controller
 			player.ship = ship;
 			player.view.addChild(ship.view);
 			
-			player.animationController = new InteractiveAnimationController(player.ship);
+			player.animationController = new FollowAnimationController(player);
 			worldProxy.animationControllers.push(player.animationController);
 			
 			var assets:AssetManager = facade.retrieveMediator(ComponentNames.RESOURCES).getViewComponent() as AssetManager;

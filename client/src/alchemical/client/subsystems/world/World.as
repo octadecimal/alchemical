@@ -4,7 +4,9 @@
 package alchemical.client.subsystems.world
 {
 	import alchemical.client.subsystems.world.entities.Camera;
+	import starling.core.Starling;
 	import starling.display.Sprite;
+	import starling.events.EnterFrameEvent;
 	
 	/**
 	 * World
@@ -18,6 +20,31 @@ package alchemical.client.subsystems.world
 		public function World() 
 		{
 			super();
+			
+			// Test
+			addEventListener(EnterFrameEvent.ENTER_FRAME, onUpdate);
+		}
+		
+		// Test
+		private function onUpdate(e:EnterFrameEvent):void 
+		{
+			if (Starling.current.nativeStage.mouseX == 0)
+			{
+				camera.transform.x -= 4;
+			}
+			else if (Starling.current.nativeStage.mouseX > 1900)
+			{
+				camera.transform.x += 4;
+			}
+			
+			if (Starling.current.nativeStage.mouseY == 0)
+			{
+				camera.transform.y -= 4;
+			}
+			else if (Starling.current.nativeStage.mouseY > 1040)
+			{
+				camera.transform.y += 4;
+			}
 		}
 		
 		

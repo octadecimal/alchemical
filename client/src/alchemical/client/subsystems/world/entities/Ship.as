@@ -24,6 +24,16 @@ package alchemical.client.subsystems.world.entities
 		public function Ship(vo:ShipVO, view:Sprite = null) 
 		{
 			super(view);
+			
+			this.view.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+		}
+		
+		private function onAddedToStage(e:Event):void 
+		{
+			view.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			
+			view.pivotX = view.width / 2;
+			view.pivotY = view.height / 2;
 		}
 		
 		

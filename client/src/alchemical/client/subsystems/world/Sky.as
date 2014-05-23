@@ -54,8 +54,8 @@ package alchemical.client.subsystems.world
 			{
 				if (_layers[i])
 				{
-					_layers[i].scrollX = camera.transform.x * i;
-					_layers[i].scrollY = camera.transform.y * i;
+					_layers[i].scrollX = (camera.transform.x * ((i*.1)+.025));
+					_layers[i].scrollY = (camera.transform.y * ((i*.1)+.025));
 				}
 			}
 		}

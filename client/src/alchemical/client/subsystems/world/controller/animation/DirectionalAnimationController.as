@@ -10,7 +10,7 @@ package alchemical.client.subsystems.world.controller.animation
 	 * CameraAnimationController
 	 * @author Dylan Heyes
 	 */
-	public class DirectionalAnimationController extends InteractiveAnimationController
+	public class DirectionalAnimationController extends ForwardAnimationController
 	{
 		public function DirectionalAnimationController(entity:MovableEntity)
 		{
@@ -23,22 +23,22 @@ package alchemical.client.subsystems.world.controller.animation
 			
 			if (_actionDownStates[EActions.MOVE_UP])
 			{
-				entity.transform.y--;
+				entity.transform.y -= 2;
 			}
 			
 			if (_actionDownStates[EActions.MOVE_DOWN])
 			{
-				entity.transform.y++;
+				entity.transform.y += 2;
 			}
 			
 			if (_actionDownStates[EActions.MOVE_LEFT])
 			{
-				entity.transform.x--;
+				entity.transform.x -= 2;
 			}
 			
 			if (_actionDownStates[EActions.MOVE_RIGHT])
 			{
-				entity.transform.x++;
+				entity.transform.x += 2;
 			}
 		}
 	}

@@ -5,6 +5,7 @@ package alchemical.client.subsystems.world.entities
 {
 	import alchemical.client.subsystems.world.controller.animation.AnimationController;
 	import flash.geom.Point;
+	import starling.events.EnterFrameEvent;
 	
 	/**
 	 * Camera
@@ -36,8 +37,8 @@ package alchemical.client.subsystems.world.entities
 		
 		public function projectPoint(position:Point):void 
 		{
-			position.x = position.x - transform.x;
-			position.y = position.y - transform.y;
+			position.x = transform.x + position.x;
+			position.y = transform.y + position.y;
 		}
 		
 		

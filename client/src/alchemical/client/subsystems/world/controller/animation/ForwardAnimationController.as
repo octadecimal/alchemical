@@ -12,16 +12,13 @@ package alchemical.client.subsystems.world.controller.animation
 	 * InteractiveAnimationController
 	 * @author Dylan Heyes
 	 */
-	public class InteractiveAnimationController extends AnimationController
+	public class ForwardAnimationController extends AnimationController
 	{
-		// Action handler map
-		protected static var _actionDownStates:Vector.<Boolean>;
-		
 		/**
 		 * Constrcutor.
 		 * @param	entity
 		 */
-		public function InteractiveAnimationController(entity:MovableEntity) 
+		public function ForwardAnimationController(entity:MovableEntity) 
 		{
 			super(entity);
 			
@@ -32,16 +29,6 @@ package alchemical.client.subsystems.world.controller.animation
 		
 		// API
 		// =========================================================================================
-		
-		public function handleKeyDown(action:uint):void 
-		{
-			_actionDownStates[action] = true;
-		}
-		
-		public function handleKeyUp(action:uint):void 
-		{
-			_actionDownStates[action] = false;
-		}
 		
 		override public function update():void
 		{

@@ -3,8 +3,10 @@
  */
 package alchemical.client.subsystems.world.entities 
 {
-	import alchemical.client.subsystems.world.controller.animation.InteractiveAnimationController;
+	import alchemical.client.subsystems.world.controller.animation.AnimationController;
+	import alchemical.client.subsystems.world.controller.animation.ForwardAnimationController;
 	import alchemical.client.subsystems.world.model.DynamicsNode;
+	import alchemical.client.subsystems.world.model.TransformNode;
 	import starling.display.Sprite;
 	
 	/**
@@ -30,16 +32,23 @@ package alchemical.client.subsystems.world.entities
 		/**
 		 * Animation controller.
 		 */
-		public function set animationController(a:InteractiveAnimationController):void	{ _animationController = a; }
-		public function get animationController():InteractiveAnimationController		{ return _animationController; }
-		private var _animationController:InteractiveAnimationController;
+		public function set animationController(a:AnimationController):void	{ _animationController = a; }
+		public function get animationController():AnimationController		{ return _animationController; }
+		private var _animationController:AnimationController;
 		
 		/**
 		 * Dynamics.
 		 */
-		public function set dynamics(a:DynamicsNode):void								{ _dynamics = a; }
-		public function get dynamics():DynamicsNode										{ return _dynamics; }
+		public function set dynamics(a:DynamicsNode):void							{ _dynamics = a; }
+		public function get dynamics():DynamicsNode									{ return _dynamics; }
 		private var _dynamics:DynamicsNode;
+		
+		/**
+		 * Target position..
+		 */
+		public function set targetPosition(a:TransformNode):void					{ _targetPosition = a; }
+		public function get targetPosition():TransformNode							{ return _targetPosition; }
+		private var _targetPosition:TransformNode;
 	}
 
 }

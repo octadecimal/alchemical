@@ -118,8 +118,12 @@ package alchemical.client.subsystems.ui.mediator
 		
 		private function handleWorldReady(notification:INotification):void 
 		{
-			var tween:Tween = new Tween(_overlay, 2);
+			var tween:Tween = new Tween(_overlay, 0.5);
 			tween.fadeTo(0);
+			tween.onComplete = function ():void
+			{
+				_overlay.removeFromParent();
+			};
 			
 			Starling.juggler.add(tween);
 		}

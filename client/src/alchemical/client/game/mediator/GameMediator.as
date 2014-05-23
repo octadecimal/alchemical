@@ -12,6 +12,8 @@ package alchemical.client.game.mediator
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	import starling.events.EnterFrameEvent;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	
 	/**
 	 * GameMediator
