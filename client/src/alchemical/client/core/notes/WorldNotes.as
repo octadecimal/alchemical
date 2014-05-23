@@ -10,6 +10,7 @@ package alchemical.client.core.notes
 	public class WorldNotes 
 	{
 		static public const WORLD_READY:String = "worldReady";
+		static public const WORLD_CLICKED:String = "worldClicked";
 	}
 
 }

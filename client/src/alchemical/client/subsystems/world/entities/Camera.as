@@ -29,9 +29,15 @@ package alchemical.client.subsystems.world.entities
 		{
 			if (target)
 			{
-				//transform.x = (target.transform.x - transform.x) / 2;
-				//transform.y = (target.transform.y - transform.y) / 2;
+				transform.x = (target.transform.x - transform.x) / 2;
+				transform.y = (target.transform.y - transform.y) / 2;
 			}
+		}
+		
+		public function projectPoint(position:Point):void 
+		{
+			position.x = position.x - transform.x;
+			position.y = position.y - transform.y;
 		}
 		
 		

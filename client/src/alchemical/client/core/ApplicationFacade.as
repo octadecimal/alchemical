@@ -10,11 +10,13 @@ package alchemical.client.core
 	import alchemical.client.core.notes.GameNotes;
 	import alchemical.client.core.notes.NetworkNotes;
 	import alchemical.client.core.notes.UINotes;
+	import alchemical.client.core.notes.WorldNotes;
 	import alchemical.client.debugger.Debugger;
 	import alchemical.client.game.controller.MLaunchGame;
 	import alchemical.client.subsystems.ui.controller.CDisplayScreenLogin;
 	import alchemical.client.subsystems.world.controller.CDefinePlayer;
 	import alchemical.client.subsystems.world.controller.CDefineWorld;
+	import alchemical.client.subsystems.world.controller.CHandleWorldClicked;
 	import org.puremvc.as3.patterns.facade.Facade;
 	
 	/**
@@ -71,6 +73,7 @@ package alchemical.client.core
 			// World
 			registerCommand(NetworkNotes.WORLD_DEFINED, CDefineWorld);
 			registerCommand(NetworkNotes.PLAYER_DEFINED, CDefinePlayer);
+			registerCommand(WorldNotes.WORLD_CLICKED, CHandleWorldClicked);
 		}
 		
 		/**
@@ -81,7 +84,7 @@ package alchemical.client.core
 		 */
 		override public function sendNotification(notificationName:String, body:Object = null, type:String = null):void 
 		{
-			//Debugger.note(notificationName, body, type);
+			Debugger.note(notificationName, body, type);
 			
 			super.sendNotification(notificationName, body, type);
 		}

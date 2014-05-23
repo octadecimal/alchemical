@@ -4,6 +4,7 @@
 package alchemical.client.subsystems.world.entities 
 {
 	import alchemical.client.subsystems.world.controller.animation.InteractiveAnimationController;
+	import flash.geom.Point;
 	import starling.display.Sprite;
 	
 	/**
@@ -18,6 +19,15 @@ package alchemical.client.subsystems.world.entities
 			
 		}
 		
+		
+		
+		// API
+		// =========================================================================================
+		
+		public function moveTo(position:Point):void 
+		{
+			trace("MOVING TO: " + position.x + "," + position.y);
+		}
 		
 		
 		
