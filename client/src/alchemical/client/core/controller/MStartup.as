@@ -14,14 +14,14 @@ package alchemical.client.core.controller
 	{
 		override protected function initializeAsyncMacroCommand():void 
 		{
-			// Create debugger
-			addSubCommand(CCreateDebugger);
-			
 			// Create subsystems
 			addSubCommand(MCreateSubsystems);
 			
 			// Create game
 			addSubCommand(CCreateGame);
+			
+			// Create debugger
+			addSubCommand(CCreateDebugger);
 			
 			// Initialize subsystems
 			addSubCommand(MInitializeSubsystems);

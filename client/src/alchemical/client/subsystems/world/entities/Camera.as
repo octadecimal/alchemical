@@ -5,6 +5,7 @@ package alchemical.client.subsystems.world.entities
 {
 	import alchemical.client.subsystems.world.controller.animation.AnimationController;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import starling.events.EnterFrameEvent;
 	
 	/**
@@ -45,6 +46,13 @@ package alchemical.client.subsystems.world.entities
 		
 		// ACCESSORS
 		// =========================================================================================
+		
+		/**
+		 * Viewport bounds.
+		 */
+		public function set viewport(a:Rectangle):void						{ _viewport = a; }
+		public function get viewport():Rectangle							{ return _viewport; }
+		private var _viewport:Rectangle;
 		
 		/**
 		 * Target entity.

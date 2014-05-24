@@ -4,6 +4,7 @@
 package alchemical.client.subsystems.world
 {
 	import alchemical.client.subsystems.world.entities.Camera;
+	import flash.geom.Rectangle;
 	import starling.core.Starling;
 	import starling.display.Sprite;
 	import starling.events.EnterFrameEvent;
@@ -22,7 +23,7 @@ package alchemical.client.subsystems.world
 			super();
 			
 			// Test
-			addEventListener(EnterFrameEvent.ENTER_FRAME, onUpdate);
+			//addEventListener(EnterFrameEvent.ENTER_FRAME, onUpdate);
 		}
 		
 		// Test
@@ -65,6 +66,13 @@ package alchemical.client.subsystems.world
 		public function set camera(a:Camera):void	{ _camera = a; }
 		public function get camera():Camera		{ return _camera; }
 		private var _camera:Camera;
+		
+		/**
+		 * Visible world bounds.
+		 */
+		public function set worldBounds(a:Rectangle):void	{ _worldBounds = a; }
+		public function get worldBounds():Rectangle		{ return _worldBounds; }
+		private var _worldBounds:Rectangle;
 	}
 
 }

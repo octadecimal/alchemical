@@ -5,6 +5,7 @@ package alchemical.client.game.mediator
 {
 	import alchemical.client.core.enum.ComponentNames;
 	import alchemical.client.core.notes.ApplicationNotes;
+	import alchemical.client.core.notes.WorldNotes;
 	import alchemical.client.debugger.Debugger;
 	import alchemical.client.core.notes.GameNotes;
 	import alchemical.client.game.Game;
@@ -33,8 +34,6 @@ package alchemical.client.game.mediator
 			
 			super(ComponentNames.GAME, viewComponent);	
 			Debugger.log(this, "Created.");
-			
-			_view.addEventListener(EnterFrameEvent.ENTER_FRAME, onGameUpdate);
 		}
 		
 		
@@ -47,6 +46,7 @@ package alchemical.client.game.mediator
 			var interests:Array = super.listNotificationInterests();
 			
 			interests.push(NetworkNotes.LOGIN_SUCCESSFUL);
+			interests.push(WorldNotes.WORLD_READY);
 			
 			return interests;
 		}
@@ -57,6 +57,10 @@ package alchemical.client.game.mediator
 			{
 				case NetworkNotes.LOGIN_SUCCESSFUL:
 					handleNetworkLoginSuccessful(notification);
+					break;
+				
+				case WorldNotes.WORLD_READY:
+					handleWorldReady(notification);
 					break;
 			}
 			
@@ -82,6 +86,12 @@ package alchemical.client.game.mediator
 		{
 			// Login success, launch game
 			sendNotification(GameNotes.LAUNCH_GAME, notification.getBody());
+		}
+		
+		private function handleWorldReady(notification:INotification):void 
+		{
+			// Start update ticks
+			_view.addEventListener(EnterFrameEvent.ENTER_FRAME, onGameUpdate);
 		}
 	}
 

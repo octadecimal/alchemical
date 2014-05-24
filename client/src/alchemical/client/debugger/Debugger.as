@@ -4,11 +4,13 @@
 package alchemical.client.debugger 
 {
 	import alchemical.client.subsystems.network.model.NetworkProxy;
+	import starling.display.Sprite;
+	
 	/**
 	 * Debugger
 	 * @author Dylan Heyes
 	 */
-	public class Debugger 
+	public class Debugger extends Sprite
 	{
 		/**
 		 * Constructor.
@@ -17,6 +19,24 @@ package alchemical.client.debugger
 		{
 			
 		}
+		
+		
+		
+		// ACCESSORS
+		// =========================================================================================
+		
+		/**
+		 * World stats overlay.
+		 */
+		public function set worldStats(a:WorldStats):void	{ _worldStats = a; }
+		public function get worldStats():WorldStats			{ return _worldStats; }
+		private var _worldStats:WorldStats; 
+		
+		
+		
+		
+		// STATIC
+		// =========================================================================================
 		
 		/**
 		 * Adds a debug log.

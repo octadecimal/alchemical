@@ -3,6 +3,7 @@
  */
 package alchemical.client.subsystems.world.controller 
 {
+	import alchemical.client.debugger.controller.CDebugUpdateWorldStats;
 	import org.puremvc.as3.patterns.command.MacroCommand;
 	
 	/**
@@ -13,8 +14,11 @@ package alchemical.client.subsystems.world.controller
 	{
 		override protected function initializeMacroCommand():void 
 		{
-			addSubCommand(CUpdateAnimationControllers);
 			addSubCommand(CProjectCamera);
+			addSubCommand(CProjectSky);
+			addSubCommand(CUpdateAnimationControllers);
+			
+			addSubCommand(CDebugUpdateWorldStats);
 		}
 	}
 

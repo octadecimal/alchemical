@@ -62,10 +62,15 @@ package alchemical.client.subsystems.world
 		
 		
 		
-		// PRIVATE
+		// ACCESSORS
 		// =========================================================================================
 		
+		/**
+		 * Sky layers.
+		 */
+		public function get layers():Vector.<SkyLayer>		{ return _layers; }
 		private var _layers:Vector.<SkyLayer>;
+		
 	}
 
 }

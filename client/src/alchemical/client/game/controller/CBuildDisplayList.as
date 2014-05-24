@@ -4,6 +4,7 @@
 package alchemical.client.game.controller 
 {
 	import alchemical.client.core.enum.ComponentNames;
+	import alchemical.client.debugger.Debugger;
 	import alchemical.client.game.Game;
 	import alchemical.client.subsystems.ui.UILayer;
 	import alchemical.client.subsystems.world.World;
@@ -24,12 +25,17 @@ package alchemical.client.game.controller
 			// Get children
 			var world:World = facade.retrieveMediator(ComponentNames.WORLD).getViewComponent() as World;
 			var uiLayer:UILayer = facade.retrieveMediator(ComponentNames.UI).getViewComponent() as UILayer;
+			var debugger:Debugger = facade.retrieveMediator(ComponentNames.DEBUGGER).getViewComponent() as Debugger;
 			
-			// Add to game display list
+			// Add to game
 			game.addChild(world);
 			game.addChild(uiLayer);
 			
+			// Add to world
 			world.addChild(world.sky.view);
+			
+			// Debugger
+			world.addChild(debugger.worldStats);
 			
 			commandComplete();
 		}

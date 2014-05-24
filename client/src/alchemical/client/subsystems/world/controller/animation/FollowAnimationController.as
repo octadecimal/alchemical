@@ -46,9 +46,11 @@ package alchemical.client.subsystems.world.controller.animation
 				while (distance > Math.PI) distance = distance - Math.PI * 2;
 				while (distance < -Math.PI) distance = distance + Math.PI * 2;
 				
+				// Get angular threshold
 				var scale:Number = Math.abs(distance / Math.PI);
 				var inverseScale:Number = 1 - scale;
 				
+				// Apply torque
 				if ((distance < 0 && distance > -Math.PI) || distance > Math.PI)
 				{
 					dynamics.angularAcceleration += dynamics.torque * inverseScale;
@@ -59,7 +61,7 @@ package alchemical.client.subsystems.world.controller.animation
 				}
 				
 				// Apply thrust
-				//if (scale > 0.5)
+				//if (scale > 0.25)
 					dynamics.acceleration += dynamics.thrust * (scale*.5+.5);	
 			}
 				

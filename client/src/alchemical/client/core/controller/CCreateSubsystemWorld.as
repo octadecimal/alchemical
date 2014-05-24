@@ -4,6 +4,7 @@
 package alchemical.client.core.controller 
 {
 	import alchemical.client.core.enum.ComponentNames;
+	import alchemical.client.core.model.vo.StartupVO;
 	import alchemical.client.debugger.Debugger;
 	import alchemical.client.subsystems.world.controller.animation.DirectionalAnimationController;
 	import alchemical.client.subsystems.world.entities.Camera;
@@ -13,6 +14,7 @@ package alchemical.client.core.controller
 	import alchemical.client.subsystems.world.World;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.AsyncCommand;
+	import starling.core.Starling;
 	
 	/**
 	 * CCreateSubsystemWorld
@@ -23,6 +25,9 @@ package alchemical.client.core.controller
 		override public function execute(notification:INotification):void 
 		{
 			Debugger.log(this, "Creating: " + ComponentNames.WORLD);
+			
+			// Get graphics
+			var graphics:Starling = facade.retrieveMediator(ComponentNames.GRAPHICS).getViewComponent() as Starling;
 			
 			// Create world
 			var world:World = new World();
@@ -37,6 +42,7 @@ package alchemical.client.core.controller
 			// Create camera
 			world.camera = new Camera();
 			proxy.animationControllers.push(new DirectionalAnimationController(world.camera));
+			world.camera.viewport = graphics.viewPort;
 			
 			Debugger.log(this, "Created: " + ComponentNames.WORLD);
 			commandComplete();

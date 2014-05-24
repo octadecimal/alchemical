@@ -4,33 +4,35 @@
 package alchemical.client.subsystems.world.controller 
 {
 	import alchemical.client.core.enum.ComponentNames;
-	import alchemical.client.debugger.Debugger;
+	import alchemical.client.subsystems.world.entities.Camera;
 	import alchemical.client.subsystems.world.enum.EWorldScale;
-	import alchemical.client.subsystems.world.model.vo.WorldVO;
 	import alchemical.client.subsystems.world.model.WorldProxy;
+	import alchemical.client.subsystems.world.SkyLayer;
 	import alchemical.client.subsystems.world.World;
-	import flash.geom.Rectangle;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.SimpleCommand;
 	
 	/**
-	 * CDefineWorld
+	 * CProjectSky
 	 * @author Dylan Heyes
 	 */
-	public class CDefineWorld extends SimpleCommand 
+	public class CProjectSky extends SimpleCommand 
 	{
 		override public function execute(notification:INotification):void 
 		{
-			var vo:WorldVO = notification.getBody() as WorldVO;
-			
 			var world:World = facade.retrieveMediator(ComponentNames.WORLD).getViewComponent() as World;
 			var worldProxy:WorldProxy = facade.retrieveProxy(ComponentNames.WORLD) as WorldProxy;
 			
-			worldProxy.worldDefinition = vo;
+			var camera:Camera = world.camera;
 			
-			world.worldBounds = new Rectangle(0, 0, vo.width * EWorldScale.UNIT_SIZE, vo.height * EWorldScale.UNIT_SIZE);
+			var worldWidth:Number = worldProxy.worldDefinition.width * EWorldScale.UNIT_SIZE;
 			
-			Debugger.log(this, "Defined world. id=" + vo.id + " name=" + vo.name + " layers="+vo.skyLayers);
+			var cameraBounds:Number = worldWidth - camera.viewport.width;
+			
+			// Get first sky layer and constrain to the world size
+			var bottomSkyLayer:SkyLayer = world.sky.layers[0];
+			
+			bottomSkyLayer.scrollX = (camera.transform.x / cameraBounds) * worldWidth;
 		}
 	}
 

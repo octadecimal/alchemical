@@ -6,6 +6,7 @@ package alchemical.client.subsystems.world.entities
 	import alchemical.client.subsystems.world.controller.animation.ForwardAnimationController;
 	import alchemical.client.subsystems.world.model.TransformNode;
 	import flash.geom.Point;
+	import flash.utils.setTimeout;
 	import starling.display.Sprite;
 	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
@@ -47,11 +48,12 @@ package alchemical.client.subsystems.world.entities
 		private function onFollowUpdate(e:EnterFrameEvent):void 
 		{
 			// TEMPORARY
-			if (Math.abs(targetPosition.x - transform.x) <= 5)
+			if (Math.abs(targetPosition.x - transform.x) <= 100)
 			{
-				if (Math.abs(targetPosition.y - transform.y) <= 5)
+				if (Math.abs(targetPosition.y - transform.y) <= 100)
 				{
 					targetPosition = null;
+					
 					view.removeEventListener(EnterFrameEvent.ENTER_FRAME, onFollowUpdate);
 				}
 			}

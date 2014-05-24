@@ -12,6 +12,10 @@ package alchemical.client.platforms
 	 */
 	public class DesktopPlatform extends Sprite
 	{
+		[Embed(source="../../../../bin/fonts/Consolas.ttf", embedAsCFF="false", fontFamily="Consolas", unicodeRange = "U+0020-U+007e")]
+		private static const Font_Consolas:Class;
+		
+		
 		// Application facade
 		private var _facade:ApplicationFacade;
 		
