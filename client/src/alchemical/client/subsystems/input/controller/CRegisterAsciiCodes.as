@@ -36,6 +36,9 @@ package alchemical.client.subsystems.input.controller
 			inputProxy.registerAsciiCode(Keyboard.F2, EKeys.F2);
 			inputProxy.registerAsciiCode(Keyboard.F3, EKeys.F3);
 			
+			inputProxy.registerAsciiCode(Keyboard.ENTER, EKeys.ENTER);
+			inputProxy.registerAsciiCode(Keyboard.SLASH, EKeys.SLASH);
+			
 			Debugger.log(this, "Registered ascii codes.");
 			commandComplete();
 		}

@@ -10,6 +10,7 @@ package alchemical.client.core.notes
 	public class UINotes 
 	{
 		static public const DISPLAY_LOGIN_SCREEN:String = "displayLoginScreen";
+		static public const ADD_TO_CHAT:String = "addToChat";
 	}
 
 }

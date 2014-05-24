@@ -113,7 +113,7 @@ package alchemical.client.subsystems.ui.mediator
 			_view.loginScreen = null;
 			
 			_overlay = new Quad(1920, 1080, 0);
-			_view.addChild(_overlay);
+			_view.stage.addChild(_overlay);
 		}
 		
 		private function handleWorldReady(notification:INotification):void 

@@ -30,6 +30,9 @@ package alchemical.client.subsystems.input.controller
 			inputProxy.registerAction("enter_full_screen", EActions.ENTER_FULL_SCREEN);
 			inputProxy.registerAction("exit_full_screen", EActions.EXIT_FULL_SCREEN);
 			
+			inputProxy.registerAction("chat", EActions.CHAT);
+			inputProxy.registerAction("chat_command", EActions.CHAT_COMMAND);
+			
 			Debugger.log(this, "Registered actions.");
 			commandComplete();
 		}

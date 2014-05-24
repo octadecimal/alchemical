@@ -4,9 +4,9 @@
 package alchemical.client.game.controller 
 {
 	import alchemical.client.subsystems.graphics.controller.CApplyDisplaySettings;
+	import alchemical.client.subsystems.ui.controller.MCreateGameUI;
 	import alchemical.client.subsystems.world.controller.CLoadShipTextures;
 	import alchemical.client.subsystems.world.controller.MBuildWorld;
-	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.AsyncMacroCommand;
 	
 	/**
@@ -23,6 +23,9 @@ package alchemical.client.game.controller
 			// World
 			addSubCommand(CLoadShipTextures);
 			addSubCommand(MBuildWorld);
+			
+			// UI
+			addSubCommand(MCreateGameUI);
 		}
 	}
 }

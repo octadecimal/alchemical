@@ -24,8 +24,8 @@ package alchemical.client.subsystems.input.model
 			
 			_asciiTable = new Dictionary();
 			_actionsTable = new Dictionary();
-			_controlsTable = new Vector.<uint>(128);
-			_keyDownStates = new Vector.<Boolean>(128);
+			_controlsTable = new Vector.<uint>(1024);
+			_keyDownStates = new Vector.<Boolean>(1024);
 			
 			Debugger.log(this, "Created.");
 		}

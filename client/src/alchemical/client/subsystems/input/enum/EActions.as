@@ -11,7 +11,7 @@ package alchemical.client.subsystems.input.enum
 	{
 		// NOTE: Start at 1 so that 0 can denote unset in InputProxy::_controlsTable
 		
-		static public const NUM_ACTIONS:uint = 6;
+		static public const NUM_ACTIONS:uint = 9;
 		
 		static public const MOVE_UP:uint = 1;
 		static public const MOVE_DOWN:uint = 2;
@@ -19,6 +19,8 @@ package alchemical.client.subsystems.input.enum
 		static public const MOVE_RIGHT:uint = 4;
 		static public const ENTER_FULL_SCREEN:uint = 5;
 		static public const EXIT_FULL_SCREEN:uint = 6;
+		static public const CHAT:uint = 7;
+		static public const CHAT_COMMAND:uint = 8;
 	}
 
 }

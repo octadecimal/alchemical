@@ -19,6 +19,8 @@ package alchemical.client.subsystems.input.enum
 		static public const D:String = "d";
 		static public const F2:String = "f2";
 		static public const F3:String = "f3";
+		static public const ENTER:String = "enter";
+		static public const SLASH:String = "slash";
 	}
 
 }

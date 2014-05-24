@@ -18,6 +18,7 @@ package alchemical.client.core.notes
 		static public const CONNECTED:String = "connected";
 		static public const PLAYER_DEFINED:String = "playerDefined";
 		static public const PLAYER_SHIP_DEFINED:String = "playerShipDefined";
+		static public const CHAT_MESSAGE_RECEIVED:String = "chatMessageReceived";
 	}
 
 }

@@ -19,6 +19,8 @@ package alchemical.client.core.enum
 		static public const WORLD:String = "world";
 		static public const PLAYER:String = "player";
 		static public const DEBUGGER:String = "debugger";
+		
+		static public const CHATBOX:String = "chatbox";
 	}
 
 }

@@ -40,6 +40,13 @@ package alchemical.client.subsystems.ui
 		public function set loginScreen(a:LoginScreen):void	{ _loginScreen = a; }
 		public function get loginScreen():LoginScreen		{ return _loginScreen; }
 		private var _loginScreen:LoginScreen;
+		
+		/**
+		 * Chatbox.
+		 */
+		public function set chatbox(a:Chatbox):void			{ _chatbox = a; }
+		public function get chatbox():Chatbox				{ return _chatbox; }
+		private var _chatbox:Chatbox;
 	}
 
 }
