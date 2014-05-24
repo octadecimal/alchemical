@@ -32,7 +32,17 @@ package alchemical.client.subsystems.world.controller
 			// Get first sky layer and constrain to the world size
 			var bottomSkyLayer:SkyLayer = world.sky.layers[0];
 			
-			bottomSkyLayer.scrollX = (camera.transform.x / cameraBounds) * worldWidth;
+			// Derive camera ratio (where it sits on horizontal bounds of min,max)
+			var maxCameraX:Number = world.worldBounds.width - camera.viewport.width;
+			var maxSkyX:Number = EWorldScale.SKY_TEXTURE_SIZE - camera.viewport.width;
+			var cameraRatioX:Number = camera.transform.x / maxCameraX;
+			
+			var maxCameraY:Number = world.worldBounds.height - camera.viewport.height;
+			var maxSkyY:Number = EWorldScale.SKY_TEXTURE_SIZE - camera.viewport.height;
+			var cameraRatioY:Number = camera.transform.y / maxCameraY;
+			
+			bottomSkyLayer.scrollX = cameraRatioX * maxSkyX;
+			bottomSkyLayer.scrollY = cameraRatioY * maxSkyY;
 		}
 	}
 
