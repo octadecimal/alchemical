@@ -7,6 +7,7 @@ package alchemical.client.subsystems.world.controller.animation
 	import alchemical.client.subsystems.world.entities.MovableEntity;
 	import alchemical.client.subsystems.world.model.DynamicsNode;
 	import alchemical.client.subsystems.world.model.TransformNode;
+	import flash.geom.Vector3D;
 	
 	/**
 	 * FollowAnimationController
@@ -39,35 +40,43 @@ package alchemical.client.subsystems.world.controller.animation
 			
 			if (target)
 			{
-				theta = Math.atan2(entity.y - target.y, entity.x - target.x);
+				// Get angular distance
+				theta = Math.atan2(target.y - entity.y, target.x - entity.x);
+				var distance:Number = theta - entity.rotation;
+				while (distance > Math.PI) distance = distance - Math.PI * 2;
+				while (distance < -Math.PI) distance = distance + Math.PI * 2;
+				
+				var scale:Number = Math.abs(distance / Math.PI);
+				var inverseScale:Number = 1 - scale;
+				
+				if ((distance < 0 && distance > -Math.PI) || distance > Math.PI)
+				{
+					dynamics.angularAcceleration += dynamics.torque * inverseScale;
+				}
+				else
+				{
+					dynamics.angularAcceleration -= dynamics.torque * inverseScale;
+				}
 				
 				// Apply thrust
-				dynamics.acceleration += dynamics.thrust;
-			
-				// Apply acceleration
-				dynamics.velocity.x = Math.cos(theta) * dynamics.acceleration;
-				dynamics.velocity.y = Math.sin(theta) * dynamics.acceleration;
+				//if (scale > 0.5)
+					dynamics.acceleration += dynamics.thrust * (scale*.5+.5);	
+			}
 				
-				// Apply friction
-				dynamics.acceleration *= dynamics.friction;
-				dynamics.angularAcceleration *= dynamics.friction;		
+			// Apply acceleration
+			dynamics.velocity.x = Math.cos(entity.rotation) * dynamics.acceleration;
+			dynamics.velocity.y = Math.sin(entity.rotation) * dynamics.acceleration;
 			
-				var d:Number = theta - entity.rotation;
-				entity.rotation = entity.rotation + (d * 0.025);
-			}
-			else
-			{
-				// Apply friction
-				dynamics.velocity.x *= 0.98;
-				dynamics.velocity.y *= 0.98;
-				dynamics.acceleration *= 0.98;
-				dynamics.angularAcceleration *= 0.98;
-			}
+			// Apply friction
+			dynamics.acceleration *= dynamics.friction;
+			dynamics.velocity.x *= dynamics.friction;
+			dynamics.velocity.y *= dynamics.friction;
+			dynamics.angularAcceleration *= dynamics.angularFriction;	
 			
 			// Integrate
 			entity.x -= dynamics.velocity.x;
 			entity.y -= dynamics.velocity.y;
-			//entity.rotation += dynamics.angularAcceleration;		
+			entity.rotation += dynamics.angularAcceleration;
 		}
 	}
 
