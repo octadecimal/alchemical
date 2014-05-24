@@ -161,6 +161,18 @@ package alchemical.client.subsystems.input.model
 		
 		
 		
+		// ACCESSORS
+		// =========================================================================================
+		
+		/**
+		 * The input received, as per ComponentNames enum.
+		 */
+		public function set focus(a:String):void	{ _focus = a; }
+		public function get focus():String			{ return _focus; }
+		private var _focus:String;
+		
+		
+		
 		// PRIVATE
 		// =========================================================================================
 		

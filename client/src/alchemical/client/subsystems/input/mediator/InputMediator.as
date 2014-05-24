@@ -59,7 +59,7 @@ package alchemical.client.subsystems.input.mediator
 				_proxy.setKeyAsDown(e.keyCode);
 				
 				// Send action
-				sendNotification(InputNotes.KEY_DOWN, _proxy.getActionCodeByAscii(e.keyCode));
+				sendNotification(InputNotes.KEY_DOWN, _proxy.getActionCodeByAscii(e.keyCode), _proxy.focus);
 			}
 		}
 		
@@ -72,7 +72,7 @@ package alchemical.client.subsystems.input.mediator
 				_proxy.setKeyAsUp(e.keyCode);
 				
 				// Send action
-				sendNotification(InputNotes.KEY_UP, _proxy.getActionCodeByAscii(e.keyCode));
+				sendNotification(InputNotes.KEY_UP, _proxy.getActionCodeByAscii(e.keyCode), _proxy.focus);
 			}
 		}
 		

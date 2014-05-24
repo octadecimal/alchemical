@@ -46,17 +46,36 @@ package alchemical.client.subsystems.world.mediator
 			switch(notification.getName())
 			{
 				case(InputNotes.KEY_DOWN):
-					//if (_view.animationController)
-						_view.animationController.handleKeyDown(uint(notification.getBody()));
+					handleKeyDown(notification);
 					break;
 				
 				case(InputNotes.KEY_UP):
-					//if (_view.animationController)
-						_view.animationController.handleKeyUp(uint(notification.getBody()));
+					handleKeyUp(notification);
 					break;
 			}
 			
 			super.handleNotification(notification);
+		}
+		
+		
+		
+		// NOTIFICATION HANDLERS
+		// =========================================================================================
+		
+		private function handleKeyDown(notification:INotification):void 
+		{
+			if (notification.getType() == ComponentNames.WORLD)
+			{
+				_view.animationController.handleKeyDown(uint(notification.getBody()));
+			}
+		}
+		
+		private function handleKeyUp(notification:INotification):void 
+		{
+			if (notification.getType() == ComponentNames.WORLD)
+			{
+				_view.animationController.handleKeyUp(uint(notification.getBody()));
+			}
 		}
 	}
 

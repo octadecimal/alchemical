@@ -28,7 +28,7 @@ package alchemical.client.subsystems.ui.controller
 			chatbox.y = ui.stage.stageHeight - chatbox.size.height;
 			
 			// Test
-			sendNotification(UINotes.ADD_TO_CHAT, new ChatMessage(0, "WELCOME TO ALCHEMICAL DEBUG TEST SERVER."));
+			sendNotification(UINotes.ADD_TO_CHAT, new ChatMessage(0, "WELCOME TO ALCHEMICAL DEBUG TEST SERVER.\n"));
 			
 		}
 	}

@@ -10,6 +10,9 @@ package alchemical.client.subsystems.ui.events
 	{
 		static public const PLAY_NOW_CLICKED:String = "playNowClicked";
 		
+		static public const CHATBOX_FOCUSED:String = "chatboxFocused";
+		static public const CHATBOX_UNFOCUSED:String = "chatboxUnfocused";
+		
 		public function UIEvent(type:String, data:Object = null) 
 		{ 
 			super(type, true, data);

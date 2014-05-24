@@ -26,8 +26,12 @@ package alchemical.client.core.controller
 			var starling:Starling = facade.retrieveMediator(ComponentNames.GRAPHICS).getViewComponent() as Starling;
 			
 			// Register
-			facade.registerProxy(new InputProxy());
+			var proxy:InputProxy = new InputProxy();
+			facade.registerProxy(proxy);
 			facade.registerMediator(new InputMediator(starling.stage));
+			
+			// Default focus to world
+			proxy.focus = ComponentNames.WORLD;
 			
 			Debugger.log(this, "Created: " + ComponentNames.INPUT);
 			commandComplete();

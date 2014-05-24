@@ -11,6 +11,7 @@ package alchemical.client.subsystems.ui.mediator
 	import alchemical.client.core.notes.UINotes;
 	import alchemical.client.core.notes.WorldNotes;
 	import alchemical.client.debugger.Debugger;
+	import alchemical.client.subsystems.input.model.InputProxy;
 	import alchemical.client.subsystems.ui.events.UIEvent;
 	import alchemical.client.subsystems.ui.UILayer;
 	import org.puremvc.as3.interfaces.INotification;
@@ -50,6 +51,8 @@ package alchemical.client.subsystems.ui.mediator
 			interests.push(ApplicationNotes.SYSTEM_READY);
 			interests.push(GameNotes.LAUNCH_GAME);
 			interests.push(WorldNotes.WORLD_READY);
+			interests.push(UINotes.CHATBOX_FOCUSED);
+			interests.push(UINotes.CHATBOX_UNFOCUSED);
 			return interests;
 		}
 		
@@ -75,6 +78,14 @@ package alchemical.client.subsystems.ui.mediator
 				
 				case WorldNotes.WORLD_READY:
 					handleWorldReady(notification);
+					break;
+				
+				case UINotes.CHATBOX_FOCUSED:
+					handleChatboxFocused(notification);
+					break;
+				
+				case UINotes.CHATBOX_UNFOCUSED:
+					handleChatboxUnfocused(notification);
 					break;
 			}
 			
@@ -129,6 +140,20 @@ package alchemical.client.subsystems.ui.mediator
 		}
 		
 		private var _overlay:Quad;	// Test
+		
+		private function handleChatboxFocused(notification:INotification):void 
+		{
+			// Set UI as focus
+			var inputProxy:InputProxy = facade.retrieveProxy(ComponentNames.INPUT) as InputProxy;
+			inputProxy.focus = ComponentNames.UI;
+		}
+		
+		private function handleChatboxUnfocused(notification:INotification):void 
+		{
+			// Set world as focus
+			var inputProxy:InputProxy = facade.retrieveProxy(ComponentNames.INPUT) as InputProxy;
+			inputProxy.focus = ComponentNames.WORLD;
+		}
 		
 		
 		
