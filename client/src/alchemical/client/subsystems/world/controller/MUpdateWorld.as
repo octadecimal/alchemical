@@ -17,6 +17,7 @@ package alchemical.client.subsystems.world.controller
 			addSubCommand(CProjectCamera);
 			addSubCommand(CProjectSky);
 			addSubCommand(CUpdateAnimationControllers);
+			addSubCommand(CProjectEntities);
 			
 			addSubCommand(CDebugUpdateWorldStats);
 		}
