@@ -1,5 +1,6 @@
 package alchemical.server.db;
 import alchemical.server.const.Passwords;
+import alchemical.server.Server.NPC;
 import alchemical.server.Server.Player;
 import alchemical.server.Server.Ship;
 import alchemical.server.Server.World;
@@ -157,5 +158,29 @@ class Database
 		
 		Debugger.database("SHIP: " + id + " -> " + ship.id);
 		return ship;
+	}
+	
+	public function getNPCsByWorld(worldID:Int):Array<NPC> 
+	{
+		var npc:NPC;
+		var output:Array<NPC> = new Array<NPC>();
+		var result:ResultSet = query(new Query().select("*").from("npcs").where("world", worldID).getQuery());
+		
+		for (row in result)
+		{
+			npc = {
+				id: row.id,
+				world: row.world,
+				ship: row.ship,
+				x: row.x,
+				y: row.y,
+				faction: row.faction
+			}
+			
+			output.push(npc);
+		}
+		
+		Debugger.database("NPCS: " + worldID + " -> " + output.length);
+		return output;
 	}
 }

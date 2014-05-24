@@ -1,5 +1,6 @@
 package alchemical.server.io;
 import alchemical.server.const.Commands;
+import alchemical.server.Server.NPC;
 import alchemical.server.Server.Player;
 import alchemical.server.Server.Ship;
 import alchemical.server.Server.World;
@@ -63,5 +64,24 @@ class PacketBuilder
 		packet.writeInt16(ship.id);
 		packet.writeInt16(ship.type);
 		packet.writeInt16(ship.hull);
+	}
+	
+	public function defineNPCs(packet:OutPacket, npcs:Array<NPC>) 
+	{
+		var npc:NPC;
+		
+		packet.writeCommand(Commands.DEFINE_NPCS);
+		packet.writeInt16(npcs.length);				// num total npcs
+		
+		for (i in 0...npcs.length)
+		{
+			npc = npcs[i];
+			packet.writeInt16(npc.id);
+			packet.writeInt16(npc.world);
+			packet.writeInt16(npc.ship);
+			packet.writeInt16(npc.x);
+			packet.writeInt16(npc.y);
+			packet.writeInt16(npc.faction);
+		}
 	}
 }

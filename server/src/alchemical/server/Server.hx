@@ -220,10 +220,14 @@ class Server extends ThreadServer<Client, Message>
 			// Get player ship
 			var ship:Ship = _database.getPlayerShip(client.player.ship);
 			
+			// Get world NPCS
+			var npcs:Array<NPC> = _database.getNPCsByWorld(world.id);
+			
 			_builder.loginSuccess(outPacket);
 			_builder.defineWorld(outPacket, world);
 			_builder.definePlayer(outPacket, client.player);
 			_builder.definePlayerShip(outPacket, client.player, ship);
+			_builder.defineNPCs(outPacket, npcs);
 		}
 		else
 		{
@@ -273,8 +277,19 @@ typedef Player = {
 	var y:Float;
 }
 
+// Ship type
 typedef Ship = {
 	var id:Int;
 	var type:UInt;
 	var hull:UInt;
+}
+
+// NPC type
+typedef NPC = {
+	var id:Int;
+	var world:Int;
+	var ship:Int;
+	var x:Int;
+	var y:Int;
+	var faction:Int;
 }
