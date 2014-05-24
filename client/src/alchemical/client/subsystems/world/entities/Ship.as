@@ -21,7 +21,7 @@ package alchemical.client.subsystems.world.entities
 		/**
 		 * Constructor.
 		 */
-		public function Ship(vo:ShipVO, view:Sprite = null) 
+		public function Ship(/*vo:ShipVO, */view:Sprite = null) 
 		{
 			super(view);
 			

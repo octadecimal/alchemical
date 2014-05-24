@@ -15,6 +15,7 @@ package alchemical.client.subsystems.world.controller
 		{
 			addSubCommand(CBuildSky);
 			addSubCommand(CCreatePlayer);
+			addSubCommand(CCreateNPCs);
 			addSubCommand(CNotifyWorldReady);
 		}
 	}

@@ -3,33 +3,24 @@
  */
 package alchemical.client.subsystems.world.entities 
 {
-	import alchemical.client.subsystems.world.controller.animation.ForwardAnimationController;
 	import alchemical.client.subsystems.world.model.TransformNode;
 	import flash.geom.Point;
-	import flash.utils.setTimeout;
 	import starling.display.Sprite;
 	import starling.events.EnterFrameEvent;
-	import starling.events.Event;
 	
 	/**
-	 * Player
+	 * NPC
 	 * @author Dylan Heyes
 	 */
-	public class Player extends MovableEntity 
+	public class NPC extends MovableEntity 
 	{
-		public function Player() 
+		/**
+		 * Constructor.
+		 * @param	view
+		 */
+		public function NPC(view:Sprite=null) 
 		{
-			super();
-			
-			view.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-		}
-		
-		private function onAddedToStage(e:Event):void 
-		{
-			view.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-			
-			transform.x = 256;
-			transform.y = 256;
+			super(view);
 		}
 		
 		

@@ -10,6 +10,7 @@ package alchemical.client.subsystems.network.model
 	import alchemical.client.subsystems.network.events.NetworkEvent;
 	import alchemical.client.subsystems.network.interfaces.INetworkGateway;
 	import alchemical.client.subsystems.network.model.packets.Packet;
+	import alchemical.client.subsystems.world.model.vo.NPCVo;
 	import alchemical.client.subsystems.world.model.vo.PlayerVO;
 	import alchemical.client.subsystems.world.model.vo.ShipVO;
 	import alchemical.client.subsystems.world.model.vo.WorldVO;
@@ -49,6 +50,7 @@ package alchemical.client.subsystems.network.model
 			_commandMap[ENetcode.DEFINE_WORLD] = handleDefineWorldResponse;
 			_commandMap[ENetcode.DEFINE_PLAYER] = handleDefinePlayerResponse;
 			_commandMap[ENetcode.DEFINE_PLAYER_SHIP] = handleDefinePlayerShipResponse;
+			_commandMap[ENetcode.DEFINE_NPCS] = handleDefineNPCsResponse;
 			
 			_packet = new Packet();
 			
@@ -129,7 +131,16 @@ package alchemical.client.subsystems.network.model
 			Debugger.log(this, "Player ship defined: " + vo.id);
 			
 			sendNotification(NetworkNotes.PLAYER_SHIP_DEFINED, vo);
-			sendNotification(NetworkNotes.LOGIN_SUCCESSFUL, vo);
+		}
+		
+		private function handleDefineNPCsResponse(bytes:IDataInput):void 
+		{
+			Debugger.log(this, "Defining NPCs...");
+			var npcs:Vector.<NPCVo> = _reader.defineNPCs(bytes);
+			Debugger.log(this, "Defined NPCs: " + npcs.length);
+			
+			sendNotification(NetworkNotes.NPCS_DEFINED, npcs);
+			sendNotification(NetworkNotes.LOGIN_SUCCESSFUL);
 		}
 		
 		

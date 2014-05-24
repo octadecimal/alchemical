@@ -3,6 +3,7 @@
  */
 package alchemical.client.subsystems.network.model 
 {
+	import alchemical.client.subsystems.world.model.vo.NPCVo;
 	import alchemical.client.subsystems.world.model.vo.PlayerVO;
 	import alchemical.client.subsystems.world.model.vo.ShipVO;
 	import alchemical.client.subsystems.world.model.vo.WorldVO;
@@ -61,6 +62,31 @@ package alchemical.client.subsystems.network.model
 			vo.hull = bytes.readShort();
 			
 			return vo;
+		}
+		
+		public function defineNPCs(bytes:IDataInput):Vector.<NPCVo> 
+		{
+			var npc:NPCVo;
+			var npcs:Vector.<NPCVo> = new Vector.<NPCVo>();
+			
+			var count:int = bytes.readShort();
+			
+			
+			for (var i:int = 0; i < count; i++)
+			{
+				npc = new NPCVo();
+				
+				npc.id = bytes.readShort();
+				npc.world = bytes.readShort();
+				npc.ship = bytes.readShort();
+				npc.x = bytes.readShort();
+				npc.y = bytes.readShort();
+				npc.faction = bytes.readShort();
+				
+				npcs.push(npc);
+			}
+			
+			return npcs;
 		}
 	}
 

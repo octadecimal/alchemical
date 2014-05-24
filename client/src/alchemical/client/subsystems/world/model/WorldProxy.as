@@ -3,6 +3,7 @@ package alchemical.client.subsystems.world.model
 	import alchemical.client.core.enum.ComponentNames;
 	import alchemical.client.debugger.Debugger;
 	import alchemical.client.subsystems.world.controller.animation.AnimationController;
+	import alchemical.client.subsystems.world.model.vo.NPCVo;
 	import alchemical.client.subsystems.world.model.vo.PlayerVO;
 	import alchemical.client.subsystems.world.model.vo.ShipVO;
 	import alchemical.client.subsystems.world.model.vo.WorldVO;
@@ -52,6 +53,13 @@ package alchemical.client.subsystems.world.model
 		public function set playerShipDefinition(a:ShipVO):void	{ _playerShipDefinition = a; }
 		public function get playerShipDefinition():ShipVO		{ return _playerShipDefinition; }
 		private var _playerShipDefinition:ShipVO;
+		
+		/**
+		 * NPC definitions.
+		 */
+		public function set npcDefinitions(a:Vector.<NPCVo>):void	{ _npcDefinitions = a; }
+		public function get npcDefinitions():Vector.<NPCVo>		{ return _npcDefinitions; }
+		private var _npcDefinitions:Vector.<NPCVo>;
 		
 		/**
 		 * Animation controllers.

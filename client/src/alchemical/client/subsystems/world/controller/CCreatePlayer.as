@@ -6,11 +6,10 @@ package alchemical.client.subsystems.world.controller
 	import alchemical.client.core.enum.ComponentNames;
 	import alchemical.client.debugger.Debugger;
 	import alchemical.client.subsystems.world.controller.animation.FollowAnimationController;
-	import alchemical.client.subsystems.world.controller.animation.ForwardAnimationController;
+	import alchemical.client.subsystems.world.entities.Player;
 	import alchemical.client.subsystems.world.entities.Ship;
 	import alchemical.client.subsystems.world.factories.WorldFactory;
 	import alchemical.client.subsystems.world.mediator.PlayerMediator;
-	import alchemical.client.subsystems.world.entities.Player;
 	import alchemical.client.subsystems.world.model.WorldProxy;
 	import alchemical.client.subsystems.world.World;
 	import org.puremvc.as3.interfaces.INotification;
@@ -32,7 +31,7 @@ package alchemical.client.subsystems.world.controller
 			var player:Player = new Player();
 			facade.registerMediator(new PlayerMediator(player));
 			
-			var ship:Ship = WorldFactory.createShip(worldProxy.playerShipDefinition);
+			var ship:Ship = WorldFactory.createShip(/*worldProxy.playerShipDefinition*/);
 			player.ship = ship;
 			player.view.addChild(ship.view);
 			

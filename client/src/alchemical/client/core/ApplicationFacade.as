@@ -14,6 +14,7 @@ package alchemical.client.core
 	import alchemical.client.debugger.Debugger;
 	import alchemical.client.game.controller.MLaunchGame;
 	import alchemical.client.subsystems.ui.controller.CDisplayScreenLogin;
+	import alchemical.client.subsystems.world.controller.CDefineNPCs;
 	import alchemical.client.subsystems.world.controller.CDefinePlayer;
 	import alchemical.client.subsystems.world.controller.CDefineWorld;
 	import alchemical.client.subsystems.world.controller.CHandleWorldClicked;
@@ -43,9 +44,7 @@ package alchemical.client.core
 		 */
 		public function startup(vo:StartupVO):void
 		{
-			//Debugger.log(this, "Starting up...");
 			sendNotification(ApplicationNotes.STARTUP, vo);
-			//Debugger.log(this, "Started up.");
 		}
 		
 		
@@ -70,9 +69,12 @@ package alchemical.client.core
 			// UI
 			registerCommand(UINotes.DISPLAY_LOGIN_SCREEN, CDisplayScreenLogin);
 			
-			// World
+			// Network
 			registerCommand(NetworkNotes.WORLD_DEFINED, CDefineWorld);
 			registerCommand(NetworkNotes.PLAYER_DEFINED, CDefinePlayer);
+			registerCommand(NetworkNotes.NPCS_DEFINED, CDefineNPCs);
+			
+			// World
 			registerCommand(WorldNotes.WORLD_CLICKED, CHandleWorldClicked);
 		}
 		
@@ -84,7 +86,7 @@ package alchemical.client.core
 		 */
 		override public function sendNotification(notificationName:String, body:Object = null, type:String = null):void 
 		{
-			if (notificationName != "updateTick")
+			if (notificationName != ApplicationNotes.UPDATE_TICK)
 			{
 				Debugger.note(notificationName, body, type);
 			}

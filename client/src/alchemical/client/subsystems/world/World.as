@@ -4,6 +4,7 @@
 package alchemical.client.subsystems.world
 {
 	import alchemical.client.subsystems.world.entities.Camera;
+	import alchemical.client.subsystems.world.entities.NPC;
 	import flash.geom.Rectangle;
 	import starling.core.Starling;
 	import starling.display.Sprite;
@@ -73,6 +74,13 @@ package alchemical.client.subsystems.world
 		public function set worldBounds(a:Rectangle):void	{ _worldBounds = a; }
 		public function get worldBounds():Rectangle		{ return _worldBounds; }
 		private var _worldBounds:Rectangle;
+		
+		/**
+		 * World NPCs.
+		 */
+		public function set npcs(a:Vector.<NPC>):void	{ _npcs = a; }
+		public function get npcs():Vector.<NPC>		{ return _npcs; }
+		private var _npcs:Vector.<NPC>;
 	}
 
 }

@@ -26,6 +26,11 @@ package alchemical.client.subsystems.world.controller
 				var player:Player = playerMediator.getViewComponent() as Player;
 				player.project(world.camera);
 			}
+			
+			for (var i:int = 0; i < world.npcs.length; i++)
+			{
+				world.npcs[i].project(world.camera);
+			}
 		}
 	}
 
