@@ -65,10 +65,11 @@ package alchemical.client.debugger
 		
 		private function createTextField(neighbor:TextField = null):TextField
 		{
-			var tf:TextField = new TextField(100, 12, "", "Consolas", 9, Color.WHITE, false);
+			var tf:TextField = new TextField(100, 12, "", "Consolas", 12, Color.WHITE, false);
 			tf.vAlign = VAlign.TOP;
 			tf.hAlign = HAlign.LEFT;
 			tf.autoSize = TextFieldAutoSize.HORIZONTAL;
+			tf.batchable = true;
 			
 			if (neighbor)
 			{

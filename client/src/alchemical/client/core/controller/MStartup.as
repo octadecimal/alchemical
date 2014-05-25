@@ -20,6 +20,9 @@ package alchemical.client.core.controller
 			// Create game
 			addSubCommand(CCreateGame);
 			
+			// Register fonts
+			addSubCommand(CRegisterFonts);
+			
 			// Create debugger
 			addSubCommand(CCreateDebugger);
 			

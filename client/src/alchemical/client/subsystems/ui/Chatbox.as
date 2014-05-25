@@ -49,19 +49,21 @@ package alchemical.client.subsystems.ui
 			_messageBuffer = new Vector.<ChatMessage>();
 			
 			// Create output text
-			_output = new TextField(_size.width - (PADDING * 2), _size.height - (PADDING * 2), "", "Consolas", 11, Color.WHITE, false);
+			_output = new TextField(_size.width - (PADDING * 2), _size.height - (PADDING * 2), "", "Consolas", 12, Color.WHITE, false);
 			_output.hAlign = HAlign.LEFT;
 			_output.vAlign = VAlign.TOP;
 			_output.x = _output.y = PADDING;
 			addChild(_output);
+			_output.batchable = true;
 			
 			// Create input text
-			_input = new TextField(_size.width - (PADDING * 2), LINE_HEIGHT, "", "Consolas", 11, Color.WHITE, false);
+			_input = new TextField(_size.width - (PADDING * 2), LINE_HEIGHT, "", "Consolas", 12, Color.WHITE, false);
 			_input.hAlign = HAlign.LEFT;
 			_input.vAlign = VAlign.TOP;
 			_input.x = _input.y = PADDING;
 			_input.y = _size.height - _input.height - PADDING;
 			addChild(_input);
+			_input.batchable = true;
 			
 			// Default unfocused
 			unfocus();
@@ -98,7 +100,7 @@ package alchemical.client.subsystems.ui
 		
 		private function unfocus():void
 		{
-			_background.alpha = 0.2;
+			_background.alpha = 0.0;
 			disableCommandLine();
 			
 			dispatchEvent(new UIEvent(UIEvent.CHATBOX_UNFOCUSED));
