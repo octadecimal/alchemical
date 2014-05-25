@@ -31,15 +31,16 @@ package alchemical.client.subsystems.world.controller
 			
 			for (var i:int = 0; i < worldProxy.npcDefinitions.length; i++)
 			{
-				npc = new NPC();
 				vo = npcVOs[i];
+				
+				npc = new NPC(vo.id);
 				
 				ship = WorldFactory.createShip(/*vo.ship*/);
 				npc.ship = ship;
 				npc.view.addChild(ship.view);
 				
-				//npc.animationController = new FollowAnimationController(npc);
-				//worldProxy.animationControllers.push(npc.animationController);
+				npc.animationController = new FollowAnimationController(npc);
+				worldProxy.animationControllers.push(npc.animationController);
 				
 				var assets:AssetManager = facade.retrieveMediator(ComponentNames.RESOURCES).getViewComponent() as AssetManager;
 				ship.setHullTexture(assets.getTextureAtlas("ships_01").getTexture("ship_0001"));

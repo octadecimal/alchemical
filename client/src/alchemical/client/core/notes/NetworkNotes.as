@@ -21,6 +21,7 @@ package alchemical.client.core.notes
 		static public const NPCS_DEFINED:String = "npcsDefined"
 		
 		static public const CHAT_MESSAGE_RECEIVED:String = "chatMessageReceived";;
+		static public const NPC_MOVED:String = "npcMoved";
 	}
 
 }

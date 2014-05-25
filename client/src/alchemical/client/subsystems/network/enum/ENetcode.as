@@ -22,5 +22,6 @@ package alchemical.client.subsystems.network.enum
 		static public const DEFINE_PLAYER:uint = 5;
 		static public const DEFINE_PLAYER_SHIP:uint = 6;
 		static public const DEFINE_NPCS:uint = 7;
+		static public const MOVE_NPC:uint = 8;
 	}
 }

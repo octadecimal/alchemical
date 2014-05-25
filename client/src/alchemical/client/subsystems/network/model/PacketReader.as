@@ -3,6 +3,7 @@
  */
 package alchemical.client.subsystems.network.model 
 {
+	import alchemical.client.subsystems.world.model.vo.MovementVO;
 	import alchemical.client.subsystems.world.model.vo.NPCVo;
 	import alchemical.client.subsystems.world.model.vo.PlayerVO;
 	import alchemical.client.subsystems.world.model.vo.ShipVO;
@@ -87,6 +88,17 @@ package alchemical.client.subsystems.network.model
 			}
 			
 			return npcs;
+		}
+		
+		public function moveNPC(bytes:IDataInput):MovementVO
+		{
+			var vo:MovementVO =  new MovementVO();
+			
+			vo.id = bytes.readShort();
+			vo.x = bytes.readShort();
+			vo.y = bytes.readShort();
+			
+			return vo;
 		}
 	}
 

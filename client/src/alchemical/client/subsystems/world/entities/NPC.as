@@ -18,8 +18,9 @@ package alchemical.client.subsystems.world.entities
 		 * Constructor.
 		 * @param	view
 		 */
-		public function NPC(view:Sprite=null) 
+		public function NPC(id:int, view:Sprite=null) 
 		{
+			_id = id;
 			super(view);
 		}
 		
@@ -53,6 +54,12 @@ package alchemical.client.subsystems.world.entities
 		
 		// ACCESSORS
 		// =========================================================================================
+		
+		/**
+		 * Unique id.
+		 */
+		public function get id():int		{ return _id; }
+		private var _id:int;
 		
 		/**
 		 * Ship.

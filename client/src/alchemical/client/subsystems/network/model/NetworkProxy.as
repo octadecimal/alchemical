@@ -10,6 +10,7 @@ package alchemical.client.subsystems.network.model
 	import alchemical.client.subsystems.network.events.NetworkEvent;
 	import alchemical.client.subsystems.network.interfaces.INetworkGateway;
 	import alchemical.client.subsystems.network.model.packets.Packet;
+	import alchemical.client.subsystems.world.model.vo.MovementVO;
 	import alchemical.client.subsystems.world.model.vo.NPCVo;
 	import alchemical.client.subsystems.world.model.vo.PlayerVO;
 	import alchemical.client.subsystems.world.model.vo.ShipVO;
@@ -51,6 +52,7 @@ package alchemical.client.subsystems.network.model
 			_commandMap[ENetcode.DEFINE_PLAYER] = handleDefinePlayerResponse;
 			_commandMap[ENetcode.DEFINE_PLAYER_SHIP] = handleDefinePlayerShipResponse;
 			_commandMap[ENetcode.DEFINE_NPCS] = handleDefineNPCsResponse;
+			_commandMap[ENetcode.MOVE_NPC] = handleMoveNPCResponse;
 			
 			_packet = new Packet();
 			
@@ -141,6 +143,15 @@ package alchemical.client.subsystems.network.model
 			
 			sendNotification(NetworkNotes.NPCS_DEFINED, npcs);
 			sendNotification(NetworkNotes.LOGIN_SUCCESSFUL);
+		}
+		
+		private function handleMoveNPCResponse(bytes:IDataInput):void 
+		{
+			var vo:MovementVO = _reader.moveNPC(bytes);
+			
+			Debugger.log(this, "Moving NPC " + vo.id + " to: " + vo.x + "," + vo.y);
+			
+			sendNotification(NetworkNotes.NPC_MOVED, vo);
 		}
 		
 		

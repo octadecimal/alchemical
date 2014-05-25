@@ -121,7 +121,7 @@ class Server extends ThreadServer<Client, Message>
 		_numConnectedClients--;
 		_nextValidID = c.id;
 		
-		_clientMap[c.id] = null;
+		_clientMap[c.id] = null; // TODO: Splice from array?
 		
 		Debugger.server("Client disconnected: " + Std.string(c.id));
 		Debugger.server("Total connections: " + _numConnectedClients);
@@ -214,9 +214,9 @@ class Server extends ThreadServer<Client, Message>
 	{
 		for (client in _clientMap)
 		{
-			if (client.world.id == worldID)
+			if (client != null && client.world != null)
 			{
-				if (client != null)
+				if (client.world.id == worldID)
 				{
 					sendToClient(client, packet);
 				}
@@ -275,7 +275,7 @@ class Server extends ThreadServer<Client, Message>
 				if (currentNPC.target == null)
 				{
 					// Generate random target
-					moveWorldNPCTo(world, currentNPC, Math.random() * (currentNPC.position.x + 600) - 300, Math.random() * (currentNPC.position.y + 600) - 300);
+					moveWorldNPCTo(world, currentNPC, Math.random() * 1920, Math.random() * 1080);
 				}
 				
 				// Increment toward target
@@ -331,6 +331,9 @@ class Server extends ThreadServer<Client, Message>
 			// Get world player exists in
 			var world:World = _worldMap[client.player.world];
 			world.players.push(client.player);
+			
+			// Set client world
+			client.world = world;
 			
 			// Get player ship
 			var ship:Ship = _database.getPlayerShip(client.player.ship);

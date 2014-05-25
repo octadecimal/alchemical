@@ -8,7 +8,9 @@ package alchemical.client.subsystems.world.mediator
 	import alchemical.client.core.notes.NetworkNotes;
 	import alchemical.client.core.notes.WorldNotes;
 	import alchemical.client.debugger.Debugger;
+	import alchemical.client.subsystems.world.model.vo.MovementVO;
 	import alchemical.client.subsystems.world.World;
+	import flash.geom.Point;
 	import org.puremvc.as3.interfaces.INotification;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -49,13 +51,42 @@ package alchemical.client.subsystems.world.mediator
 		{
 			var interests:Array = super.listNotificationInterests();
 			interests.push(WorldNotes.WORLD_READY);
+			interests.push(NetworkNotes.NPC_MOVED);
 			return interests;
 		}
 		
 		override public function handleNotification(notification:INotification):void
 		{
+			switch(notification.getName())
+			{
+				case NetworkNotes.NPC_MOVED:
+					handleNPCMoved(notification.getBody() as MovementVO);
+					break
+			}
 			
 			super.handleNotification(notification);
+		}
+		
+		
+		
+		// EVENTS
+		// =========================================================================================
+		
+		private function handleNPCMoved(movementVO:MovementVO):void 
+		{
+			var world:World = getViewComponent() as World;
+			
+			if (world.npcs == null)
+				return;
+			
+			for (var i:int = 0; i < world.npcs.length; i++)
+			{
+				if (world.npcs[i].id == movementVO.id)
+				{
+					var point:Point = new Point(movementVO.x, movementVO.y);
+					world.npcs[i].moveTo(point);
+				}
+			}
 		}
 		
 		
