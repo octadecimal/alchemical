@@ -1,4 +1,5 @@
 package alchemical.server.db;
+import alchemical.server.const.EntityStates;
 import alchemical.server.const.Passwords;
 import alchemical.server.Server.NPC;
 import alchemical.server.Server.Player;
@@ -84,7 +85,9 @@ class Database
 				height: row.height,
 				numSkyLayers: row.numskylayers,
 				skyLayers: parseSkyLayers(row.skylayers),
-				players: []
+				players: [],
+				npcs: [],
+				outPacket: null
 			};
 			
 			Debugger.database(world.id + " -> " + world.name + " "+world.width+","+world.height+","+world.numSkyLayers);
@@ -185,7 +188,9 @@ class Database
 				world: row.world,
 				ship: row.ship,
 				faction: row.faction,
-				position: position
+				position: position,
+				target: null,
+				state: EntityStates.IDLE
 			}
 			
 			output.push(npc);

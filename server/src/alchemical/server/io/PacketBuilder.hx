@@ -3,8 +3,10 @@ import alchemical.server.const.Commands;
 import alchemical.server.Server.NPC;
 import alchemical.server.Server.Player;
 import alchemical.server.Server.Ship;
+import alchemical.server.Server.TransformNode;
 import alchemical.server.Server.World;
 import alchemical.server.io.OutPacket;
+import alchemical.server.util.Debugger;
 
 /**
  * ...
@@ -83,5 +85,20 @@ class PacketBuilder
 			packet.writeInt16(Std.int(npc.position.y));
 			packet.writeInt16(npc.faction);
 		}
+	}
+	
+	public function moveWorldNPCTo(world:World, npc:NPC, target:TransformNode) 
+	{
+		if (world.outPacket == null)
+		{
+			world.outPacket = new OutPacket();
+		}
+		
+		var packet:OutPacket = world.outPacket;
+		
+		packet.writeCommand(Commands.MOVE_NPC);
+		packet.writeInt16(npc.id);
+		packet.writeInt16(Std.int(target.x));
+		packet.writeInt16(Std.int(target.y));
 	}
 }
