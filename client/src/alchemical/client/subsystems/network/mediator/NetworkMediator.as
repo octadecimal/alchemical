@@ -6,10 +6,12 @@ package alchemical.client.subsystems.network.mediator
 	import alchemical.client.core.architecture.SubsystemMediator;
 	import alchemical.client.core.enum.ComponentNames;
 	import alchemical.client.core.notes.NetworkNotes;
+	import alchemical.client.core.notes.UINotes;
 	import alchemical.client.debugger.Debugger;
 	import alchemical.client.subsystems.network.events.NetworkEvent;
 	import alchemical.client.subsystems.network.model.NetworkProxy;
 	import alchemical.client.subsystems.network.Network;
+	import alchemical.client.subsystems.ui.model.ChatMessage;
 	import org.puremvc.as3.interfaces.INotification;
 	
 	/**
@@ -55,6 +57,7 @@ package alchemical.client.subsystems.network.mediator
 			var interests:Array = super.listNotificationInterests();
 			
 			interests.push(NetworkNotes.LOGIN);
+			interests.push(UINotes.CHATBOX_MESSAGE_ENTERED);
 			
 			return interests;
 		}
@@ -68,6 +71,10 @@ package alchemical.client.subsystems.network.mediator
 			{
 				case NetworkNotes.LOGIN:
 					handleLoginRequest(notification);
+					break;
+				
+				case UINotes.CHATBOX_MESSAGE_ENTERED:
+					handleChatboxMessageEntered(notification);
 					break;
 			}
 			
@@ -90,6 +97,14 @@ package alchemical.client.subsystems.network.mediator
 			_proxy.writeLoginRequest(user, pass);
 			
 			Debugger.log(this, "Logging in with: " + user + "," + pass);
+		}
+		
+		/**
+		 * Player entered chat message.
+		 */
+		private function handleChatboxMessageEntered(notification:INotification):void 
+		{
+			_proxy.writeChatMessage(notification.getBody() as ChatMessage);
 		}
 		
 		

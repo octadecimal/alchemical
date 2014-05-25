@@ -43,6 +43,7 @@ package alchemical.client.subsystems.ui.mediator
 			
 			_view.addEventListener(UIEvent.CHATBOX_FOCUSED, onChatboxFocused);
 			_view.addEventListener(UIEvent.CHATBOX_UNFOCUSED, onChatboxUnfocused);
+			_view.addEventListener(UIEvent.CHATBOX_MESSAGE_ENTERED, onChatboxMessageEntered);
 		}
 		
 		override public function listNotificationInterests():Array 
@@ -72,6 +73,7 @@ package alchemical.client.subsystems.ui.mediator
 		
 		
 		// EVENT HANDLERS
+		
 		// =========================================================================================
 		
 		private function onChatboxFocused(e:UIEvent):void 
@@ -82,6 +84,11 @@ package alchemical.client.subsystems.ui.mediator
 		private function onChatboxUnfocused(e:UIEvent):void 
 		{
 			sendNotification(UINotes.CHATBOX_UNFOCUSED);
+		}
+		
+		private function onChatboxMessageEntered(e:UIEvent):void 
+		{
+			sendNotification(UINotes.CHATBOX_MESSAGE_ENTERED, ChatMessage(e.data));
 		}
 		
 		

@@ -3,6 +3,7 @@
  */
 package alchemical.client.subsystems.network.model 
 {
+	import alchemical.client.subsystems.ui.model.ChatMessage;
 	import alchemical.client.subsystems.world.model.vo.MovementVO;
 	import alchemical.client.subsystems.world.model.vo.NPCVo;
 	import alchemical.client.subsystems.world.model.vo.PlayerVO;
@@ -117,6 +118,21 @@ package alchemical.client.subsystems.network.model
 			vo.y = bytes.readShort();
 			
 			return vo;
+		}
+		
+		/**
+		 * Reads an incoming chat message.
+		 * @return A ChatMessage object.
+		 */
+		public function chatMessage(bytes:IDataInput):ChatMessage 
+		{
+			var type:int = bytes.readShort();
+			var msgLen:int = bytes.readShort();
+			var msg:String = bytes.readUTFBytes(msgLen);
+			var nameLen:int = bytes.readShort();
+			var name:String = bytes.readUTFBytes(nameLen);
+			
+			return new ChatMessage(type, msg, name);
 		}
 	}
 

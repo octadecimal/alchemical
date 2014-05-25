@@ -10,6 +10,7 @@ package alchemical.client.subsystems.network.model
 	import alchemical.client.subsystems.network.events.NetworkEvent;
 	import alchemical.client.subsystems.network.interfaces.INetworkGateway;
 	import alchemical.client.subsystems.network.model.packets.Packet;
+	import alchemical.client.subsystems.ui.model.ChatMessage;
 	import alchemical.client.subsystems.world.model.vo.MovementVO;
 	import alchemical.client.subsystems.world.model.vo.NPCVo;
 	import alchemical.client.subsystems.world.model.vo.PlayerVO;
@@ -55,6 +56,7 @@ package alchemical.client.subsystems.network.model
 			_commandMap[ENetcode.DEFINE_PLAYER_SHIP] = handleDefinePlayerShipResponse;
 			_commandMap[ENetcode.DEFINE_NPCS] = handleDefineNPCsResponse;
 			_commandMap[ENetcode.MOVE_NPC] = handleMoveNPCResponse;
+			_commandMap[ENetcode.CHAT_MESSAGE] = handleChatMessageResponse;
 			
 			_packet = new Packet();
 			
@@ -95,6 +97,15 @@ package alchemical.client.subsystems.network.model
 		public function writeLoginRequest(user:String, pass:String):void
 		{
 			_builder.login(_packet, user, pass);
+		}
+		
+		/**
+		 * Writes a chat message that was entered by the player.
+		 * @param	chatMessage	ChatMessage object of player message.
+		 */
+		public function writeChatMessage(chatMessage:ChatMessage):void 
+		{
+			_builder.chatMessage(_packet, chatMessage);
 		}
 		
 		
@@ -175,6 +186,15 @@ package alchemical.client.subsystems.network.model
 		{
 			var vo:MovementVO = _reader.moveNPC(bytes);
 			sendNotification(NetworkNotes.NPC_MOVED, vo);
+		}
+		
+		/**
+		 * Command: Chat message received.
+		 */
+		private function handleChatMessageResponse(bytes:IDataInput):void 
+		{
+			var chatMessage:ChatMessage = _reader.chatMessage(bytes);
+			sendNotification(NetworkNotes.CHAT_MESSAGE_RECEIVED, chatMessage);
 		}
 		
 		

@@ -3,6 +3,7 @@
  */
 package alchemical.client.subsystems.ui 
 {
+	import alchemical.client.subsystems.ui.enum.EChatMessageTypes;
 	import alchemical.client.subsystems.ui.events.UIEvent;
 	import alchemical.client.subsystems.ui.model.ChatMessage;
 	import flash.geom.Rectangle;
@@ -74,12 +75,13 @@ package alchemical.client.subsystems.ui
 		
 		public function addMessage(chatMessage:ChatMessage):void 
 		{
-			//_output.text += "["+chatMessage.type + "] " +chatMessage.msg;
 			_messageBuffer.push(chatMessage);
+			
 			if (_messageBuffer.length > _lineFields.length)
 			{
 				_scrollV++;
 			}
+			
 			refresh();
 		}
 		
@@ -89,7 +91,18 @@ package alchemical.client.subsystems.ui
 			{
 				if (_messageBuffer.length > i+_scrollV)
 				{
-					_lineFields[i].text = "[" + _messageBuffer[i + _scrollV].type+"] " + _messageBuffer[i + _scrollV].msg;
+					var msg:ChatMessage = _messageBuffer[i + _scrollV];
+					
+					if (msg.type == 0)
+					{
+						_lineFields[i].color = Color.YELLOW;
+						_lineFields[i].text = "[" + msg.type+"] " + msg.msg;
+					}
+					else
+					{
+						_lineFields[i].color = Color.WHITE;
+						_lineFields[i].text = "[" + msg.type+"] <" + msg.sender + "> " + msg.msg;
+					}
 				}
 			}
 		}
@@ -134,9 +147,11 @@ package alchemical.client.subsystems.ui
 			_backgroundInput.visible = false;
 			_input.visible = false;
 			
-			if (_input.text.length > 0)
+			if (_input.text.length > 2)
 			{
-				addMessage(new ChatMessage(0, _input.text));
+				var chatMessage:ChatMessage = new ChatMessage(1, _input.text, "You");
+				//addMessage(chatMessage);
+				dispatchEvent(new UIEvent(UIEvent.CHATBOX_MESSAGE_ENTERED, chatMessage));
 			}
 			
 			_input.text = "";
@@ -175,6 +190,7 @@ package alchemical.client.subsystems.ui
 		
 		
 		// EVENT HANDLERS
+		
 		// =========================================================================================
 		
 		private function onKeyDown(e:KeyboardEvent):void 

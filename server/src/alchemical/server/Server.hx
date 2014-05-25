@@ -69,6 +69,7 @@ class Server extends ThreadServer<Client, Message>
 		_commandMap[0] = handleLoginRequest;
 		_commandMap[1] = handleLoginRequest;
 		_commandMap[2] = handleLoginRequest;
+		_commandMap[Commands.CHAT_MSG] = handleChatMessageReceived;
 	}
 	
 	
@@ -244,7 +245,7 @@ class Server extends ThreadServer<Client, Message>
 		for (i in 0..._worldMap.length)
 		{
 			// Update world NPCs
-			updateWorldNPCs(_worldMap[i]);
+			//updateWorldNPCs(_worldMap[i]);
 			
 			// Send world outpacket
 			if (_worldMap[i].outPacket != null)
@@ -355,6 +356,15 @@ class Server extends ThreadServer<Client, Message>
 		}
 		
 		sendToClient(client, outPacket);
+	}
+	
+	private function handleChatMessageReceived(client:Client, packet:InPacket):Void
+	{
+		var type:Int = packet.readInt16();
+		var msg:String = packet.readString();
+		
+		// Build out packet (gets queued into world outpacket)
+		_builder.chatMessage(client.world, type, msg, client.player.name);
 	}
 }
 	

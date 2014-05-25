@@ -101,4 +101,17 @@ class PacketBuilder
 		packet.writeInt16(Std.int(target.x));
 		packet.writeInt16(Std.int(target.y));
 	}
+	
+	public function chatMessage(world:World, type:Int, msg:String, name:String) 
+	{
+		if (world.outPacket == null)
+		{
+			world.outPacket = new OutPacket();
+		}
+		
+		world.outPacket.writeCommand(Commands.CHAT_MSG);
+		world.outPacket.writeInt16(type);
+		world.outPacket.writeString(msg);
+		world.outPacket.writeString(name);
+	}
 }

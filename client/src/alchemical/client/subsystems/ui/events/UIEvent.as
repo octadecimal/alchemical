@@ -12,6 +12,7 @@ package alchemical.client.subsystems.ui.events
 		
 		static public const CHATBOX_FOCUSED:String = "chatboxFocused";
 		static public const CHATBOX_UNFOCUSED:String = "chatboxUnfocused";
+		static public const CHATBOX_MESSAGE_ENTERED:String = "chatMessageEntered";
 		
 		public function UIEvent(type:String, data:Object = null) 
 		{ 

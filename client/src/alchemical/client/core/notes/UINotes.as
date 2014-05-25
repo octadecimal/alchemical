@@ -13,6 +13,7 @@ package alchemical.client.core.notes
 		static public const ADD_TO_CHAT:String = "addToChat";
 		static public const CHATBOX_UNFOCUSED:String = "chatboxUnfocused";
 		static public const CHATBOX_FOCUSED:String = "chatboxFocused";
+		static public const CHATBOX_MESSAGE_ENTERED:String = "chatboxMessageEntered";
 	}
 
 }

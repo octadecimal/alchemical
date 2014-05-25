@@ -27,5 +27,8 @@ package alchemical.client.subsystems.network.enum
 		
 		// Movement
 		static public const MOVE_NPC:uint = 8;
+		
+		// Chat
+		static public const CHAT_MESSAGE:uint = 9;
 	}
 }
