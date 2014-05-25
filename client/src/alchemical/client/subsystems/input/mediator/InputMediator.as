@@ -98,7 +98,6 @@ package alchemical.client.subsystems.input.mediator
 		
 		private function onMouseWheel(e:MouseEvent):void 
 		{
-			trace("DELTA: " + e.delta);
 			sendNotification(InputNotes.MOUSE_WHEEL, new MouseVO(e.stageX, e.stageY, e.delta));
 		}
 		

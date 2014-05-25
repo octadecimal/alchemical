@@ -118,7 +118,6 @@ package alchemical.client.subsystems.ui.mediator
 		
 		private function handleMouseWheel(mouseVO:MouseVO):void 
 		{
-			trace("SCROLL: " + mouseVO.delta);
 			_view.scroll(mouseVO.delta);
 		}
 	}

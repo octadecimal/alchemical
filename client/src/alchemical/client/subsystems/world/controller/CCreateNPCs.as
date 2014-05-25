@@ -51,8 +51,6 @@ package alchemical.client.subsystems.world.controller
 				world.addChild(npc.view);
 				
 				npcs.push(npc);
-				
-				trace("NPC: " + vo.id + " -> " + npc.transform.x + "," + npc.transform.y);
 			}
 			
 			world.npcs = npcs;
