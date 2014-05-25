@@ -7,7 +7,10 @@ package alchemical.client.subsystems.input.mediator
 	import alchemical.client.debugger.Debugger;
 	import alchemical.client.core.notes.InputNotes;
 	import alchemical.client.subsystems.input.model.InputProxy;
+	import alchemical.client.subsystems.input.model.vo.MouseVO;
+	import flash.events.MouseEvent;
 	import org.puremvc.as3.patterns.mediator.Mediator;
+	import starling.core.Starling;
 	import starling.display.Stage;
 	import starling.events.KeyboardEvent;
 	import starling.events.TouchEvent;
@@ -40,14 +43,21 @@ package alchemical.client.subsystems.input.mediator
 			
 			_proxy = facade.retrieveProxy(ComponentNames.INPUT) as InputProxy;
 			
+			// Native events
 			_view.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			_view.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 			_view.addEventListener(TouchEvent.TOUCH, onTouch);
+			
+			// Handle events not supported by starling
+			var starling:Starling = facade.retrieveMediator(ComponentNames.GRAPHICS).getViewComponent() as Starling;
+			starling.nativeStage.addEventListener(MouseEvent.RIGHT_CLICK, onMouseRightClick);
+			starling.nativeStage.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
 		}
 		
 		
 		
 		// EVENT HANDLERS
+		
 		// =========================================================================================
 		
 		private function onKeyDown(e:KeyboardEvent):void 
@@ -79,6 +89,17 @@ package alchemical.client.subsystems.input.mediator
 		private function onTouch(e:TouchEvent):void 
 		{
 			
+		}
+		
+		private function onMouseRightClick(e:MouseEvent):void 
+		{
+			sendNotification(InputNotes.RIGHT_CLICK, new MouseVO(e.stageX, e.stageY));
+		}
+		
+		private function onMouseWheel(e:MouseEvent):void 
+		{
+			trace("DELTA: " + e.delta);
+			sendNotification(InputNotes.MOUSE_WHEEL, new MouseVO(e.stageX, e.stageY, e.delta));
 		}
 		
 		

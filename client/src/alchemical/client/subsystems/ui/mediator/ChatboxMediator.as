@@ -8,6 +8,7 @@ package alchemical.client.subsystems.ui.mediator
 	import alchemical.client.core.notes.NetworkNotes;
 	import alchemical.client.core.notes.UINotes;
 	import alchemical.client.subsystems.input.enum.EActions;
+	import alchemical.client.subsystems.input.model.vo.MouseVO;
 	import alchemical.client.subsystems.ui.Chatbox;
 	import alchemical.client.subsystems.ui.events.UIEvent;
 	import alchemical.client.subsystems.ui.model.ChatMessage;
@@ -51,7 +52,9 @@ package alchemical.client.subsystems.ui.mediator
 			return [
 				NetworkNotes.CHAT_MESSAGE_RECEIVED,
 				UINotes.ADD_TO_CHAT,
-				InputNotes.KEY_UP
+				InputNotes.KEY_UP,
+				InputNotes.RIGHT_CLICK,
+				InputNotes.MOUSE_WHEEL
 			];
 		}
 		
@@ -66,6 +69,10 @@ package alchemical.client.subsystems.ui.mediator
 				
 				case InputNotes.KEY_UP:
 					handleKeyUp(int(notification.getBody()));
+					break;
+				
+				case InputNotes.MOUSE_WHEEL:
+					handleMouseWheel(MouseVO(notification.getBody()));
 					break;
 			}
 		}
@@ -107,6 +114,12 @@ package alchemical.client.subsystems.ui.mediator
 			{
 				_view.toggleFocus();
 			}
+		}
+		
+		private function handleMouseWheel(mouseVO:MouseVO):void 
+		{
+			trace("SCROLL: " + mouseVO.delta);
+			_view.scroll(mouseVO.delta);
 		}
 	}
 

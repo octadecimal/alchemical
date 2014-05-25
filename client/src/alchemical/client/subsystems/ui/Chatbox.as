@@ -104,6 +104,10 @@ package alchemical.client.subsystems.ui
 						_lineFields[i].text = "[" + msg.type+"] <" + msg.sender + "> " + msg.msg;
 					}
 				}
+				else
+				{
+					_lineFields[i].text = "";
+				}
 			}
 		}
 		
@@ -111,6 +115,22 @@ package alchemical.client.subsystems.ui
 		{
 			(_focused) ? unfocus() : focus();
 			_focused = !_focused;
+		}
+		
+		public function scroll(delta:int):void 
+		{
+			delta = (delta > 0) ? -1 : +1;
+			_scrollV += delta;
+			if (_scrollV < 0)
+				_scrollV = 0;
+			
+			if (_scrollV > _messageBuffer.length - _lineFields.length)
+				_scrollV = _messageBuffer.length - _lineFields.length;
+			
+			if (_messageBuffer.length < _lineFields.length)
+				_scrollV = 0;
+			
+			refresh();
 		}
 		
 		
