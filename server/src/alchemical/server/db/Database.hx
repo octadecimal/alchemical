@@ -3,6 +3,7 @@ import alchemical.server.const.Passwords;
 import alchemical.server.Server.NPC;
 import alchemical.server.Server.Player;
 import alchemical.server.Server.Ship;
+import alchemical.server.Server.TransformNode;
 import alchemical.server.Server.World;
 import alchemical.server.util.Debugger;
 import haxe.ds.Vector;
@@ -122,23 +123,28 @@ class Database
 	
 	public function getPlayer(id:UInt):Player
 	{
-		var player:Player;
+		var player:Player, position:TransformNode;
 		var result:ResultSet = query(new Query().select("*").from("players").where("user", id).getQuery());
 		
 		for (row in result)
 		{
+			position = {
+				x: row.x,
+				y: row.y,
+				r: 0
+			};
+			
 			player = { 
 				id: row.id, 
 				user: row.user, 
 				name: row.name, 
 				world: row.world, 
 				ship: row.ship, 
-				x: row.x, 
-				y: row.y
+				position: position
 			};
 		}
 		
-		Debugger.database("PLAYER: " + player.id + " -> " + player.name + " (" + player.x + "," + player.y+")");
+		Debugger.database("PLAYER: " + player.id + " -> " + player.name + " (" + player.position.x + "," + player.position.y+")");
 		return player;
 	}
 	
@@ -162,19 +168,24 @@ class Database
 	
 	public function getNPCsByWorld(worldID:Int):Array<NPC> 
 	{
-		var npc:NPC;
+		var npc:NPC, position:TransformNode;
 		var output:Array<NPC> = new Array<NPC>();
 		var result:ResultSet = query(new Query().select("*").from("npcs").where("world", worldID).getQuery());
 		
 		for (row in result)
 		{
+			position = {
+				x: row.x,
+				y: row.y,
+				r: 0
+			}
+			
 			npc = {
 				id: row.id,
 				world: row.world,
 				ship: row.ship,
-				x: row.x,
-				y: row.y,
-				faction: row.faction
+				faction: row.faction,
+				position: position
 			}
 			
 			output.push(npc);

@@ -6,8 +6,10 @@ import alchemical.server.io.InPacket;
 import alchemical.server.io.OutPacket;
 import alchemical.server.io.PacketBuilder;
 import alchemical.server.Server.Client;
+import alchemical.server.Server.World;
 import alchemical.server.util.Debugger;
 import haxe.io.Bytes;
+import haxe.Timer;
 import neko.net.ThreadServer;
 import sys.net.Socket;
 
@@ -82,7 +84,7 @@ class Server extends ThreadServer<Client, Message>
 		var id:UInt = generateClientId();
 		_numConnectedClients++;
 		
-		var client:Client = { id: id, sock: s , player: null};
+		var client:Client = { id: id, sock: s , player: null, world: null };
 		
 		_clientMap[id] = client;
 		
@@ -190,6 +192,36 @@ class Server extends ThreadServer<Client, Message>
 		}
 	}
 	
+	private function sendToWorldPlayers(worldID:Int, packet:OutPacket):Void
+	{
+		for (client in _clientMap)
+		{
+			if (client.world.id == worldID)
+			{
+				if (client != null)
+				{
+					sendToClient(client, packet);
+				}
+			}
+		}
+	}
+	
+	
+	
+	// UPDATE
+	// =========================================================================================
+	
+	override public function update() 
+	{	
+		super.update();
+		
+		// Loop through worlds
+		for (i in 0..._worldMap.length)
+		{
+			
+		}
+	}
+	
 	
 	
 	// REQUEST HANDLERS
@@ -216,6 +248,7 @@ class Server extends ThreadServer<Client, Message>
 			
 			// Get world player exists in
 			var world:World = _worldMap[client.player.world];
+			world.players.push(client.player);
 			
 			// Get player ship
 			var ship:Ship = _database.getPlayerShip(client.player.ship);
@@ -223,6 +256,7 @@ class Server extends ThreadServer<Client, Message>
 			// Get world NPCS
 			var npcs:Array<NPC> = _database.getNPCsByWorld(world.id);
 			
+			// Build out packet
 			_builder.loginSuccess(outPacket);
 			_builder.defineWorld(outPacket, world);
 			_builder.definePlayer(outPacket, client.player);
@@ -238,21 +272,24 @@ class Server extends ThreadServer<Client, Message>
 		sendToClient(client, outPacket);
 	}
 }
-
+	
+	
+	
+// TYPEDEFS
+// =========================================================================================
 
 // Client type
 typedef Client = {
 	var id:Int;
 	var sock:Socket;
 	var player:Player;
+	var world:World;
 }
-
 
 // Socket message type
 typedef Message = {
 	var packet:InPacket;
 }
-
 
 // World type
 typedef World = {
@@ -265,7 +302,6 @@ typedef World = {
 	var players:Array<Player>;
 }
 
-
 // Player type
 typedef Player = {
 	var id:UInt;
@@ -273,8 +309,7 @@ typedef Player = {
 	var name:String;
 	var world:UInt;
 	var ship:Int;
-	var x:Float;
-	var y:Float;
+	var position:TransformNode;
 }
 
 // Ship type
@@ -289,7 +324,13 @@ typedef NPC = {
 	var id:Int;
 	var world:Int;
 	var ship:Int;
-	var x:Int;
-	var y:Int;
 	var faction:Int;
+	var position:TransformNode;
+}
+
+// Transform
+typedef TransformNode = {
+	var x:Float;
+	var y:Float;
+	var r:Float;
 }

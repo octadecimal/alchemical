@@ -54,8 +54,8 @@ class PacketBuilder
 		packet.writeInt16(player.id);
 		packet.writeString(player.name);
 		packet.writeInt16(player.ship);
-		packet.writeInt16(Std.int(player.x));
-		packet.writeInt16(Std.int(player.y));
+		packet.writeInt16(Std.int(player.position.x));
+		packet.writeInt16(Std.int(player.position.y));
 	}
 	
 	public function definePlayerShip(packet:OutPacket, player:Player, ship:Ship) 
@@ -79,8 +79,8 @@ class PacketBuilder
 			packet.writeInt16(npc.id);
 			packet.writeInt16(npc.world);
 			packet.writeInt16(npc.ship);
-			packet.writeInt16(npc.x);
-			packet.writeInt16(npc.y);
+			packet.writeInt16(Std.int(npc.position.x));
+			packet.writeInt16(Std.int(npc.position.y));
 			packet.writeInt16(npc.faction);
 		}
 	}
