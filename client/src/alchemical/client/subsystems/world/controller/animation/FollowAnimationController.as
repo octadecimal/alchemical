@@ -31,7 +31,7 @@ package alchemical.client.subsystems.world.controller.animation
 		// API
 		// =========================================================================================
 		
-		override public function update():void 
+		override public function update(passedTime:Number):void 
 		{
 			var entity:TransformNode = _entity.transform;
 			var target:TransformNode = _entity.targetPosition;
@@ -53,16 +53,16 @@ package alchemical.client.subsystems.world.controller.animation
 				// Apply torque
 				if ((distance < 0 && distance > -Math.PI) || distance > Math.PI)
 				{
-					dynamics.angularAcceleration += dynamics.torque * inverseScale;
+					dynamics.angularAcceleration += dynamics.torque * inverseScale * passedTime;
 				}
 				else
 				{
-					dynamics.angularAcceleration -= dynamics.torque * inverseScale;
+					dynamics.angularAcceleration -= dynamics.torque * inverseScale * passedTime;
 				}
 				
 				// Apply thrust
 				//if (scale > 0.25)
-					dynamics.acceleration += dynamics.thrust * (scale*.5+.5);	
+					dynamics.acceleration += dynamics.thrust * (scale*.5+.5) * passedTime;	
 			}
 				
 			// Apply acceleration

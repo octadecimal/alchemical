@@ -39,7 +39,7 @@ package alchemical.client.subsystems.world.controller.animation
 			_actionDownStates[action] = false;
 		}
 		
-		public function update():void
+		public function update(passedTime:Number):void
 		{
 			
 		}

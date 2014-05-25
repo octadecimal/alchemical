@@ -10,8 +10,8 @@ package alchemical.client.subsystems.world.model
 	 */
 	public class DynamicsNode 
 	{
-		public var thrust:Number = 0.05;
-		public var torque:Number = 0.005;
+		public var thrust:Number = 2;
+		public var torque:Number = 0.3;
 		
 		public var maxAcceleration:Number = 3;
 		public var maxAngularAcceleration:Number = 0.1;

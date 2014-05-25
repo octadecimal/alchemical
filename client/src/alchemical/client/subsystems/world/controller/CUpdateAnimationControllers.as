@@ -17,13 +17,15 @@ package alchemical.client.subsystems.world.controller
 	{
 		override public function execute(notification:INotification):void 
 		{
+			var passedTime:Number = Number(notification.getBody());
+			
 			var worldProxy:WorldProxy = facade.retrieveProxy(ComponentNames.WORLD) as WorldProxy;
 			
 			var animationControllers:Vector.<AnimationController> = worldProxy.animationControllers;
 			
 			for (var i:int = 0, c:int = animationControllers.length; i < animationControllers.length; i++)
 			{
-				animationControllers[i].update();
+				animationControllers[i].update(passedTime);
 			}
 		}
 	}

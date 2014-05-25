@@ -30,7 +30,7 @@ package alchemical.client.subsystems.world.controller.animation
 		// API
 		// =========================================================================================
 		
-		override public function update():void
+		override public function update(passedTime:Number):void
 		{
 			var entity:MovableEntity = _entity;
 			var dynamics:DynamicsNode = entity.dynamics;
@@ -62,7 +62,7 @@ package alchemical.client.subsystems.world.controller.animation
 			entity.transform.y += Math.sin(offset + entity.transform.rotation) * dynamics.acceleration;
 			entity.transform.rotation += dynamics.angularAcceleration;
 			
-			super.update();
+			super.update(passedTime);
 		}
 		
 	}

@@ -17,28 +17,28 @@ package alchemical.client.subsystems.world.controller.animation
 			super(entity);
 		}
 		
-		override public function update():void 
+		override public function update(passedTime:Number):void 
 		{
 			var entity:MovableEntity = _entity;
 			
 			if (_actionDownStates[EActions.MOVE_UP])
 			{
-				entity.transform.y -= 2;
+				entity.transform.y -= 100 * passedTime;
 			}
 			
 			if (_actionDownStates[EActions.MOVE_DOWN])
 			{
-				entity.transform.y += 2;
+				entity.transform.y += 100 * passedTime;
 			}
 			
 			if (_actionDownStates[EActions.MOVE_LEFT])
 			{
-				entity.transform.x -= 2;
+				entity.transform.x -= 100 * passedTime;
 			}
 			
 			if (_actionDownStates[EActions.MOVE_RIGHT])
 			{
-				entity.transform.x += 2;
+				entity.transform.x += 100 * passedTime;
 			}
 		}
 	}
