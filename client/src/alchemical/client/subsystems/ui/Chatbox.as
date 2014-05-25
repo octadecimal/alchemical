@@ -24,7 +24,6 @@ package alchemical.client.subsystems.ui
 		static private const PADDING:int = 5;
 		static private const LINE_HEIGHT:int = 15;
 		
-		
 		/**
 		 * Constructor.
 		 */
@@ -33,7 +32,7 @@ package alchemical.client.subsystems.ui
 			super();
 			
 			// Default size
-			_size = new Rectangle(0, 0, 500, 200);
+			_size = new Rectangle(0, 0, 500, 193);
 			
 			// Create background
 			_background = new Quad(_size.width, _size.height, 0x0);
@@ -43,18 +42,11 @@ package alchemical.client.subsystems.ui
 			// Create command background
 			_backgroundInput = new Quad(_size.width, 20, 0x222222);
 			_backgroundInput.y = _size.height - 20;
+			_backgroundInput.alpha = 0.5;
 			addChild(_backgroundInput);
 			
 			// Create message buffer
 			_messageBuffer = new Vector.<ChatMessage>();
-			
-			// Create output text
-			_output = new TextField(_size.width - (PADDING * 2), _size.height - (PADDING * 2), "", "Consolas", 12, Color.WHITE, false);
-			_output.hAlign = HAlign.LEFT;
-			_output.vAlign = VAlign.TOP;
-			_output.x = _output.y = PADDING;
-			addChild(_output);
-			_output.batchable = true;
 			
 			// Create input text
 			_input = new TextField(_size.width - (PADDING * 2), LINE_HEIGHT, "", "Consolas", 12, Color.WHITE, false);
@@ -65,8 +57,14 @@ package alchemical.client.subsystems.ui
 			addChild(_input);
 			_input.batchable = true;
 			
+			// Create line fields
+			buildLineFields();
+			
 			// Default unfocused
 			unfocus();
+			
+			// Refresh
+			refresh();
 		}
 		
 		
@@ -76,7 +74,24 @@ package alchemical.client.subsystems.ui
 		
 		public function addMessage(chatMessage:ChatMessage):void 
 		{
-			_output.text += "["+chatMessage.type + "] " +chatMessage.msg;
+			//_output.text += "["+chatMessage.type + "] " +chatMessage.msg;
+			_messageBuffer.push(chatMessage);
+			if (_messageBuffer.length > _lineFields.length)
+			{
+				_scrollV++;
+			}
+			refresh();
+		}
+		
+		public function refresh():void
+		{
+			for (var i:int = 0; i < _lineFields.length; i++)
+			{
+				if (_messageBuffer.length > i+_scrollV)
+				{
+					_lineFields[i].text = "[" + _messageBuffer[i + _scrollV].type+"] " + _messageBuffer[i + _scrollV].msg;
+				}
+			}
 		}
 		
 		public function toggleFocus():void 
@@ -92,7 +107,7 @@ package alchemical.client.subsystems.ui
 		
 		private function focus():void
 		{
-			_background.alpha = 0.8;
+			_background.alpha = 0.4;
 			enableCommandLine();
 			
 			dispatchEvent(new UIEvent(UIEvent.CHATBOX_FOCUSED));
@@ -134,7 +149,27 @@ package alchemical.client.subsystems.ui
 		
 		private function buildLineFields():void
 		{
+			var numFields:int = ((_size.height-(PADDING*2)) / LINE_HEIGHT) - 1;
 			
+			_lineFields = new Vector.<TextField>(numFields);
+			
+			for (var i:int = 0; i < numFields; i++)
+			{
+				var tf:TextField = createLineField();
+				tf.y = i * LINE_HEIGHT + PADDING;
+				_lineFields[i] = tf;
+			}
+		}
+		
+		private function createLineField():TextField
+		{
+			var tf:TextField = new TextField(_size.width - (PADDING * 2), _size.height - (PADDING * 2), "" , "Consolas", 12, Color.WHITE, false);
+			tf.hAlign = HAlign.LEFT;
+			tf.vAlign = VAlign.TOP;
+			tf.x = tf.y = PADDING;
+			addChild(tf);
+			tf.batchable = true;
+			return tf;
 		}
 		
 		
@@ -176,6 +211,8 @@ package alchemical.client.subsystems.ui
 		private var _output:TextField;
 		private var _input:TextField;
 		private var _focused:Boolean;
+		private var _lineFields:Vector.<TextField>;
+		private var _scrollV:int = 0;
 	}
 
 }
