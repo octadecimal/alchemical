@@ -49,11 +49,18 @@ package alchemical.client.subsystems.network.gateways
 		// API
 		// =========================================================================================
 		
+		/**
+		 * Connects the socket to the server.
+		 */
 		public function connect():void
 		{
 			_socket.connect(_host, _port);
 		}
 		
+		/**
+		 * Sends an out packet to the server.
+		 * @param	packet
+		 */
 		public function send(packet:Packet):void 
 		{
 			if (_socket.connected)
@@ -73,6 +80,15 @@ package alchemical.client.subsystems.network.gateways
 			}
 		}
 		
+		
+		
+		// INTERNAL
+		// =========================================================================================
+		
+		/**
+		 * Fills the end of a packet with empty bytes. Would like to avoid this on the client side, as it
+		 * isn't necessary on the server sisde.
+		 */
 		private function fillSocket(socket:NetworkSocket):void 
 		{
 			for (var i:int = _socket.bytesPending; i < 128; i++)
@@ -86,6 +102,9 @@ package alchemical.client.subsystems.network.gateways
 		// EVENTS
 		// =========================================================================================
 		
+		/**
+		 * event: Socket connected.
+		 */
 		private function onSocketConnected(e:Event):void 
 		{
 			Debugger.log(this, "Socket connected.");
@@ -93,6 +112,9 @@ package alchemical.client.subsystems.network.gateways
 			dispatchEvent(new NetworkEvent(NetworkEvent.CONNECTED));
 		}
 		
+		/**
+		 * event: Socket closed.
+		 */
 		private function onSocketClosed(e:Event):void 
 		{
 			Debugger.log(this, "Socket disconnected.");
@@ -100,6 +122,9 @@ package alchemical.client.subsystems.network.gateways
 			dispatchEvent(new NetworkEvent(NetworkEvent.DISCONNECTED));
 		}
 		
+		/**
+		 * event: Socket data received.
+		 */
 		private function onSocketDataReceived(e:ProgressEvent):void 
 		{
 			Debugger.log(this, "Received " + _socket.bytesAvailable+" bytes.");
@@ -112,6 +137,9 @@ package alchemical.client.subsystems.network.gateways
 		// ERRORS
 		// =========================================================================================
 		
+		/**
+		 * error: Socket IO error.
+		 */
 		private function onSocketIOError(e:IOErrorEvent):void 
 		{
 			Debugger.log(this, "IO Error: " + e.errorID);
@@ -124,6 +152,9 @@ package alchemical.client.subsystems.network.gateways
 			}
 		}
 		
+		/**
+		 * error: Socket security error.
+		 */
 		private function onSocketSecurityError(e:SecurityErrorEvent):void 
 		{
 			Debugger.log(this, "Security error: " + e.errorID);

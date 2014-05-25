@@ -9,23 +9,26 @@ package alchemical.client.subsystems.network.model
 	import alchemical.client.subsystems.world.model.vo.ShipVO;
 	import alchemical.client.subsystems.world.model.vo.WorldVO;
 	import flash.utils.IDataInput;
+	
 	/**
 	 * PacketReader
 	 * @author Dylan Heyes
 	 */
 	public class PacketReader 
 	{
-		
-		public function PacketReader() 
-		{
-			
-		}
-		
+		/**
+		 * Reads a login success response.
+		 * @return	True if login successful.
+		 */
 		public function loginSuccess(bytes:IDataInput):Boolean 
 		{
 			return bytes.readBoolean();
 		}
 		
+		/**
+		 * Reads a world definition.
+		 * @return WorldVO object containing world parameters.
+		 */
 		public function defineWorld(bytes:IDataInput):WorldVO
 		{
 			var vo:WorldVO = new WorldVO();
@@ -43,6 +46,10 @@ package alchemical.client.subsystems.network.model
 			return vo;
 		}
 		
+		/**
+		 * Reads a player definition.
+		 * @return PlayerVO object containing the player parameters.
+		 */
 		public function definePlayer(bytes:IDataInput):PlayerVO
 		{
 			var vo:PlayerVO = new PlayerVO();
@@ -55,6 +62,10 @@ package alchemical.client.subsystems.network.model
 			return vo;
 		}
 		
+		/**
+		 * Reads a ship definition.
+		 * @return ShipVO object containing the ship parameters.
+		 */
 		public function defineShip(bytes:IDataInput):ShipVO 
 		{
 			var vo:ShipVO = new ShipVO();
@@ -65,13 +76,16 @@ package alchemical.client.subsystems.network.model
 			return vo;
 		}
 		
+		/**
+		 * Defines npcs for the current world the player is located in.
+		 * @return Vector of NPCVo objects containing the NPC parameters.
+		 */
 		public function defineNPCs(bytes:IDataInput):Vector.<NPCVo> 
 		{
 			var npc:NPCVo;
 			var npcs:Vector.<NPCVo> = new Vector.<NPCVo>();
 			
 			var count:int = bytes.readShort();
-			
 			
 			for (var i:int = 0; i < count; i++)
 			{
@@ -90,6 +104,10 @@ package alchemical.client.subsystems.network.model
 			return npcs;
 		}
 		
+		/**
+		 * Reads a npc movement command.
+		 * @return A MovementVO object with the target position of the NPC.
+		 */
 		public function moveNPC(bytes:IDataInput):MovementVO
 		{
 			var vo:MovementVO =  new MovementVO();

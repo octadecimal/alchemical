@@ -5,10 +5,9 @@ package alchemical.client.subsystems.network.mediator
 {
 	import alchemical.client.core.architecture.SubsystemMediator;
 	import alchemical.client.core.enum.ComponentNames;
-	import alchemical.client.debugger.Debugger;
 	import alchemical.client.core.notes.NetworkNotes;
+	import alchemical.client.debugger.Debugger;
 	import alchemical.client.subsystems.network.events.NetworkEvent;
-	import alchemical.client.subsystems.network.interfaces.INetworkGateway;
 	import alchemical.client.subsystems.network.model.NetworkProxy;
 	import alchemical.client.subsystems.network.Network;
 	import org.puremvc.as3.interfaces.INotification;
@@ -37,6 +36,9 @@ package alchemical.client.subsystems.network.mediator
 		// INTERNAL OVERRIDES
 		// =========================================================================================
 		
+		/**
+		 * Mediator registered.
+		 */
 		override public function onRegister():void
 		{
 			_proxy = facade.retrieveProxy(ComponentNames.NETWORK) as NetworkProxy;
@@ -45,6 +47,9 @@ package alchemical.client.subsystems.network.mediator
 			_network.gateway..addEventListener(NetworkEvent.DISCONNECTED, onGatewayDisconnected);
 		}
 		
+		/**
+		 * Notification interests.
+		 */
 		override public function listNotificationInterests():Array 
 		{
 			var interests:Array = super.listNotificationInterests();
@@ -54,6 +59,9 @@ package alchemical.client.subsystems.network.mediator
 			return interests;
 		}
 		
+		/**
+		 * Notification handler.
+		 */
 		override public function handleNotification(notification:INotification):void 
 		{
 			switch(notification.getName())
@@ -71,6 +79,9 @@ package alchemical.client.subsystems.network.mediator
 		// NOTIFICATION HANDLERS
 		// =========================================================================================
 		
+		/**
+		 * Request: Login
+		 */
 		private function handleLoginRequest(notification:INotification):void 
 		{
 			var user:String = notification.getBody().user;
@@ -86,11 +97,17 @@ package alchemical.client.subsystems.network.mediator
 		// EVENT HANDLERS
 		// =========================================================================================
 		
+		/**
+		 * event: Gateway connected.
+		 */
 		private function onGatewayConnected(e:NetworkEvent):void 
 		{
 			sendNotification(NetworkNotes.CONNECTED);
 		}
 		
+		/**
+		 * event: Gateway disconencted.
+		 */
 		private function onGatewayDisconnected(e:NetworkEvent):void 
 		{
 			sendNotification(NetworkNotes.DISCONNECTED);

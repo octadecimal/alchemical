@@ -4,12 +4,14 @@
 package alchemical.client.subsystems.network 
 {
 	import alchemical.client.subsystems.network.interfaces.INetworkGateway;
+	
 	/**
 	 * Network
 	 * @author Dylan Heyes
 	 */
 	public class Network 
 	{
+		// Network gateway.
 		public var gateway:INetworkGateway;
 		
 		/**

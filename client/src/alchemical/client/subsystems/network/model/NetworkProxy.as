@@ -4,9 +4,9 @@
 package alchemical.client.subsystems.network.model 
 {
 	import alchemical.client.core.enum.ComponentNames;
+	import alchemical.client.core.notes.NetworkNotes;
 	import alchemical.client.debugger.Debugger;
 	import alchemical.client.subsystems.network.enum.ENetcode;
-	import alchemical.client.core.notes.NetworkNotes;
 	import alchemical.client.subsystems.network.events.NetworkEvent;
 	import alchemical.client.subsystems.network.interfaces.INetworkGateway;
 	import alchemical.client.subsystems.network.model.packets.Packet;
@@ -29,6 +29,7 @@ package alchemical.client.subsystems.network.model
 		static public const FLUSH_RATE:Number = 16;
 		
 		private var _reader:PacketReader;
+		private var _builder:PacketBuilder;
 		private var _gateway:INetworkGateway;
 		private var _packet:Packet;
 		private var _timer:Timer;
@@ -42,6 +43,7 @@ package alchemical.client.subsystems.network.model
 			super(ComponentNames.NETWORK, _gateway);
 			
 			_reader = new PacketReader();
+			_builder = new PacketBuilder();
 			
 			_gateway = gateway;
 			_gateway.addEventListener(NetworkEvent.DATA_RECEIVED, onDataReceived);
@@ -68,6 +70,9 @@ package alchemical.client.subsystems.network.model
 		// INTERNAL
 		// =========================================================================================
 		
+		/**
+		 * Flushes the current output packet, sending the packet to the server.
+		 */
 		private function flush():void
 		{
 			Debugger.log(this, "Flushing " + _packet.bytes.length + " bytes.");
@@ -82,18 +87,24 @@ package alchemical.client.subsystems.network.model
 		// REQUEST WRITERS
 		// =========================================================================================
 		
+		/**
+		 * Writes a login request to the current output packet.
+		 * @param	user	User login credentials.
+		 * @param	pass	User password credentials.
+		 */
 		public function writeLoginRequest(user:String, pass:String):void
 		{
-			_packet.writeCommand(ENetcode.LOGIN);
-			_packet.writeString(user);
-			_packet.writeString(pass);
+			_builder.login(_packet, user, pass);
 		}
 		
 		
 		
-		// RESPONSE HANDLERS
+		// COMMAND HANDLERS
 		// =========================================================================================
 		
+		/**
+		 * Command: Login
+		 */
 		private function handleLoginResponse(bytes:IDataInput):void 
 		{
 			var success:Boolean = bytes.readBoolean();
@@ -109,6 +120,9 @@ package alchemical.client.subsystems.network.model
 			}
 		}
 		
+		/**
+		 * Command: Define world
+		 */
 		private function handleDefineWorldResponse(bytes:IDataInput):void 
 		{
 			Debugger.log(this, "Defining world...");
@@ -117,6 +131,9 @@ package alchemical.client.subsystems.network.model
 			sendNotification(NetworkNotes.WORLD_DEFINED, vo);
 		}
 		
+		/**
+		 * Command: Define player
+		 */
 		private function handleDefinePlayerResponse(bytes:IDataInput):void 
 		{
 			Debugger.log(this, "Defining player...");
@@ -126,6 +143,9 @@ package alchemical.client.subsystems.network.model
 			sendNotification(NetworkNotes.PLAYER_DEFINED, vo);
 		}
 		
+		/**
+		 * Command: Player's ship
+		 */
 		private function handleDefinePlayerShipResponse(bytes:IDataInput):void 
 		{
 			Debugger.log(this, "Defining player ship...");
@@ -135,6 +155,9 @@ package alchemical.client.subsystems.network.model
 			sendNotification(NetworkNotes.PLAYER_SHIP_DEFINED, vo);
 		}
 		
+		/**
+		 * Command: Define world NPCs
+		 */
 		private function handleDefineNPCsResponse(bytes:IDataInput):void 
 		{
 			Debugger.log(this, "Defining NPCs...");
@@ -145,12 +168,12 @@ package alchemical.client.subsystems.network.model
 			sendNotification(NetworkNotes.LOGIN_SUCCESSFUL);
 		}
 		
+		/**
+		 * Command: Move NPC
+		 */
 		private function handleMoveNPCResponse(bytes:IDataInput):void 
 		{
 			var vo:MovementVO = _reader.moveNPC(bytes);
-			
-			Debugger.log(this, "Moving NPC " + vo.id + " to: " + vo.x + "," + vo.y);
-			
 			sendNotification(NetworkNotes.NPC_MOVED, vo);
 		}
 		
@@ -159,6 +182,9 @@ package alchemical.client.subsystems.network.model
 		// EVENTS
 		// =========================================================================================
 		
+		/**
+		 * event: Flush timer ticked.
+		 */
 		private function onTimerTick(e:TimerEvent):void 
 		{
 			if (_packet.bytes.length > 0)
@@ -167,6 +193,9 @@ package alchemical.client.subsystems.network.model
 			}
 		}
 		
+		/**
+		 * event: Incoming packet data received.
+		 */
 		private function onDataReceived(e:NetworkEvent):void 
 		{
 			var command:int;
@@ -174,10 +203,11 @@ package alchemical.client.subsystems.network.model
 			
 			while (e.bytes.bytesAvailable > 0)
 			{
+				// Get next command
 				command = bytes.readShort();
-				
 				Debugger.log(this, "Executing command: " + command);
 				
+				// Execute mapped command
 				_commandMap[command](bytes);
 			}
 		}
