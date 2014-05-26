@@ -62,7 +62,8 @@ package alchemical.client.subsystems.world.controller.animation
 				
 				// Apply thrust
 				//if (scale > 0.25)
-					dynamics.acceleration += dynamics.thrust * (scale*.5+.5) * passedTime;	
+					//dynamics.acceleration += dynamics.thrust * (scale*.5+.5) * passedTime;	
+				dynamics.acceleration += dynamics.thrust * scale * passedTime;	
 			}
 				
 			// Apply acceleration

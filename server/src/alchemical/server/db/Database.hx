@@ -88,6 +88,7 @@ class Database
 				skyLayers: parseSkyLayers(row.skylayers),
 				players: [],
 				npcs: [],
+				entities: [],
 				outPacket: null
 			};
 			
@@ -144,6 +145,7 @@ class Database
 				thrust: 0.3,
 				torque: 0.05,
 				acceleration: 0,
+				angularAcceleration: 0,
 				vx: 0,
 				vy: 0
 			}
@@ -203,6 +205,7 @@ class Database
 				thrust: 0.3,
 				torque: 0.05,
 				acceleration: 0,
+				angularAcceleration: 0,
 				vx: 0,
 				vy: 0
 			}

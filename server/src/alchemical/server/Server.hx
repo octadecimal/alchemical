@@ -10,6 +10,7 @@ import alchemical.server.physics.Physics;
 import alchemical.server.Server.Client;
 import alchemical.server.Server.NPC;
 import alchemical.server.Server.World;
+import alchemical.server.test.Tests;
 import alchemical.server.util.Debugger;
 import alchemical.server.util.Delays;
 import alchemical.server.util.Tweens;
@@ -48,6 +49,9 @@ class Server extends ThreadServer<Client, Message>
 	private var _passedTime:Float;
 	private var _lastUpdateTime:Float = Timer.stamp();
 	
+	// Tests
+	private var _tests:Tests;
+	
 	
 	/**
 	 * Constructor.
@@ -55,6 +59,8 @@ class Server extends ThreadServer<Client, Message>
 	public function new() 
 	{
 		super();
+		
+		_tests = new Tests();
 		
 		_delays = new Delays();
 		_tweens = new Tweens();
@@ -92,7 +98,13 @@ class Server extends ThreadServer<Client, Message>
 		// Initialize npcs
 		for (i in 0..._worldMap.length)
 		{
-			_worldMap[i].npcs = _database.getNPCsByWorld(i);
+			var npcs:Array<NPC> = _database.getNPCsByWorld(i);
+			_worldMap[i].npcs = npcs;
+			
+			for (j in 0...npcs.length)
+			{
+				_worldMap[i].entities.push(npcs[j]);
+			}
 		}
 		
 		Debugger.info("Server started. host=" + host + " port=" + port);
@@ -242,6 +254,9 @@ class Server extends ThreadServer<Client, Message>
 		
 		_passedTime = Timer.stamp() - _lastUpdateTime;
 		
+		// TEST!!!
+		_tests.testPhysicsStepping(1000, _physics, _passedTime);
+		
 		// Update timers
 		_delays.update(_passedTime);
 		
@@ -251,6 +266,9 @@ class Server extends ThreadServer<Client, Message>
 		// Loop through worlds
 		for (i in 0..._worldMap.length)
 		{
+			// Update physics for entities in world
+			_physics.step(_worldMap[i].entities, _passedTime);
+			
 			// Update world NPCs
 			updateWorldNPCs(_worldMap[i]);
 			
@@ -334,6 +352,7 @@ class Server extends ThreadServer<Client, Message>
 			// Get world player exists in
 			var world:World = _worldMap[client.player.world];
 			world.players.push(client.player);
+			world.entities.push(client.player);
 			
 			// Set client world
 			client.world = world;
@@ -399,6 +418,7 @@ typedef World = {
 	var skyLayers:Array<Int>;
 	var players:Array<Player>;
 	var npcs:Array<NPC>;
+	var entities:Array<DynamicEntity>;
 	var outPacket:OutPacket;
 }
 
@@ -422,6 +442,7 @@ typedef DynamicsNode = {
 	var thrust:Float;
 	var torque:Float;
 	var acceleration:Float;
+	var angularAcceleration:Float;
 	var vx:Float;
 	var vy:Float;
 }
