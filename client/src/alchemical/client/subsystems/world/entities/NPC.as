@@ -7,6 +7,7 @@ package alchemical.client.subsystems.world.entities
 	import flash.geom.Point;
 	import starling.display.Sprite;
 	import starling.events.EnterFrameEvent;
+	import starling.events.Event;
 	
 	/**
 	 * NPC
@@ -22,6 +23,20 @@ package alchemical.client.subsystems.world.entities
 		{
 			_id = id;
 			super(view);
+			
+			// Temp
+			this.view.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+		}
+		
+		private function onAddedToStage(e:Event):void 
+		{
+			view.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			view.addEventListener(EnterFrameEvent.ENTER_FRAME, onUpdate);
+		}
+		
+		private function onUpdate(e:EnterFrameEvent):void 
+		{
+			ship.setThrust(dynamics.acceleration);
 		}
 		
 		
@@ -33,6 +48,8 @@ package alchemical.client.subsystems.world.entities
 		{
 			targetPosition = new TransformNode(position.x, position.y);
 			ship.targetPosition = targetPosition;
+			
+			ship.setThrust(1);
 			
 			view.addEventListener(EnterFrameEvent.ENTER_FRAME, onFollowUpdate);
 		}
@@ -46,6 +63,8 @@ package alchemical.client.subsystems.world.entities
 					targetPosition = null;
 					
 					view.removeEventListener(EnterFrameEvent.ENTER_FRAME, onFollowUpdate);
+					
+					ship.setThrust(0);
 				}
 			}
 		}

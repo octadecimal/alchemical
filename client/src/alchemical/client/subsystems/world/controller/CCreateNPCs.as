@@ -13,6 +13,8 @@ package alchemical.client.subsystems.world.controller
 	import alchemical.client.subsystems.world.World;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.AsyncCommand;
+	import starling.display.MovieClip;
+	import starling.textures.TextureAtlas;
 	import starling.utils.AssetManager;
 	
 	/**
@@ -44,6 +46,9 @@ package alchemical.client.subsystems.world.controller
 				
 				var assets:AssetManager = facade.retrieveMediator(ComponentNames.RESOURCES).getViewComponent() as AssetManager;
 				ship.setHullTexture(assets.getTextureAtlas("ships_01").getTexture("ship_0001"));
+				
+				var thrust:MovieClip = new MovieClip(assets.getTextureAtlas("ships_01").getTextures("thrust_01"), 12);
+				ship.setThrustTexture(thrust);
 				
 				npc.transform.x = vo.x;
 				npc.transform.y = vo.y;

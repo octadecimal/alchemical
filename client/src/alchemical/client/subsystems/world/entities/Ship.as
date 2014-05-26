@@ -4,7 +4,9 @@
 package alchemical.client.subsystems.world.entities 
 {
 	import alchemical.client.subsystems.world.model.vo.ShipVO;
+	import starling.core.Starling;
 	import starling.display.Image;
+	import starling.display.MovieClip;
 	import starling.display.Sprite;
 	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
@@ -17,6 +19,7 @@ package alchemical.client.subsystems.world.entities
 	public class Ship extends MovableEntity 
 	{
 		private var _hull:Image;
+		private var _thrust:MovieClip;
 		
 		/**
 		 * Constructor.
@@ -38,6 +41,25 @@ package alchemical.client.subsystems.world.entities
 		
 		
 		
+		// API
+		// =========================================================================================
+		
+		public function setThrust(value:Number):void
+		{
+			if (value == 0)
+			{
+				_thrust.alpha = 0;
+			}
+			else
+			{
+				_thrust.alpha = Math.min(1, value);
+				
+				_thrust.scaleY = value;
+			}
+		}
+		
+		
+		
 		// TEXTURES
 		// =========================================================================================
 		
@@ -52,6 +74,25 @@ package alchemical.client.subsystems.world.entities
 			{
 				_hull.texture = texture;
 			}
+		}
+		
+		public function setThrustTexture(thrust:MovieClip):void 
+		{
+			_thrust = thrust;
+			
+			view.addChildAt(thrust, 0);
+			thrust.loop = true;
+			thrust.play();
+			
+			thrust.rotation = Math.PI;
+			
+			thrust.pivotX = view.width / 2;
+			
+			thrust.x = 1;
+			thrust.y = 15;
+			
+			// Temp
+			Starling.juggler.add(thrust);
 		}
 	}
 

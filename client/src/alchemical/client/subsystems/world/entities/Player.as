@@ -22,6 +22,14 @@ package alchemical.client.subsystems.world.entities
 			super();
 			
 			view.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			
+			// Temp
+			view.addEventListener(EnterFrameEvent.ENTER_FRAME, onUpdate);
+		}
+		
+		private function onUpdate(e:EnterFrameEvent):void 
+		{
+			_ship.setThrust(dynamics.acceleration);
 		}
 		
 		private function onAddedToStage(e:Event):void 
