@@ -35,8 +35,10 @@ package alchemical.client.subsystems.network.model
 		private var _builder:PacketBuilder;
 		private var _gateway:INetworkGateway;
 		private var _packet:Packet;
-		private var _timer:Timer;
+		private var _flushTimer:Timer;
+		private var _secondTimer:Timer;
 		private var _commandMap:Vector.<Function>;
+		private var _inBytes:uint, _outBytes:uint = 0;
 		
 		/**
 		 * Constructor.
@@ -64,9 +66,13 @@ package alchemical.client.subsystems.network.model
 			
 			_packet = new Packet();
 			
-			_timer = new Timer(FLUSH_RATE);
-			_timer.addEventListener(TimerEvent.TIMER, onTimerTick);
-			_timer.start();
+			_flushTimer = new Timer(FLUSH_RATE);
+			_flushTimer.addEventListener(TimerEvent.TIMER, onFlushTimerTick);
+			_flushTimer.start();
+			
+			_secondTimer = new Timer(1000);
+			_secondTimer.addEventListener(TimerEvent.TIMER, onSecondTimerTick);
+			_secondTimer.start();
 			
 			Debugger.log(this, "Created.");
 		}
@@ -83,6 +89,7 @@ package alchemical.client.subsystems.network.model
 		{
 			Debugger.log(this, "Flushing " + _packet.bytes.length + " bytes.");
 			
+			_outBytes += _packet.bytes.bytesAvailable;
 			_packet.bytes.position = 0;
 			_gateway.send(_packet);
 			_packet = new Packet();
@@ -226,7 +233,7 @@ package alchemical.client.subsystems.network.model
 		/**
 		 * event: Flush timer ticked.
 		 */
-		private function onTimerTick(e:TimerEvent):void 
+		private function onFlushTimerTick(e:TimerEvent):void 
 		{
 			if (_packet.bytes.length > 0)
 			{
@@ -242,16 +249,49 @@ package alchemical.client.subsystems.network.model
 			var command:int;
 			var bytes:IDataInput = e.bytes;
 			
+			_inBytes += e.bytes.bytesAvailable;
+			
 			while (e.bytes.bytesAvailable > 0)
 			{
 				// Get next command
 				command = bytes.readShort();
-				Debugger.log(this, "Executing command: " + command);
+				//Debugger.log(this, "Executing command: " + command);
 				
 				// Execute mapped command
 				_commandMap[command](bytes);
 			}
 		}
+		
+		/**
+		 * event: Second has passed.
+		 * @param	e
+		 */
+		private function onSecondTimerTick(e:TimerEvent):void 
+		{
+			trace("IN: " + _inBytes + ", OUT: " + _outBytes);
+			
+			_inBytesPerSecond = _inBytes;
+			_outBytesPerSecond = _outBytes;
+			
+			_inBytes = _outBytes = 0;
+		}
+		
+		
+		
+		// ACCESSORS
+		// =========================================================================================
+		
+		/**
+		 * In bytes per second.
+		 */
+		public function get inBytesPerSecond():uint		{ return _inBytesPerSecond; }
+		private var _inBytesPerSecond:uint				= 0;
+		
+		/**
+		 * Out bytes per second.
+		 */
+		public function get outBytesPerSecond():uint	{ return _outBytesPerSecond; }
+		private var _outBytesPerSecond:uint				= 0;
 	}
 
 }

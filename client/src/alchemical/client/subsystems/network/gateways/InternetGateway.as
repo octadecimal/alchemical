@@ -127,7 +127,7 @@ package alchemical.client.subsystems.network.gateways
 		 */
 		private function onSocketDataReceived(e:ProgressEvent):void 
 		{
-			Debugger.log(this, "Received " + _socket.bytesAvailable+" bytes.");
+			//Debugger.log(this, "Received " + _socket.bytesAvailable+" bytes.");
 			
 			dispatchEvent(new NetworkEvent(NetworkEvent.DATA_RECEIVED, _socket));
 		}

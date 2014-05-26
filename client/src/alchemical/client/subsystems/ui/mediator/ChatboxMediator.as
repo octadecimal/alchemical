@@ -114,6 +114,14 @@ package alchemical.client.subsystems.ui.mediator
 			{
 				_view.toggleFocus();
 			}
+			
+			if (action == EActions.CHAT_COMMAND)
+			{
+				if (!_view.focused)
+				{
+					_view.enterCommandMode();
+				}
+			}
 		}
 		
 		private function handleMouseWheel(mouseVO:MouseVO):void 

@@ -114,7 +114,6 @@ package alchemical.client.subsystems.ui
 		public function toggleFocus():void 
 		{
 			(_focused) ? unfocus() : focus();
-			_focused = !_focused;
 		}
 		
 		public function scroll(delta:int):void 
@@ -133,6 +132,12 @@ package alchemical.client.subsystems.ui
 			refresh();
 		}
 		
+		public function enterCommandMode():void 
+		{
+			focus();
+			_input.text = "/";
+		}
+		
 		
 		
 		// INTERNAL
@@ -140,6 +145,8 @@ package alchemical.client.subsystems.ui
 		
 		private function focus():void
 		{
+			_focused = true;
+			
 			_background.alpha = 0.4;
 			enableCommandLine();
 			
@@ -148,6 +155,8 @@ package alchemical.client.subsystems.ui
 		
 		private function unfocus():void
 		{
+			_focused = false;
+			
 			_background.alpha = 0.0;
 			disableCommandLine();
 			
@@ -169,8 +178,12 @@ package alchemical.client.subsystems.ui
 			
 			if (_input.text.length > 2)
 			{
+				// Handle command
+				if (_input.text.charAt(0) == "/")
+				{
+					trace("COMAND YOU");
+				}
 				var chatMessage:ChatMessage = new ChatMessage(1, _input.text, "You");
-				//addMessage(chatMessage);
 				dispatchEvent(new UIEvent(UIEvent.CHATBOX_MESSAGE_ENTERED, chatMessage));
 			}
 			
@@ -236,6 +249,12 @@ package alchemical.client.subsystems.ui
 		public function get size():Rectangle		{ return _size; }
 		private var _size:Rectangle;
 		
+		/**
+		 * Focused state.
+		 */
+		public function get focused():Boolean		{ return _focused; }
+		private var _focused:Boolean;
+		
 		
 		
 		// PRIVATE
@@ -246,7 +265,6 @@ package alchemical.client.subsystems.ui
 		private var _messageBuffer:Vector.<ChatMessage>;
 		private var _output:TextField;
 		private var _input:TextField;
-		private var _focused:Boolean;
 		private var _lineFields:Vector.<TextField>;
 		private var _scrollV:int = 0;
 	}

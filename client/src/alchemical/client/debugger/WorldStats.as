@@ -19,6 +19,8 @@ package alchemical.client.debugger
 	 */
 	public class WorldStats extends Sprite 
 	{
+		private var _tfInBytes:TextField;
+		private var _tfOutBytes:TextField;
 		private var _tfWorld:TextField;
 		private var _tfCamera:TextField;
 		private var _tfPlayer:TextField;
@@ -33,7 +35,9 @@ package alchemical.client.debugger
 			x = 1;
 			y = 40;
 			
-			_tfWorld = createTextField();
+			_tfInBytes = createTextField();
+			_tfOutBytes = createTextField(_tfInBytes);
+			_tfWorld = createTextField(_tfOutBytes);
 			_tfCamera = createTextField(_tfWorld);
 			_tfPlayer = createTextField(_tfCamera);
 		}
@@ -42,6 +46,12 @@ package alchemical.client.debugger
 		
 		// API
 		// =========================================================================================
+		
+		public function updateNetworkBandwidth(inBytes:uint, outBytes:uint):void
+		{
+			_tfInBytes.text = label("in") + Number(inBytes/1024).toFixed(2) + " kb/s";
+			_tfOutBytes.text = label("out") + Number(outBytes/1024).toFixed(2) + " kb/s";
+		}
 		
 		public function updateWorld(world:World):void
 		{

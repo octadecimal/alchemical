@@ -86,7 +86,7 @@ package alchemical.client.core
 		 */
 		override public function sendNotification(notificationName:String, body:Object = null, type:String = null):void 
 		{
-			if (notificationName != ApplicationNotes.UPDATE_TICK)
+			if (notificationName != ApplicationNotes.UPDATE_TICK && notificationName != NetworkNotes.TRANSFORM_NODE_RECEIVED)
 			{
 				Debugger.note(notificationName, body, type);
 			}
