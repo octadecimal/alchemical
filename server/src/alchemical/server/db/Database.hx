@@ -142,8 +142,8 @@ class Database
 			
 			dynamics = {
 				mass: 1,
-				thrust: 0.3,
-				torque: 0.05,
+				thrust: 2,
+				torque: 0.3,
 				acceleration: 0,
 				angularAcceleration: 0,
 				vx: 0,
@@ -202,8 +202,8 @@ class Database
 			
 			dynamics = {
 				mass: 1,
-				thrust: 0.3,
-				torque: 0.05,
+				thrust: 2,
+				torque: 0.3,
 				acceleration: 0,
 				angularAcceleration: 0,
 				vx: 0,

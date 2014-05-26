@@ -3,12 +3,15 @@
  */
 package alchemical.client.subsystems.network.model 
 {
+	import alchemical.client.subsystems.network.model.vo.TransformNodeVO;
 	import alchemical.client.subsystems.ui.model.ChatMessage;
+	import alchemical.client.subsystems.world.model.TransformNode;
 	import alchemical.client.subsystems.world.model.vo.MovementVO;
 	import alchemical.client.subsystems.world.model.vo.NPCVo;
 	import alchemical.client.subsystems.world.model.vo.PlayerVO;
 	import alchemical.client.subsystems.world.model.vo.ShipVO;
 	import alchemical.client.subsystems.world.model.vo.WorldVO;
+	import flash.sampler.NewObjectSample;
 	import flash.utils.IDataInput;
 	
 	/**
@@ -133,6 +136,20 @@ package alchemical.client.subsystems.network.model
 			var name:String = bytes.readUTFBytes(nameLen);
 			
 			return new ChatMessage(type, msg, name);
+		}
+		
+		/**
+		 * Reads an incoming transform node assigned to an entity id.
+		 * @param	bytes
+		 */
+		public function transformNode(bytes:IDataInput):TransformNodeVO 
+		{
+			var id:int = bytes.readShort();
+			var x:Number = bytes.readFloat();
+			var y:Number = bytes.readFloat();
+			var r:Number = bytes.readFloat();
+			
+			return new TransformNodeVO(id, new TransformNode(x, y, r));
 		}
 	}
 

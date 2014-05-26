@@ -10,7 +10,9 @@ package alchemical.client.subsystems.network.model
 	import alchemical.client.subsystems.network.events.NetworkEvent;
 	import alchemical.client.subsystems.network.interfaces.INetworkGateway;
 	import alchemical.client.subsystems.network.model.packets.Packet;
+	import alchemical.client.subsystems.network.model.vo.TransformNodeVO;
 	import alchemical.client.subsystems.ui.model.ChatMessage;
+	import alchemical.client.subsystems.world.model.TransformNode;
 	import alchemical.client.subsystems.world.model.vo.MovementVO;
 	import alchemical.client.subsystems.world.model.vo.NPCVo;
 	import alchemical.client.subsystems.world.model.vo.PlayerVO;
@@ -50,6 +52,7 @@ package alchemical.client.subsystems.network.model
 			_gateway.addEventListener(NetworkEvent.DATA_RECEIVED, onDataReceived);
 			
 			_commandMap = new Vector.<Function>(ENetcode.TOTAL_COMMANDS);
+			_commandMap[ENetcode.END] = handleEndResponse;
 			_commandMap[ENetcode.LOGIN] = handleLoginResponse;
 			_commandMap[ENetcode.DEFINE_WORLD] = handleDefineWorldResponse;
 			_commandMap[ENetcode.DEFINE_PLAYER] = handleDefinePlayerResponse;
@@ -57,6 +60,7 @@ package alchemical.client.subsystems.network.model
 			_commandMap[ENetcode.DEFINE_NPCS] = handleDefineNPCsResponse;
 			_commandMap[ENetcode.MOVE_NPC] = handleMoveNPCResponse;
 			_commandMap[ENetcode.CHAT_MESSAGE] = handleChatMessageResponse;
+			_commandMap[ENetcode.ENTITY_TRANSFORM] = handleEntityTransformResponse;
 			
 			_packet = new Packet();
 			
@@ -195,6 +199,23 @@ package alchemical.client.subsystems.network.model
 		{
 			var chatMessage:ChatMessage = _reader.chatMessage(bytes);
 			sendNotification(NetworkNotes.CHAT_MESSAGE_RECEIVED, chatMessage);
+		}
+		
+		/**
+		 * Command: Entity transform data received.
+		 */
+		private function handleEntityTransformResponse(bytes:IDataInput):void 
+		{
+			var vo:TransformNodeVO = _reader.transformNode(bytes);
+			sendNotification(NetworkNotes.TRANSFORM_NODE_RECEIVED, vo);
+		}
+		
+		/**
+		 * Command: End flag received.
+		 */
+		private function handleEndResponse(bytes:IDataInput):void 
+		{
+			
 		}
 		
 		

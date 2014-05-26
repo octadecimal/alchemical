@@ -1,5 +1,6 @@
 package alchemical.server.io;
 import alchemical.server.const.Commands;
+import alchemical.server.Server.Entity;
 import alchemical.server.Server.NPC;
 import alchemical.server.Server.Player;
 import alchemical.server.Server.Ship;
@@ -113,5 +114,17 @@ class PacketBuilder
 		world.outPacket.writeInt16(type);
 		world.outPacket.writeString(msg);
 		world.outPacket.writeString(name);
+	}
+	
+	public function entityTransform(world:World, entity:Entity) 
+	{
+		if (world.outPacket == null)
+		{
+			world.outPacket = new OutPacket();
+		}
+		
+		world.outPacket.writeCommand(Commands.ENTITY_TRANSFORM);
+		world.outPacket.writeInt16(entity.id);
+		world.outPacket.writeTransform(entity.transform);
 	}
 }

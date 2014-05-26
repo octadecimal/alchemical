@@ -16,6 +16,7 @@ import alchemical.server.util.Delays;
 import alchemical.server.util.Tweens;
 import haxe.io.Bytes;
 import haxe.Timer;
+import neko.Lib;
 import neko.net.ThreadServer;
 import sys.net.Socket;
 
@@ -70,8 +71,8 @@ class Server extends ThreadServer<Client, Message>
 		
 		_numConnectedClients = 0;
 		
-		updateTime = 0.16;
-		initialBufferSize = 128;
+		updateTime = 0.02;
+		initialBufferSize = 256;
 		
 		_commandMap = [];
 		_clientMap = [];
@@ -205,6 +206,8 @@ class Server extends ThreadServer<Client, Message>
 	 */
 	private function sendToClient(client:Client, packet:OutPacket):Void
 	{
+		packet.writeCommand(Commands.END);
+		
 		var outBytes:Bytes = packet.getBytes();
 		
 		Debugger.data("Sending " + outBytes.length + " bytes to client: " + client.id);
@@ -255,7 +258,7 @@ class Server extends ThreadServer<Client, Message>
 		_passedTime = Timer.stamp() - _lastUpdateTime;
 		
 		// TEST!!!
-		_tests.testPhysicsStepping(1000, _physics, _passedTime);
+		//_tests.testPhysicsStepping(1000, _physics, _passedTime);
 		
 		// Update timers
 		_delays.update(_passedTime);
@@ -304,6 +307,22 @@ class Server extends ThreadServer<Client, Message>
 					moveWorldNPCTo(world, currentNPC, Math.random() * 1920, Math.random() * 1080);
 				}
 			}
+				
+			// Handle target near
+			if (Math.abs(currentNPC.transform.x - currentNPC.destination.x) < 100)
+			{
+				if (Math.abs(currentNPC.transform.y - currentNPC.destination.y) < 100)
+				{
+					currentNPC.destination = null;
+					
+					//_delays.add(10, function ():Void {
+						currentNPC.state = EntityStates.IDLE;
+					//});
+				}
+			}
+			
+			// DEBUG: Write NPC position to packet
+			_builder.entityTransform(world, currentNPC);
 		}
 	}
 	
@@ -318,11 +337,11 @@ class Server extends ThreadServer<Client, Message>
 		// Add to world outpacket
 		_builder.moveWorldNPCTo(world, npc, npc.destination);
 		
-		_delays.add(3, function ():Void
+		/*_delays.add(10, function ():Void
 		{
 			npc.destination = null;
 			npc.state = EntityStates.IDLE;
-		});
+		});*/
 	}
 	
 	

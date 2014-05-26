@@ -6,6 +6,7 @@ package alchemical.client.core.controller
 	import alchemical.client.core.enum.ComponentNames;
 	import alchemical.client.debugger.Debugger;
 	import alchemical.client.debugger.mediator.DebuggerMediator;
+	import alchemical.client.debugger.NetworkEntityOverlay;
 	import alchemical.client.debugger.WorldStats;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.AsyncCommand;
@@ -22,6 +23,7 @@ package alchemical.client.core.controller
 			facade.registerMediator(new DebuggerMediator(debugger));
 			
 			debugger.worldStats = new WorldStats();
+			debugger.networkEntityOverlay = new NetworkEntityOverlay();
 			
 			commandComplete();
 		}

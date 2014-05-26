@@ -12,8 +12,8 @@ class Physics
 {
 	static public inline var PI_2:Float = 6.28318530718;
 	
-	static public inline var FRICTION:Float = 0.96;
-	static public inline var ANGULAR_FRICTION:Float = 0.96;
+	static public inline var FRICTION:Float = 0.98;
+	static public inline var ANGULAR_FRICTION:Float = 0.93;
 	
 	/**
 	 * Constructor.
@@ -54,7 +54,7 @@ class Physics
 				
 				// Wrap to -PI -> PI
 				while (distance > Math.PI) distance = distance - PI_2;
-				while (distance > Math.PI) distance = distance - PI_2;
+				while (distance < -Math.PI) distance = distance + PI_2;
 				
 				// Get angular thresholds
 				scale = Math.abs(distance / Math.PI);
@@ -82,7 +82,7 @@ class Physics
 			dynamics.acceleration *= FRICTION;
 			dynamics.vx *= FRICTION;
 			dynamics.vy *= FRICTION;
-			dynamics.angularAcceleration *= ANGULAR_FRICTION;
+			dynamics.angularAcceleration = dynamics.angularAcceleration * ANGULAR_FRICTION;
 			
 			// Integrate
 			transform.x -= dynamics.vx;

@@ -91,7 +91,7 @@ package alchemical.client.subsystems.network.gateways
 		 */
 		private function fillSocket(socket:NetworkSocket):void 
 		{
-			for (var i:int = _socket.bytesPending; i < 128; i++)
+			for (var i:int = _socket.bytesPending; i < 256; i++)
 			{
 				_socket.writeByte(0);
 			}

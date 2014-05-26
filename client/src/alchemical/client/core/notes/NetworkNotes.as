@@ -22,6 +22,7 @@ package alchemical.client.core.notes
 		
 		static public const CHAT_MESSAGE_RECEIVED:String = "chatMessageReceived";;
 		static public const NPC_MOVED:String = "npcMoved";
+		static public const TRANSFORM_NODE_RECEIVED:String = "transformNodeReceived";
 	}
 
 }

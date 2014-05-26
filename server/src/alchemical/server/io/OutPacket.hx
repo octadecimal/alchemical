@@ -1,4 +1,5 @@
 package alchemical.server.io;
+import alchemical.server.Server.TransformNode;
 import alchemical.server.util.Debugger;
 import haxe.io.Bytes;
 import haxe.io.BytesOutput;
@@ -62,6 +63,14 @@ class OutPacket
 	{
 		Debugger.raw("[FLT] " + value);
 		_bytes.writeFloat(value);
+	}
+	
+	public function writeTransform(transform:TransformNode) 
+	{
+		Debugger.raw("[TFM] " + transform.x+","+transform.y+","+transform.r);
+		_bytes.writeFloat(transform.x);
+		_bytes.writeFloat(transform.y);
+		_bytes.writeFloat(transform.r);
 	}
 	
 }

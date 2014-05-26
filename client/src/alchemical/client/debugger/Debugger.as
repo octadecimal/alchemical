@@ -32,6 +32,13 @@ package alchemical.client.debugger
 		public function get worldStats():WorldStats			{ return _worldStats; }
 		private var _worldStats:WorldStats; 
 		
+		/**
+		 * Network entity transform overlay.
+		 */
+		public function set networkEntityOverlay(a:NetworkEntityOverlay):void	{ _networkEntityOverlay = a; }
+		public function get networkEntityOverlay():NetworkEntityOverlay		{ return _networkEntityOverlay; }
+		private var _networkEntityOverlay:NetworkEntityOverlay;
+		
 		
 		
 		

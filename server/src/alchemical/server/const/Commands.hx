@@ -18,4 +18,6 @@ class Commands
 	static public inline var MOVE_NPC:Int = 8;
 	
 	static public inline var CHAT_MSG:Int = 9;
+	
+	static public inline var ENTITY_TRANSFORM:Int = 10;
 }

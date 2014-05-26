@@ -65,6 +65,10 @@ package alchemical.client.subsystems.world.controller.animation
 					//dynamics.acceleration += dynamics.thrust * (scale*.5+.5) * passedTime;	
 				dynamics.acceleration += dynamics.thrust * scale * passedTime;	
 			}
+			else
+			{
+				trace(entity.id +" NO TARGET");
+			}
 				
 			// Apply acceleration
 			dynamics.velocity.x = Math.cos(entity.rotation) * dynamics.acceleration;
