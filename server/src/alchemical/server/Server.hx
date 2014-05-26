@@ -6,15 +6,15 @@ import alchemical.server.db.Database;
 import alchemical.server.io.InPacket;
 import alchemical.server.io.OutPacket;
 import alchemical.server.io.PacketBuilder;
+import alchemical.server.physics.Physics;
 import alchemical.server.Server.Client;
 import alchemical.server.Server.NPC;
 import alchemical.server.Server.World;
 import alchemical.server.util.Debugger;
 import alchemical.server.util.Delays;
-import haxe.ds.Vector;
+import alchemical.server.util.Tweens;
 import haxe.io.Bytes;
 import haxe.Timer;
-import neko.Lib;
 import neko.net.ThreadServer;
 import sys.net.Socket;
 
@@ -43,6 +43,8 @@ class Server extends ThreadServer<Client, Message>
 	
 	// Time memory
 	private var _delays:Delays;
+	private var _tweens:Tweens;
+	private var _physics:Physics;
 	private var _passedTime:Float;
 	private var _lastUpdateTime:Float = Timer.stamp();
 	
@@ -55,6 +57,8 @@ class Server extends ThreadServer<Client, Message>
 		super();
 		
 		_delays = new Delays();
+		_tweens = new Tweens();
+		_physics = new Physics();
 		_database = new Database();
 		_builder = new PacketBuilder();
 		
@@ -241,11 +245,14 @@ class Server extends ThreadServer<Client, Message>
 		// Update timers
 		_delays.update(_passedTime);
 		
+		// Update tweens
+		_tweens.update(_passedTime);
+		
 		// Loop through worlds
 		for (i in 0..._worldMap.length)
 		{
 			// Update world NPCs
-			//updateWorldNPCs(_worldMap[i]);
+			updateWorldNPCs(_worldMap[i]);
 			
 			// Send world outpacket
 			if (_worldMap[i].outPacket != null)
@@ -273,16 +280,11 @@ class Server extends ThreadServer<Client, Message>
 			if (currentNPC.state == EntityStates.IDLE)
 			{
 				// Has no target position
-				if (currentNPC.target == null)
+				if (currentNPC.destination == null)
 				{
 					// Generate random target
 					moveWorldNPCTo(world, currentNPC, Math.random() * 1920, Math.random() * 1080);
 				}
-				
-				// Increment toward target
-				var theta:Float = Math.atan2(currentNPC.target.y - currentNPC.position.y, currentNPC.target.x - currentNPC.position.x);
-				currentNPC.position.x += Math.cos(theta);
-				currentNPC.position.y += Math.sin(theta);
 			}
 		}
 	}
@@ -293,14 +295,14 @@ class Server extends ThreadServer<Client, Message>
 		npc.state = EntityStates.PATROLLING;
 		
 		// Set npc target position
-		npc.target = { x: x, y: y, r: 0 }
+		npc.destination = { x: x, y: y, r: 0 };
 		
 		// Add to world outpacket
-		_builder.moveWorldNPCTo(world, npc, npc.target);
+		_builder.moveWorldNPCTo(world, npc, npc.destination);
 		
 		_delays.add(3, function ():Void
 		{
-			npc.target = null;
+			npc.destination = null;
 			npc.state = EntityStates.IDLE;
 		});
 	}
@@ -335,6 +337,7 @@ class Server extends ThreadServer<Client, Message>
 			
 			// Set client world
 			client.world = world;
+			client.player.world = world.id;
 			
 			// Get player ship
 			var ship:Ship = _database.getPlayerShip(client.player.ship);
@@ -399,16 +402,6 @@ typedef World = {
 	var outPacket:OutPacket;
 }
 
-// Player type
-typedef Player = {
-	var id:UInt;
-	var user:UInt;
-	var name:String;
-	var world:UInt;
-	var ship:Int;
-	var position:TransformNode;
-}
-
 // Ship type
 typedef Ship = {
 	var id:Int;
@@ -416,20 +409,56 @@ typedef Ship = {
 	var hull:UInt;
 }
 
-// NPC type
-typedef NPC = {
-	var id:Int;
-	var world:Int;
-	var ship:Int;
-	var faction:Int;
-	var position:TransformNode;
-	var target:TransformNode;
-	var state:Int;
-}
-
 // Transform
 typedef TransformNode = {
 	var x:Float;
 	var y:Float;
 	var r:Float;
+}
+
+// Dynamics
+typedef DynamicsNode = {
+	var mass:Float;
+	var thrust:Float;
+	var torque:Float;
+	var acceleration:Float;
+	var vx:Float;
+	var vy:Float;
+}
+
+// Entity
+typedef Entity = {
+	var id:Int;
+	var world:Int;
+	var transform:TransformNode;
+	var state:Int;
+}
+
+// Movable Entity
+typedef DynamicEntity = {> Entity,
+	var dynamics:DynamicsNode;
+	var destination:TransformNode;
+}
+
+// Player
+typedef Player = {> DynamicEntity,
+	var user:Int;
+	var name:String;
+	var ship:Int;
+}
+
+// NPC
+typedef NPC = {> DynamicEntity,
+	 var ship:Int;
+	 var faction:Int;
+}
+
+// Projectile
+typedef Projectile = {> DynamicEntity,
+	
+}
+
+// Structure
+typedef Structure = {> Entity,
+	
 }

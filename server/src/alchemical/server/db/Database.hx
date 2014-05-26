@@ -1,6 +1,7 @@
 package alchemical.server.db;
 import alchemical.server.const.EntityStates;
 import alchemical.server.const.Passwords;
+import alchemical.server.Server.DynamicsNode;
 import alchemical.server.Server.NPC;
 import alchemical.server.Server.Player;
 import alchemical.server.Server.Ship;
@@ -126,16 +127,26 @@ class Database
 	
 	public function getPlayer(id:UInt):Player
 	{
-		var player:Player, position:TransformNode;
+		var player:Player, transform:TransformNode, dynamics:DynamicsNode;
+		
 		var result:ResultSet = query(new Query().select("*").from("players").where("user", id).getQuery());
 		
 		for (row in result)
 		{
-			position = {
+			transform = {
 				x: row.x,
 				y: row.y,
 				r: 0
 			};
+			
+			dynamics = {
+				mass: 1,
+				thrust: 0.3,
+				torque: 0.05,
+				acceleration: 0,
+				vx: 0,
+				vy: 0
+			}
 			
 			player = { 
 				id: row.id, 
@@ -143,11 +154,14 @@ class Database
 				name: row.name, 
 				world: row.world, 
 				ship: row.ship, 
-				position: position
+				transform: transform,
+				dynamics: dynamics,
+				state: EntityStates.IDLE,
+				destination: null
 			};
 		}
 		
-		Debugger.database("PLAYER: " + player.id + " -> " + player.name + " (" + player.position.x + "," + player.position.y+")");
+		Debugger.database("PLAYER: " + player.id + " -> " + player.name + " (" + player.transform.x + "," + player.transform.y+")");
 		return player;
 	}
 	
@@ -171,16 +185,26 @@ class Database
 	
 	public function getNPCsByWorld(worldID:Int):Array<NPC> 
 	{
-		var npc:NPC, position:TransformNode;
+		var npc:NPC, transform:TransformNode, dynamics:DynamicsNode;
 		var output:Array<NPC> = new Array<NPC>();
+		
 		var result:ResultSet = query(new Query().select("*").from("npcs").where("world", worldID).getQuery());
 		
 		for (row in result)
 		{
-			position = {
+			transform = {
 				x: row.x,
 				y: row.y,
 				r: 0
+			}
+			
+			dynamics = {
+				mass: 1,
+				thrust: 0.3,
+				torque: 0.05,
+				acceleration: 0,
+				vx: 0,
+				vy: 0
 			}
 			
 			npc = {
@@ -188,9 +212,10 @@ class Database
 				world: row.world,
 				ship: row.ship,
 				faction: row.faction,
-				position: position,
-				target: null,
-				state: EntityStates.IDLE
+				transform: transform,
+				dynamics: dynamics,
+				state: EntityStates.IDLE,
+				destination: null
 			}
 			
 			output.push(npc);
