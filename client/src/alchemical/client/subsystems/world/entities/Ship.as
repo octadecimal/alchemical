@@ -46,16 +46,9 @@ package alchemical.client.subsystems.world.entities
 		
 		public function setThrust(value:Number):void
 		{
-			if (value == 0)
-			{
-				_thrust.alpha = 0;
-			}
-			else
-			{
-				_thrust.alpha = Math.min(1, value);
-				
-				_thrust.scaleY = value;
-			}
+			//_thrust.alpha = Math.min(1, value);
+			
+			_thrust.scaleY = Math.max(0.25, value);
 		}
 		
 		
@@ -88,7 +81,7 @@ package alchemical.client.subsystems.world.entities
 			
 			thrust.pivotX = view.width / 2;
 			
-			thrust.x = 1;
+			thrust.x = 0.5;
 			thrust.y = 15;
 			
 			// Temp

@@ -36,7 +36,7 @@ package alchemical.client.game.controller
 			
 			// Debugger
 			world.addChild(debugger.worldStats);
-			//world.addChild(debugger.networkEntityOverlay);
+			world.addChild(debugger.networkEntityOverlay);
 			
 			commandComplete();
 		}

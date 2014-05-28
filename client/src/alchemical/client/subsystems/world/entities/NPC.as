@@ -36,7 +36,7 @@ package alchemical.client.subsystems.world.entities
 		
 		private function onUpdate(e:EnterFrameEvent):void 
 		{
-			ship.setThrust(dynamics.acceleration);
+			ship.setThrust(dynamics.acceleration - dynamics.angularAcceleration);
 		}
 		
 		

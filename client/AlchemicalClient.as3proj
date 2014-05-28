@@ -6,8 +6,8 @@
     <movie input="" />
     <movie path="bin\AlchemicalClient.swf" />
     <movie fps="60" />
-    <movie width="768" />
-    <movie height="768" />
+    <movie width="1264" />
+    <movie height="681" />
     <movie version="4" />
     <movie minorVersion="0" />
     <movie platform="AIR" />

@@ -47,7 +47,7 @@ package alchemical.client.subsystems.world.controller
 				var assets:AssetManager = facade.retrieveMediator(ComponentNames.RESOURCES).getViewComponent() as AssetManager;
 				ship.setHullTexture(assets.getTextureAtlas("ships_01").getTexture("ship_0001"));
 				
-				var thrust:MovieClip = new MovieClip(assets.getTextureAtlas("ships_01").getTextures("thrust_01"), 12);
+				var thrust:MovieClip = new MovieClip(assets.getTextureAtlas("ships_01").getTextures("thrust_01"), 15);
 				ship.setThrustTexture(thrust);
 				
 				npc.transform.x = vo.x;
