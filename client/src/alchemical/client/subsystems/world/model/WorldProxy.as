@@ -3,6 +3,8 @@ package alchemical.client.subsystems.world.model
 	import alchemical.client.core.enum.ComponentNames;
 	import alchemical.client.debugger.Debugger;
 	import alchemical.client.subsystems.world.controller.animation.AnimationController;
+	import alchemical.client.subsystems.world.entities.DynamicEntity;
+	import alchemical.client.subsystems.world.entities.Entity;
 	import alchemical.client.subsystems.world.model.vo.NPCVo;
 	import alchemical.client.subsystems.world.model.vo.PlayerVO;
 	import alchemical.client.subsystems.world.model.vo.ShipVO;
@@ -15,6 +17,16 @@ package alchemical.client.subsystems.world.model
 	 */
 	public class WorldProxy extends Proxy 
 	{
+		// Storage for all entities
+		private var _entities:Vector.<Entity>;
+		
+		// Storage for all dynamic entities
+		private var _dynamicEntities:Vector.<DynamicEntity>;
+		
+		// Storage for all static entities
+		private var _staticEntities:Vector.<Entity>;
+		
+		
 		/**
 		 * Consturctor.
 		 */
@@ -22,9 +34,32 @@ package alchemical.client.subsystems.world.model
 		{
 			super(ComponentNames.WORLD, data);
 			
-			_animationControllers = new Vector.<AnimationController>();
+			_entities = new Vector.<Entity>();
+			_dynamicEntities = new Vector.<DynamicEntity>();
+			_staticEntities = new Vector.<Entity>;
 			
 			Debugger.log(this, "Created.");
+		}
+		
+		
+		
+		// API
+		// =========================================================================================
+		
+		public function registerEntity(entity:DynamicEntity):void
+		{
+			_entities.push(entity);
+			
+			if (entity.dynamics)
+			{
+				_dynamicEntities.push(entity);
+			}
+			else
+			{
+				_staticEntities.push(entity);
+			}
+			
+			Debugger.log(this, "Entity registered: " + entity.id);
 		}
 		
 		
@@ -60,13 +95,6 @@ package alchemical.client.subsystems.world.model
 		public function set npcDefinitions(a:Vector.<NPCVo>):void	{ _npcDefinitions = a; }
 		public function get npcDefinitions():Vector.<NPCVo>		{ return _npcDefinitions; }
 		private var _npcDefinitions:Vector.<NPCVo>;
-		
-		/**
-		 * Animation controllers.
-		 */
-		public function set animationControllers(a:Vector.<AnimationController>):void	{ _animationControllers = a; }
-		public function get animationControllers():Vector.<AnimationController>			{ return _animationControllers; }
-		private var _animationControllers:Vector.<AnimationController>;
 	}
 
 }

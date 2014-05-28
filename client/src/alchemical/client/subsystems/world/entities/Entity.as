@@ -3,7 +3,9 @@
  */
 package alchemical.client.subsystems.world.entities 
 {
+	import alchemical.client.subsystems.world.model.DynamicsNode;
 	import alchemical.client.subsystems.world.model.TransformNode;
+	import starling.display.DisplayObject;
 	import starling.display.Sprite;
 	
 	/**
@@ -17,10 +19,12 @@ package alchemical.client.subsystems.world.entities
 		/**
 		 * Constructor.
 		 */
-		public function Entity(view:Sprite = null) 
+		public function Entity(id:int, view:DisplayObject = null, transform:TransformNode = null, dynamics:DynamicsNode = null) 
 		{
-			_view = view ? view : new Sprite();
-			_transform = new TransformNode();
+			_id = id;
+			_view = view;
+			_transform = transform ? transform : new TransformNode();
+			_dynamics = dynamics;
 		}
 		
 		
@@ -41,17 +45,31 @@ package alchemical.client.subsystems.world.entities
 		// =========================================================================================
 		
 		/**
+		 * Unique entity id as also defined on the server.
+		 */
+		public function get id():int							{ return _id; }
+		private var _id:int;
+		
+		/**
 		 * Entity view.
 		 */
-		public function set view(a:Sprite):void				{ _view = a; }
-		public function get view():Sprite					{ return _view; }
-		private var _view:Sprite; 
+		public function set view(a:DisplayObject):void			{ _view = a; }
+		public function get view():DisplayObject				{ return _view; }
+		protected var _view:DisplayObject; 
 		
 		/**
 		 * Entity transform node.
 		 */
-		public function get transform():TransformNode		{ return _transform; }
-		private var _transform:TransformNode;
+		 public function set transform(a:TransformNode):void	{ _transform = a; }
+		 public function get transform():TransformNode			{ return _transform; }
+		 private var _transform:TransformNode;
+		 
+		 /**
+		  * Entity dynamics node.
+		  */
+		 public function set dynamics(a:DynamicsNode):void		{ _dynamics = a; }
+		 public function get dynamics():DynamicsNode			{ return _dynamics; }
+		 private var _dynamics:DynamicsNode;
 	}
 
 }
