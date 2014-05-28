@@ -6,6 +6,7 @@ package alchemical.client.core.controller
 	import alchemical.client.core.enum.ComponentNames;
 	import alchemical.client.debugger.Debugger;
 	import alchemical.client.subsystems.resources.mediator.ResourcesMediator;
+	import alchemical.client.subsystems.resources.Resources;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.AsyncCommand;
 	import starling.utils.AssetManager;
@@ -20,7 +21,7 @@ package alchemical.client.core.controller
 		{
 			Debugger.log(this, "Creating: " + ComponentNames.RESOURCES);
 			
-			var assetManager:AssetManager = new AssetManager();
+			var assetManager:Resources = new Resources();
 			assetManager.verbose = true;
 			
 			facade.registerMediator(new ResourcesMediator(assetManager));
