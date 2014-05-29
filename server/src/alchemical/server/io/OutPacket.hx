@@ -71,7 +71,6 @@ class OutPacket
 	
 	public function writeTransform(transform:TransformNode) 
 	{
-		//Debugger.raw("[TFM] " + transform.x+","+transform.y+","+transform.r);
 		Debugger.raw("[TFM] " + transform);
 		
 		_bytes.writeFloat(transform.x);
@@ -81,7 +80,6 @@ class OutPacket
 	
 	public function writeDynamics(dynamics:DynamicsNode)
 	{
-		//Debugger.raw("[DYN] " + dynamics.vx + "," + dynamics.vy + "," + dynamics.angularAcceleration);
 		Debugger.raw("[DYN] " + dynamics);
 		
 		_bytes.writeFloat(dynamics.mass);

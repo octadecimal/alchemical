@@ -255,8 +255,6 @@ class Database
 		{
 			shipHull = getHull(row.hull);
 			
-			trace("HULL: " + shipHull);
-			
 			var numEngines:Int = row.num_engines;
 			if (numEngines > 0)
 			{

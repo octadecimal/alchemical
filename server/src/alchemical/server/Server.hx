@@ -269,19 +269,19 @@ class Server extends ThreadServer<Client, Message>
 		for (i in 0..._worldMap.length)
 		{
 			// Update physics for entities in world
-			/*_physics.step(_worldMap[i].entities, _passedTime);
+			_physics.step(_worldMap[i].entities, _passedTime);
 			
 			// Update world NPCs
-			updateWorldPilots(_worldMap[i]);
+			//updateWorldPilots(_worldMap[i]);
 			
 			// Send world outpacket
 			if (_worldMap[i].outPacket != null)
 			{
-				sendToWorldPlayers(_worldMap[i].id, _worldMap[i].outPacket);
+				//sendToWorldPlayers(_worldMap[i].id, _worldMap[i].outPacket);
 			}
 			
 			// Dispose outpacket
-			_worldMap[i].outPacket = null;*/
+			_worldMap[i].outPacket = null;
 		}
 		
 		_lastUpdateTime = Timer.stamp();
@@ -376,7 +376,7 @@ class Server extends ThreadServer<Client, Message>
 			// Build out packet
 			_builder.loginSuccess(outPacket);
 			_builder.defineWorld(outPacket, world);
-			_builder.definePlayer(outPacket, client.player);
+			_builder.definePlayer(outPacket, client.player, ship);
 			//_builder.defineShip(outPacket, client.player, ship);
 			_builder.definePilots(outPacket, pilots);
 		}

@@ -68,14 +68,15 @@ class PacketBuilder
 	 * @param	packet
 	 * @param	player
 	 */
-	public function definePlayer(packet:OutPacket, player:Player) 
+	public function definePlayer(packet:OutPacket, player:Player, ship:Ship) 
 	{
 		packet.writeCommand(Commands.DEFINE_PLAYER);
 		packet.writeInt16(player.id);
 		packet.writeString(player.name);
-		packet.writeInt16(player.ship);
 		packet.writeInt16(Std.int(player.transform.x));
 		packet.writeInt16(Std.int(player.transform.y));
+		packet.writeInt16(Std.int(player.transform.r));
+		packet.writeShip(ship);
 	}
 	
 	/**
