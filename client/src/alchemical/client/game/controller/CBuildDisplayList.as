@@ -32,7 +32,7 @@ package alchemical.client.game.controller
 			game.addChild(uiLayer);
 			
 			// Add to world
-			world.addChild(world.sky.view);
+			world.addChild(world.sky);
 			
 			// Debugger
 			world.addChild(debugger.worldStats);

@@ -3,6 +3,7 @@
  */
 package alchemical.client.subsystems.world.entities 
 {
+	import alchemical.client.subsystems.world.controller.animation.AnimationController;
 	import alchemical.client.subsystems.world.model.DynamicsNode;
 	import alchemical.client.subsystems.world.model.TransformNode;
 	import starling.display.DisplayObject;
@@ -70,6 +71,13 @@ package alchemical.client.subsystems.world.entities
 		 public function set dynamics(a:DynamicsNode):void		{ _dynamics = a; }
 		 public function get dynamics():DynamicsNode			{ return _dynamics; }
 		 private var _dynamics:DynamicsNode;
+		 
+		 /**
+		  * Entity animation controller. I really want to detach this from the Entity type, but will remain for the time being.
+		  */
+		 public function set animationController(a:AnimationController):void	{ _animationController = a; }
+		 public function get animationController():AnimationController			{ return _animationController; }
+		 private var _animationController:AnimationController;
 	}
 
 }

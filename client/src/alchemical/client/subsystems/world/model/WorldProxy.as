@@ -3,7 +3,6 @@ package alchemical.client.subsystems.world.model
 	import alchemical.client.core.enum.ComponentNames;
 	import alchemical.client.debugger.Debugger;
 	import alchemical.client.subsystems.world.controller.animation.AnimationController;
-	import alchemical.client.subsystems.world.entities.DynamicEntity;
 	import alchemical.client.subsystems.world.entities.Entity;
 	import alchemical.client.subsystems.world.model.vo.NPCVo;
 	import alchemical.client.subsystems.world.model.vo.PlayerVO;
@@ -21,7 +20,7 @@ package alchemical.client.subsystems.world.model
 		private var _entities:Vector.<Entity>;
 		
 		// Storage for all dynamic entities
-		private var _dynamicEntities:Vector.<DynamicEntity>;
+		private var _dynamicEntities:Vector.<Entity>;
 		
 		// Storage for all static entities
 		private var _staticEntities:Vector.<Entity>;
@@ -35,8 +34,9 @@ package alchemical.client.subsystems.world.model
 			super(ComponentNames.WORLD, data);
 			
 			_entities = new Vector.<Entity>();
-			_dynamicEntities = new Vector.<DynamicEntity>();
+			_dynamicEntities = new Vector.<Entity>();
 			_staticEntities = new Vector.<Entity>;
+			_animationControllers = new Vector.<AnimationController>();
 			
 			Debugger.log(this, "Created.");
 		}
@@ -46,7 +46,7 @@ package alchemical.client.subsystems.world.model
 		// API
 		// =========================================================================================
 		
-		public function registerEntity(entity:DynamicEntity):void
+		public function registerEntity(entity:Entity):void
 		{
 			_entities.push(entity);
 			
@@ -95,6 +95,12 @@ package alchemical.client.subsystems.world.model
 		public function set npcDefinitions(a:Vector.<NPCVo>):void	{ _npcDefinitions = a; }
 		public function get npcDefinitions():Vector.<NPCVo>		{ return _npcDefinitions; }
 		private var _npcDefinitions:Vector.<NPCVo>;
+		
+		/**
+		 * Animation controllers.
+		 */
+		public function get animationControllers():Vector.<AnimationController>		{ return _animationControllers; }
+		private var _animationControllers:Vector.<AnimationController>;
 	}
 
 }

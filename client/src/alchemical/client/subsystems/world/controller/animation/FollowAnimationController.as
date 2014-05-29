@@ -3,11 +3,9 @@
  */
 package alchemical.client.subsystems.world.controller.animation 
 {
-	import alchemical.client.subsystems.input.enum.EActions;
-	import alchemical.client.subsystems.world.entities.MovableEntity;
+	import alchemical.client.subsystems.world.entities.Entity;
 	import alchemical.client.subsystems.world.model.DynamicsNode;
 	import alchemical.client.subsystems.world.model.TransformNode;
-	import flash.geom.Vector3D;
 	
 	/**
 	 * FollowAnimationController
@@ -18,7 +16,7 @@ package alchemical.client.subsystems.world.controller.animation
 		/**
 		 * Constructor.
 		 */
-		public function FollowAnimationController(entity:MovableEntity) 
+		public function FollowAnimationController(entity:Entity) 
 		{
 			super(entity);
 			
@@ -34,14 +32,14 @@ package alchemical.client.subsystems.world.controller.animation
 		override public function update(passedTime:Number):void 
 		{
 			var entity:TransformNode = _entity.transform;
-			var target:TransformNode = _entity.targetPosition;
+			var destination:TransformNode = _entity.dynamics.destination;
 			var dynamics:DynamicsNode = _entity.dynamics;
 			var theta:Number = 0;
 			
-			if (target)
+			if (destination)
 			{
 				// Get angular distance
-				theta = Math.atan2(target.y - entity.y, target.x - entity.x);
+				theta = Math.atan2(destination.y - entity.y, destination.x - entity.x);
 				var distance:Number = theta - entity.rotation;
 				while (distance > Math.PI) distance = distance - Math.PI * 2;
 				while (distance < -Math.PI) distance = distance + Math.PI * 2;

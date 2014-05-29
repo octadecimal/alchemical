@@ -3,7 +3,8 @@
  */
 package alchemical.client.subsystems.world.controller.animation 
 {
-	import alchemical.client.subsystems.world.entities.MovableEntity;
+	import alchemical.client.subsystems.world.entities.Entity;
+	
 	/**
 	 * AnimationController
 	 * @author Dylan Heyes
@@ -12,14 +13,14 @@ package alchemical.client.subsystems.world.controller.animation
 	{
 		protected static var _actionDownStates:Vector.<Boolean>;
 		
-		protected var _entity:MovableEntity;
+		protected var _entity:Entity;
 		
 		
 		/**
 		 * Constructor.
 		 * @param	entity	Movable entity to be controlled.
 		 */
-		public function AnimationController(entity:MovableEntity) 
+		public function AnimationController(entity:Entity) 
 		{
 			_entity = entity;
 		}

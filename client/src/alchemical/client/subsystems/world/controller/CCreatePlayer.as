@@ -15,6 +15,7 @@ package alchemical.client.subsystems.world.controller
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.SimpleCommand;
 	import starling.display.MovieClip;
+	import starling.display.Sprite;
 	import starling.utils.AssetManager;
 	
 	/**
@@ -29,12 +30,12 @@ package alchemical.client.subsystems.world.controller
 			
 			var worldProxy:WorldProxy = facade.retrieveProxy(ComponentNames.WORLD) as WorldProxy;
 			
-			var player:Player = new Player();
+			var player:Player = new Player(0);	// TODO: Properly pull player id
 			facade.registerMediator(new PlayerMediator(player));
 			
-			var ship:Ship = WorldFactory.createShip(/*worldProxy.playerShipDefinition*/);
+			var ship:Ship = WorldFactory.createShip(ship.id);
 			player.ship = ship;
-			player.view.addChild(ship.view);
+			Sprite(player.view).addChild(ship.view);
 			
 			player.animationController = new FollowAnimationController(player);
 			worldProxy.animationControllers.push(player.animationController);

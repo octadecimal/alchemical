@@ -12,9 +12,9 @@ package alchemical.client.subsystems.world.factories
 	 */
 	public class WorldFactory 
 	{
-		static public function createShip():Ship
+		static public function createShip(id:int):Ship
 		{
-			var ship:Ship = new Ship();
+			var ship:Ship = new Ship(id);
 			return ship;
 		}
 	}

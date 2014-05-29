@@ -13,7 +13,7 @@ package alchemical.client.subsystems.world.entities
 	 * NPC
 	 * @author Dylan Heyes
 	 */
-	public class NPC extends MovableEntity 
+	public class NPC extends Entity 
 	{
 		/**
 		 * Constructor.
@@ -21,8 +21,7 @@ package alchemical.client.subsystems.world.entities
 		 */
 		public function NPC(id:int, view:Sprite=null) 
 		{
-			_id = id;
-			super(view);
+			super(id, view);
 			
 			// Temp
 			this.view.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
@@ -46,8 +45,8 @@ package alchemical.client.subsystems.world.entities
 		
 		public function moveTo(position:Point):void 
 		{
-			targetPosition = new TransformNode(position.x, position.y);
-			ship.targetPosition = targetPosition;
+			dynamics.destination = new TransformNode(position.x, position.y);
+			ship.dynamics.destination = dynamics.destination;
 			
 			ship.setThrust(1);
 			
@@ -56,11 +55,11 @@ package alchemical.client.subsystems.world.entities
 		
 		private function onFollowUpdate(e:EnterFrameEvent):void 
 		{
-			if (Math.abs(targetPosition.x - transform.x) <= 100)
+			if (Math.abs(dynamics.destination.x - transform.x) <= 100)
 			{
-				if (Math.abs(targetPosition.y - transform.y) <= 100)
+				if (Math.abs(dynamics.destination.y - transform.y) <= 100)
 				{
-					targetPosition = null;
+					dynamics.destination = null;
 					
 					view.removeEventListener(EnterFrameEvent.ENTER_FRAME, onFollowUpdate);
 					
@@ -73,12 +72,6 @@ package alchemical.client.subsystems.world.entities
 		
 		// ACCESSORS
 		// =========================================================================================
-		
-		/**
-		 * Unique id.
-		 */
-		public function get id():int		{ return _id; }
-		private var _id:int;
 		
 		/**
 		 * Ship.

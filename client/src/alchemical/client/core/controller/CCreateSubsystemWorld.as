@@ -37,10 +37,10 @@ package alchemical.client.core.controller
 			
 			// Create sky
 			world.sky = new Sky();
-			world.addChild(world.sky.view);
+			world.addChild(world.sky);
 			
 			// Create camera
-			world.camera = new Camera();
+			world.camera = new Camera(1);	// TODO: Implement proper id pulling
 			proxy.animationControllers.push(new DirectionalAnimationController(world.camera));
 			world.camera.viewport = graphics.viewPort;
 			

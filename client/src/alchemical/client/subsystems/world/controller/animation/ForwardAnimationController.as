@@ -4,7 +4,7 @@
 package alchemical.client.subsystems.world.controller.animation 
 {
 	import alchemical.client.subsystems.input.enum.EActions;
-	import alchemical.client.subsystems.world.entities.MovableEntity;
+	import alchemical.client.subsystems.world.entities.Entity;
 	import alchemical.client.subsystems.world.model.DynamicsNode;
 	import flash.geom.Point;
 	
@@ -18,7 +18,7 @@ package alchemical.client.subsystems.world.controller.animation
 		 * Constrcutor.
 		 * @param	entity
 		 */
-		public function ForwardAnimationController(entity:MovableEntity) 
+		public function ForwardAnimationController(entity:Entity) 
 		{
 			super(entity);
 			
@@ -32,7 +32,7 @@ package alchemical.client.subsystems.world.controller.animation
 		
 		override public function update(passedTime:Number):void
 		{
-			var entity:MovableEntity = _entity;
+			var entity:Entity = _entity;
 			var dynamics:DynamicsNode = entity.dynamics;
 			var velocity:Point = dynamics.velocity;
 			

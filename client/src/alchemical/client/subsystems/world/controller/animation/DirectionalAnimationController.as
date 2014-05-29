@@ -4,7 +4,7 @@
 package alchemical.client.subsystems.world.controller.animation 
 {
 	import alchemical.client.subsystems.input.enum.EActions;
-	import alchemical.client.subsystems.world.entities.MovableEntity;
+	import alchemical.client.subsystems.world.entities.Entity;
 	
 	/**
 	 * CameraAnimationController
@@ -12,14 +12,14 @@ package alchemical.client.subsystems.world.controller.animation
 	 */
 	public class DirectionalAnimationController extends ForwardAnimationController
 	{
-		public function DirectionalAnimationController(entity:MovableEntity)
+		public function DirectionalAnimationController(entity:Entity)
 		{
 			super(entity);
 		}
 		
 		override public function update(passedTime:Number):void 
 		{
-			var entity:MovableEntity = _entity;
+			var entity:Entity = _entity;
 			
 			if (_actionDownStates[EActions.MOVE_UP])
 			{

@@ -3,12 +3,10 @@
  */
 package alchemical.client.subsystems.world.entities 
 {
-	import alchemical.client.subsystems.world.model.vo.ShipVO;
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.MovieClip;
 	import starling.display.Sprite;
-	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
 	import starling.textures.Texture;
 	
@@ -16,7 +14,7 @@ package alchemical.client.subsystems.world.entities
 	 * Ship
 	 * @author Dylan Heyes
 	 */
-	public class Ship extends MovableEntity 
+	public class Ship extends Entity
 	{
 		private var _hull:Image;
 		private var _thrust:MovieClip;
@@ -24,9 +22,9 @@ package alchemical.client.subsystems.world.entities
 		/**
 		 * Constructor.
 		 */
-		public function Ship(/*vo:ShipVO, */view:Sprite = null) 
+		public function Ship(id:int, view:Sprite = null) 
 		{
-			super(view);
+			super(id, view);
 			
 			this.view.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
@@ -61,7 +59,7 @@ package alchemical.client.subsystems.world.entities
 			if (_hull == null)
 			{
 				_hull = new Image(texture);
-				view.addChild(_hull);
+				Sprite(view).addChild(_hull);
 			}
 			else
 			{
@@ -73,7 +71,7 @@ package alchemical.client.subsystems.world.entities
 		{
 			_thrust = thrust;
 			
-			view.addChildAt(thrust, 0);
+			Sprite(view).addChildAt(thrust, 0);
 			thrust.loop = true;
 			thrust.play();
 			
