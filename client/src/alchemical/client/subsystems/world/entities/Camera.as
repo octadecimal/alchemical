@@ -3,16 +3,14 @@
  */
 package alchemical.client.subsystems.world.entities
 {
-	import alchemical.client.subsystems.world.controller.animation.AnimationController;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import starling.events.EnterFrameEvent;
 	
 	/**
 	 * Camera
 	 * @author Dylan Heyes
 	 */
-	public class Camera extends MovableEntity
+	public class Camera extends Entity
 	{
 		/**
 		 * Constructor.

@@ -14,6 +14,11 @@ package alchemical.client.subsystems.entities.controller
 		override protected function initializeAsyncMacroCommand():void 
 		{
 			// Load vessel
+			addSubCommand(CCreateVessel);
+			
+			// Create entity
+			
+			// Notify created
 		}
 	}
 

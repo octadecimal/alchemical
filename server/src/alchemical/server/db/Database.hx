@@ -227,4 +227,24 @@ class Database
 		Debugger.database("NPCS: " + worldID + " -> " + output.length);
 		return output;
 	}
+	
+	/*public function defineShip(id:Int):Ship
+	{
+		var ship:Ship, var hullID:Int;
+		
+		// Get ship definition
+		var result:ResultSet = query(new Query().select("*").from("ship_definitions").where("id", id).getQuery());
+		
+		// Handle ship definition
+		for (row in result)
+		{
+			// Hull
+			hullID = row.hull;
+			
+			
+			ship = {
+				
+			}
+		}
+	}*/
 }

@@ -474,7 +474,7 @@ typedef Entity = {
 	var state:Int;
 }
 
-// Movable Entity
+// Dynamic Entity
 typedef DynamicEntity = {> Entity,
 	var dynamics:DynamicsNode;
 	var destination:TransformNode;
