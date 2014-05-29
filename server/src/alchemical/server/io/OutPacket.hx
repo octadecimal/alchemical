@@ -106,6 +106,8 @@ class OutPacket
 	
 	public function writeShip(ship:Ship) 
 	{
+		Debugger.raw("[SHP] " + ship);
+		
 		_bytes.writeInt16(ship.id);
 		_bytes.writeInt16(ship.type);
 		_bytes.writeInt16(ship.hull.id);

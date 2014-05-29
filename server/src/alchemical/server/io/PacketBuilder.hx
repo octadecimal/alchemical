@@ -118,7 +118,7 @@ class PacketBuilder
 		packet.writeInt16(pilot.faction);
 		packet.writeTransform(pilot.transform);
 		packet.writeDynamics(pilot.dynamics);
-		//packet.writeShip(pilot.ship);
+		packet.writeShip(pilot.ship);
 	}
 	
 	/**
