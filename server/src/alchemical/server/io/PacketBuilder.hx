@@ -61,13 +61,13 @@ class PacketBuilder
 		packet.writeInt16(Std.int(player.transform.y));
 	}
 	
-	public function definePlayerShip(packet:OutPacket, player:Player, ship:Ship) 
+	/*public function definePlayerShip(packet:OutPacket, player:Player, ship:Ship) 
 	{
 		packet.writeCommand(Commands.DEFINE_PLAYER_SHIP);
 		packet.writeInt16(ship.id);
 		packet.writeInt16(ship.type);
 		packet.writeInt16(ship.hull);
-	}
+	}*/
 	
 	public function defineNPCs(packet:OutPacket, npcs:Array<NPC>) 
 	{

@@ -5,6 +5,8 @@ import alchemical.server.Server.DynamicsNode;
 import alchemical.server.Server.NPC;
 import alchemical.server.Server.Player;
 import alchemical.server.Server.Ship;
+import alchemical.server.Server.ShipEngine;
+import alchemical.server.Server.ShipHull;
 import alchemical.server.Server.TransformNode;
 import alchemical.server.Server.World;
 import alchemical.server.util.Debugger;
@@ -167,7 +169,7 @@ class Database
 		return player;
 	}
 	
-	public function getPlayerShip(id:UInt):Ship
+	/*public function getPlayerShip(id:UInt):Ship
 	{
 		var ship:Ship;
 		var result:ResultSet = query(new Query().select("*").from("ships").where("id", id).getQuery());
@@ -183,7 +185,7 @@ class Database
 		
 		Debugger.database("SHIP: " + id + " -> " + ship.id);
 		return ship;
-	}
+	}*/
 	
 	public function getNPCsByWorld(worldID:Int):Array<NPC> 
 	{
@@ -228,9 +230,10 @@ class Database
 		return output;
 	}
 	
-	/*public function defineShip(id:Int):Ship
+	public function getShip(id:Int):Ship
 	{
-		var ship:Ship, var hullID:Int;
+		var ship:Ship, shipHull:ShipHull;
+		var shipEngines:Array<ShipEngine> = [];
 		
 		// Get ship definition
 		var result:ResultSet = query(new Query().select("*").from("ship_definitions").where("id", id).getQuery());
@@ -238,13 +241,67 @@ class Database
 		// Handle ship definition
 		for (row in result)
 		{
-			// Hull
-			hullID = row.hull;
+			// Get hull
+			shipHull = getHull(row.hull);
 			
+			// Get engines
+			var numEngines:Int = row.num_engines;
 			
+			if (numEngines > 0)
+			{
+				for (i in 0...numEngines)
+				{
+					shipEngines.push(getEngine(row.engine_0));
+				}
+			}
+			
+			// Create ship
 			ship = {
-				
+				id: row.id,
+				type: 0, // TODO: Implement
+				hull: shipHull,
+				engines: shipEngines
 			}
 		}
-	}*/
+		
+		Debugger.database("SHIP: id=" + ship.id + " type=" + ship.type + " hull=" + ship.hull + " engines=" + ship.engines);
+		return ship;
+	}
+	
+	public function getHull(id:Int):ShipHull
+	{
+		var hull:ShipHull;
+		
+		var result:ResultSet = query(new Query().select("*").from("ship_hulls").where("id", id).getQuery());
+		
+		for (row in result)
+		{
+			hull = {
+				id: row.id,
+				mass: row.mass
+			}
+		}
+		
+		Debugger.database("HULL: id=" + hull.id + " mass=" + hull.mass);
+		return hull;
+	}
+	
+	public function getEngine(id:Int):ShipEngine 
+	{
+		var engine:ShipEngine;
+		
+		var result:ResultSet = query(new Query().select("*").from("ship_engines").where("id", id).getQuery());
+		
+		for (row in result)
+		{
+			engine = {
+				id: row.id,
+				thrust: row.thrust,
+				torque: row.torque
+			}
+		}
+		
+		Debugger.database("ENGINE: id=" + engine.id + " thrust=" + engine.thrust + " torque=" + engine.torque);
+		return engine;
+	}
 }

@@ -141,7 +141,7 @@ class Server extends ThreadServer<Client, Message>
 		
 		_clientMap[c.id] = null; // TODO: Splice from array?
 		
-		Debugger.server("Client disconnected: " + Std.string(c.id));
+		Debugger.info("Client disconnected: " + Std.string(c.id));
 		Debugger.server("Total connections: " + _numConnectedClients);
 		Debugger.server("Clients buffer: " + _clientMap.length);
 	}
@@ -210,7 +210,7 @@ class Server extends ThreadServer<Client, Message>
 		
 		var outBytes:Bytes = packet.getBytes();
 		
-		Debugger.data("Sending " + outBytes.length + " bytes to client: " + client.id);
+		//Debugger.data("Sending " + outBytes.length + " bytes to client: " + client.id);
 		
 		client.sock.output.writeBytes(outBytes, 0, outBytes.length);
 		client.sock.output.flush();
@@ -336,12 +336,6 @@ class Server extends ThreadServer<Client, Message>
 		
 		// Add to world outpacket
 		_builder.moveWorldNPCTo(world, npc, npc.destination);
-		
-		/*_delays.add(10, function ():Void
-		{
-			npc.destination = null;
-			npc.state = EntityStates.IDLE;
-		});*/
 	}
 	
 	
@@ -378,17 +372,18 @@ class Server extends ThreadServer<Client, Message>
 			client.player.world = world.id;
 			
 			// Get player ship
-			var ship:Ship = _database.getPlayerShip(client.player.ship);
+			//var ship:Ship = _database.getPlayerShip(client.player.ship);
+			var ship:Ship = _database.getShip(client.player.ship);
 			
 			// Get world NPCS
 			var npcs:Array<NPC> = world.npcs;
 			
 			// Build out packet
-			_builder.loginSuccess(outPacket);
+			/*_builder.loginSuccess(outPacket);
 			_builder.defineWorld(outPacket, world);
 			_builder.definePlayer(outPacket, client.player);
 			_builder.definePlayerShip(outPacket, client.player, ship);
-			_builder.defineNPCs(outPacket, npcs);
+			_builder.defineNPCs(outPacket, npcs);*/
 		}
 		else
 		{
@@ -411,7 +406,7 @@ class Server extends ThreadServer<Client, Message>
 	
 	
 	
-// TYPEDEFS
+// SERVER TYPEDEFS
 // =========================================================================================
 
 // Client type
@@ -426,6 +421,11 @@ typedef Client = {
 typedef Message = {
 	var packet:InPacket;
 }
+	
+	
+	
+// WORLD TYPEDEFS
+// =========================================================================================
 
 // World type
 typedef World = {
@@ -441,12 +441,10 @@ typedef World = {
 	var outPacket:OutPacket;
 }
 
-// Ship type
-typedef Ship = {
-	var id:Int;
-	var type:UInt;
-	var hull:UInt;
-}
+
+
+// ENTITY TYPEDEFS
+// =========================================================================================
 
 // Transform
 typedef TransformNode = {
@@ -500,5 +498,28 @@ typedef Projectile = {> DynamicEntity,
 
 // Structure
 typedef Structure = {> Entity,
-	
+
+}
+
+
+// SHIP TYPEDEFS
+// =========================================================================================
+
+// Ship type
+typedef Ship = {
+	var id:Int;
+	var type:Int;
+	var hull:ShipHull;
+	var engines:Array<ShipEngine>;
+}
+
+typedef ShipHull = {
+	var id:Int;
+	var mass:Float;
+}
+
+typedef ShipEngine = {
+	var id:Int;
+	var thrust:Float;
+	var torque:Float;
 }
