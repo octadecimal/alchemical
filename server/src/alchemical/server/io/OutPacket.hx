@@ -1,4 +1,6 @@
 package alchemical.server.io;
+import alchemical.server.Server.Ship;
+import alchemical.server.io.OutPacket;
 import alchemical.server.Server.DynamicsNode;
 import alchemical.server.Server.TransformNode;
 import alchemical.server.util.Debugger;
@@ -29,10 +31,11 @@ class OutPacket
 	
 	public function getBytes():Bytes
 	{
+		var bytes:Bytes = _bytes.getBytes();
 		Debugger.raw("");
-		Debugger.raw("-- GETBYTES --");
+		Debugger.raw("-- GETBYTES ("+bytes.length+") --");
 		Debugger.raw("");
-		return _bytes.getBytes();
+		return bytes;
 	}
 	
 	public function writeCommand(value:Int):Void
@@ -68,7 +71,9 @@ class OutPacket
 	
 	public function writeTransform(transform:TransformNode) 
 	{
-		Debugger.raw("[TFM] " + transform.x+","+transform.y+","+transform.r);
+		//Debugger.raw("[TFM] " + transform.x+","+transform.y+","+transform.r);
+		Debugger.raw("[TFM] " + transform);
+		
 		_bytes.writeFloat(transform.x);
 		_bytes.writeFloat(transform.y);
 		_bytes.writeFloat(transform.r);
@@ -76,7 +81,8 @@ class OutPacket
 	
 	public function writeDynamics(dynamics:DynamicsNode)
 	{
-		Debugger.raw("[DYN] " + dynamics.vx + "," + dynamics.vy + "," + dynamics.angularAcceleration);
+		//Debugger.raw("[DYN] " + dynamics.vx + "," + dynamics.vy + "," + dynamics.angularAcceleration);
+		Debugger.raw("[DYN] " + dynamics);
 		
 		_bytes.writeFloat(dynamics.mass);
 		_bytes.writeFloat(dynamics.thrust);
@@ -85,7 +91,33 @@ class OutPacket
 		_bytes.writeFloat(dynamics.angularAcceleration);
 		_bytes.writeFloat(dynamics.vx);
 		_bytes.writeFloat(dynamics.vy);
-		writeTransform(dynamics.target);
+		
+		if (dynamics.target != null)
+		{
+			_bytes.writeByte(1);
+			writeTransform(dynamics.target);
+		}
+		else
+		{
+			_bytes.writeByte(0);
+		}
+		
+	}
+	
+	public function writeShip(ship:Ship) 
+	{
+		_bytes.writeInt16(ship.id);
+		_bytes.writeInt16(ship.type);
+		_bytes.writeInt16(ship.hull.id);
+		_bytes.writeFloat(ship.hull.mass);
+		_bytes.writeInt16(ship.engines.length);
+		
+		for (i in 0...ship.engines.length)
+		{
+			_bytes.writeInt16(ship.engines[i].id);
+			_bytes.writeFloat(ship.engines[i].thrust);
+			_bytes.writeFloat(ship.engines[i].torque);
+		}
 	}
 	
 }

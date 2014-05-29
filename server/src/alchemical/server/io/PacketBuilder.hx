@@ -78,32 +78,16 @@ class PacketBuilder
 		packet.writeInt16(Std.int(player.transform.y));
 	}
 	
-	public function defineEntity(packet:OutPacket, entity:Entity)
-	{
-		
-	}
-	
 	/**
 	 * Writes a ship definition to the input packet.
 	 * @param	packet
 	 * @param	player
 	 * @param	ship
 	 */
-	public function defineShip(packet:OutPacket, player:Player, ship:Ship) 
+	public function defineShip(packet:OutPacket, ship:Ship) 
 	{
 		packet.writeCommand(Commands.DEFINE_SHIP);
-		packet.writeInt16(ship.id);
-		packet.writeInt16(ship.type);
-		packet.writeInt16(ship.hull.id);
-		packet.writeFloat(ship.hull.mass);
-		packet.writeInt16(ship.engines.length);
-		
-		for (i in 0...ship.engines.length)
-		{
-			packet.writeInt16(ship.engines[i].id);
-			packet.writeFloat(ship.engines[i].thrust);
-			packet.writeFloat(ship.engines[i].torque);
-		}
+		packet.writeShip(ship);
 	}
 	
 	/**
@@ -113,21 +97,28 @@ class PacketBuilder
 	 */
 	public function definePilots(packet:OutPacket, pilots:Array<Pilot>) 
 	{
-		var pilot:Pilot;
-		
 		packet.writeCommand(Commands.DEFINE_PILOTS);
 		packet.writeInt16(pilots.length);				// num total npcs
 		
 		for (i in 0...pilots.length)
 		{
-			pilot = pilots[i];
-			packet.writeInt16(pilot.id);
-			packet.writeInt16(pilot.world);
-			packet.writeInt16(pilot.ship);
-			packet.writeInt16(Std.int(pilot.transform.x));
-			packet.writeInt16(Std.int(pilot.transform.y));
-			packet.writeInt16(pilot.faction);
+			definePilot(packet, pilots[i]);
 		}
+	}
+	
+	/**
+	 * Writes a pilot definition to the inputted packet.
+	 * @param	packet
+	 * @param	pilot
+	 */
+	public function definePilot(packet:OutPacket, pilot:Pilot)
+	{
+		packet.writeInt16(pilot.id);
+		packet.writeInt16(pilot.state);
+		packet.writeInt16(pilot.faction);
+		packet.writeTransform(pilot.transform);
+		packet.writeDynamics(pilot.dynamics);
+		//packet.writeShip(pilot.ship);
 	}
 	
 	/**

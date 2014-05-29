@@ -203,6 +203,8 @@ class Database
 		
 		for (row in result)
 		{
+			var ship:Ship = getShip(row.ship);
+			
 			transform = {
 				x: row.x,
 				y: row.y,
@@ -223,7 +225,7 @@ class Database
 			pilot = {
 				id: row.id,
 				world: row.world,
-				ship: row.ship,
+				ship: ship,
 				faction: row.faction,
 				transform: transform,
 				dynamics: dynamics,
@@ -252,6 +254,8 @@ class Database
 		for (row in result)
 		{
 			shipHull = getHull(row.hull);
+			
+			trace("HULL: " + shipHull);
 			
 			var numEngines:Int = row.num_engines;
 			if (numEngines > 0)
