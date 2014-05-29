@@ -10,8 +10,6 @@ import alchemical.server.Server.ShipHull;
 import alchemical.server.Server.TransformNode;
 import alchemical.server.Server.World;
 import alchemical.server.util.Debugger;
-import haxe.ds.Vector;
-import neko.Lib;
 import sys.db.Connection;
 import sys.db.Mysql;
 import sys.db.ResultSet;
@@ -38,6 +36,9 @@ class Database
 	// CORE
 	// =========================================================================================
 	
+	/**
+	 * Connects to the MySQL database.
+	 */
 	public function connect():Void
 	{
 		_connection = Mysql.connect(
@@ -56,15 +57,23 @@ class Database
 		}
 	}
 	
+	/**
+	 * Disconnects the MySQL database.
+	 */
 	public function disconnect():Void
 	{
 		_connection.close();
 	}
 	
+	/**
+	 * Executes a raw query on the MySQL database and returns
+	 * the results as a ResultSet.
+	 * @param	string
+	 * @return
+	 */
 	private function query(string:String):ResultSet
 	{
 		Debugger.database("QUERY: " + string);
-		
 		return _connection.request(string);
 	}
 	
@@ -73,6 +82,10 @@ class Database
 	// QUERIES
 	// =========================================================================================
 	
+	/**
+	 * Returns all world definitions.
+	 * @return
+	 */
 	public function getWorlds():Array<World>
 	{
 		var output:Array<World> = [];
@@ -81,13 +94,20 @@ class Database
 		
 		for (row in result)
 		{
+			var skyLayers:Array<Int> = [];
+			var skyLayerIDs:Array<String> = row.skylayers.split(",");
+			for (id in skyLayerIDs)
+			{
+				skyLayers.push(Std.parseInt(id));
+			}
+			
 			var world:World = { 
 				id: row.id,
 				name: row.name,
 				width: row.width,
 				height: row.height,
 				numSkyLayers: row.numskylayers,
-				skyLayers: parseSkyLayers(row.skylayers),
+				skyLayers: skyLayers,
 				players: [],
 				npcs: [],
 				entities: [],
@@ -101,17 +121,12 @@ class Database
 		return output;
 	}
 	
-	function parseSkyLayers(input:String):Array<Int> 
-	{
-		var output:Array<Int> = [];
-		var ids:Array<String> = input.split(",");
-		for (id in ids)
-		{
-			output.push(Std.parseInt(id));
-		}
-		return output;
-	}
-	
+	/**
+	 * Gets a user id by input user and password credentials.
+	 * @param	user
+	 * @param	pass
+	 * @return	Returns 0 if user with inputted credentials does not exist.
+	 */
 	public function getUserIDByCredentials(user:String, pass:String):UInt
 	{
 		var result:ResultSet = query(new Query().select("*").from("users").where("name", user).and("pass", pass).getQuery());
@@ -128,6 +143,11 @@ class Database
 		return 0;
 	}
 	
+	/**
+	 * Gets a player definition by inputted ID.
+	 * @param	id
+	 * @return
+	 */
 	public function getPlayer(id:UInt):Player
 	{
 		var player:Player, transform:TransformNode, dynamics:DynamicsNode;
@@ -169,24 +189,11 @@ class Database
 		return player;
 	}
 	
-	/*public function getPlayerShip(id:UInt):Ship
-	{
-		var ship:Ship;
-		var result:ResultSet = query(new Query().select("*").from("ships").where("id", id).getQuery());
-		
-		for (row in result)
-		{
-			ship = {
-				id: row.id,
-				type: row.id,
-				hull: row.hull
-			};
-		}
-		
-		Debugger.database("SHIP: " + id + " -> " + ship.id);
-		return ship;
-	}*/
-	
+	/**
+	 * Gets all NPCs by inputted world id.
+	 * @param	worldID
+	 * @return
+	 */
 	public function getNPCsByWorld(worldID:Int):Array<NPC> 
 	{
 		var npc:NPC, transform:TransformNode, dynamics:DynamicsNode;
@@ -230,23 +237,23 @@ class Database
 		return output;
 	}
 	
+	/**
+	 * Gets a ship definition by ship id.
+	 * @param	id
+	 * @return
+	 */
 	public function getShip(id:Int):Ship
 	{
 		var ship:Ship, shipHull:ShipHull;
 		var shipEngines:Array<ShipEngine> = [];
 		
-		// Get ship definition
 		var result:ResultSet = query(new Query().select("*").from("ship_definitions").where("id", id).getQuery());
 		
-		// Handle ship definition
 		for (row in result)
 		{
-			// Get hull
 			shipHull = getHull(row.hull);
 			
-			// Get engines
 			var numEngines:Int = row.num_engines;
-			
 			if (numEngines > 0)
 			{
 				for (i in 0...numEngines)
@@ -255,7 +262,6 @@ class Database
 				}
 			}
 			
-			// Create ship
 			ship = {
 				id: row.id,
 				type: 0, // TODO: Implement
@@ -268,6 +274,11 @@ class Database
 		return ship;
 	}
 	
+	/**
+	 * Gets a ship hull definition by hull id.
+	 * @param	id
+	 * @return
+	 */
 	public function getHull(id:Int):ShipHull
 	{
 		var hull:ShipHull;
@@ -286,6 +297,11 @@ class Database
 		return hull;
 	}
 	
+	/**
+	 * Gets a ship engine definition by engine id.
+	 * @param	id
+	 * @return
+	 */
 	public function getEngine(id:Int):ShipEngine 
 	{
 		var engine:ShipEngine;

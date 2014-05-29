@@ -13,6 +13,7 @@ class Commands
 	static public inline var DEFINE_WORLD:Int = 4;
 	static public inline var DEFINE_PLAYER:Int = 5;
 	static public inline var DEFINE_PLAYER_SHIP:Int = 6;
+	static public inline var DEFINE_SHIP:Int = 11;
 	static public inline var DEFINE_NPCS:Int = 7;
 	
 	static public inline var MOVE_NPC:Int = 8;

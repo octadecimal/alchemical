@@ -344,7 +344,7 @@ class Server extends ThreadServer<Client, Message>
 	// =========================================================================================
 	
 	/**
-	 * request: LOGIN
+	 * Handles a client login request.
 	 */
 	private function handleLoginRequest(client:Client, packet:InPacket):Void
 	{
@@ -372,18 +372,17 @@ class Server extends ThreadServer<Client, Message>
 			client.player.world = world.id;
 			
 			// Get player ship
-			//var ship:Ship = _database.getPlayerShip(client.player.ship);
 			var ship:Ship = _database.getShip(client.player.ship);
 			
 			// Get world NPCS
 			var npcs:Array<NPC> = world.npcs;
 			
 			// Build out packet
-			/*_builder.loginSuccess(outPacket);
+			_builder.loginSuccess(outPacket);
 			_builder.defineWorld(outPacket, world);
 			_builder.definePlayer(outPacket, client.player);
-			_builder.definePlayerShip(outPacket, client.player, ship);
-			_builder.defineNPCs(outPacket, npcs);*/
+			_builder.defineShip(outPacket, client.player, ship);
+			_builder.defineNPCs(outPacket, npcs);
 		}
 		else
 		{
