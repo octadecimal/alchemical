@@ -1,4 +1,5 @@
 package alchemical.server.io;
+import alchemical.server.Server.DynamicsNode;
 import alchemical.server.Server.TransformNode;
 import alchemical.server.util.Debugger;
 import haxe.io.Bytes;
@@ -71,6 +72,20 @@ class OutPacket
 		_bytes.writeFloat(transform.x);
 		_bytes.writeFloat(transform.y);
 		_bytes.writeFloat(transform.r);
+	}
+	
+	public function writeDynamics(dynamics:DynamicsNode)
+	{
+		Debugger.raw("[DYN] " + dynamics.vx + "," + dynamics.vy + "," + dynamics.angularAcceleration);
+		
+		_bytes.writeFloat(dynamics.mass);
+		_bytes.writeFloat(dynamics.thrust);
+		_bytes.writeFloat(dynamics.torque);
+		_bytes.writeFloat(dynamics.acceleration);
+		_bytes.writeFloat(dynamics.angularAcceleration);
+		_bytes.writeFloat(dynamics.vx);
+		_bytes.writeFloat(dynamics.vy);
+		writeTransform(dynamics.target);
 	}
 	
 }

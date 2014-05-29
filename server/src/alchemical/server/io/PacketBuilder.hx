@@ -1,13 +1,13 @@
 package alchemical.server.io;
 import alchemical.server.const.Commands;
+import alchemical.server.io.OutPacket;
+import alchemical.server.Server.DynamicEntity;
 import alchemical.server.Server.Entity;
-import alchemical.server.Server.NPC;
+import alchemical.server.Server.Pilot;
 import alchemical.server.Server.Player;
 import alchemical.server.Server.Ship;
 import alchemical.server.Server.TransformNode;
 import alchemical.server.Server.World;
-import alchemical.server.io.OutPacket;
-import alchemical.server.util.Debugger;
 
 /**
  * ...
@@ -78,6 +78,11 @@ class PacketBuilder
 		packet.writeInt16(Std.int(player.transform.y));
 	}
 	
+	public function defineEntity(packet:OutPacket, entity:Entity)
+	{
+		
+	}
+	
 	/**
 	 * Writes a ship definition to the input packet.
 	 * @param	packet
@@ -106,22 +111,22 @@ class PacketBuilder
 	 * @param	packet
 	 * @param	npcs
 	 */
-	public function defineNPCs(packet:OutPacket, npcs:Array<NPC>) 
+	public function definePilots(packet:OutPacket, pilots:Array<Pilot>) 
 	{
-		var npc:NPC;
+		var pilot:Pilot;
 		
-		packet.writeCommand(Commands.DEFINE_NPCS);
-		packet.writeInt16(npcs.length);				// num total npcs
+		packet.writeCommand(Commands.DEFINE_PILOTS);
+		packet.writeInt16(pilots.length);				// num total npcs
 		
-		for (i in 0...npcs.length)
+		for (i in 0...pilots.length)
 		{
-			npc = npcs[i];
-			packet.writeInt16(npc.id);
-			packet.writeInt16(npc.world);
-			packet.writeInt16(npc.ship);
-			packet.writeInt16(Std.int(npc.transform.x));
-			packet.writeInt16(Std.int(npc.transform.y));
-			packet.writeInt16(npc.faction);
+			pilot = pilots[i];
+			packet.writeInt16(pilot.id);
+			packet.writeInt16(pilot.world);
+			packet.writeInt16(pilot.ship);
+			packet.writeInt16(Std.int(pilot.transform.x));
+			packet.writeInt16(Std.int(pilot.transform.y));
+			packet.writeInt16(pilot.faction);
 		}
 	}
 	
@@ -131,7 +136,7 @@ class PacketBuilder
 	 * @param	npc
 	 * @param	target
 	 */
-	public function moveWorldNPCTo(world:World, npc:NPC, target:TransformNode) 
+	public function moveEntityTo(world:World, entity:DynamicEntity, target:TransformNode) 
 	{
 		if (world.outPacket == null)
 		{
@@ -141,7 +146,7 @@ class PacketBuilder
 		var packet:OutPacket = world.outPacket;
 		
 		packet.writeCommand(Commands.MOVE_NPC);
-		packet.writeInt16(npc.id);
+		packet.writeInt16(entity.id);
 		packet.writeInt16(Std.int(target.x));
 		packet.writeInt16(Std.int(target.y));
 	}

@@ -2,7 +2,7 @@ package alchemical.server.db;
 import alchemical.server.const.EntityStates;
 import alchemical.server.const.Passwords;
 import alchemical.server.Server.DynamicsNode;
-import alchemical.server.Server.NPC;
+import alchemical.server.Server.Pilot;
 import alchemical.server.Server.Player;
 import alchemical.server.Server.Ship;
 import alchemical.server.Server.ShipEngine;
@@ -109,7 +109,7 @@ class Database
 				numSkyLayers: row.numskylayers,
 				skyLayers: skyLayers,
 				players: [],
-				npcs: [],
+				pilots: [],
 				entities: [],
 				outPacket: null
 			};
@@ -169,7 +169,8 @@ class Database
 				acceleration: 0,
 				angularAcceleration: 0,
 				vx: 0,
-				vy: 0
+				vy: 0,
+				target: null
 			}
 			
 			player = { 
@@ -180,8 +181,7 @@ class Database
 				ship: row.ship, 
 				transform: transform,
 				dynamics: dynamics,
-				state: EntityStates.IDLE,
-				destination: null
+				state: EntityStates.IDLE
 			};
 		}
 		
@@ -194,10 +194,10 @@ class Database
 	 * @param	worldID
 	 * @return
 	 */
-	public function getNPCsByWorld(worldID:Int):Array<NPC> 
+	public function getPilotsByWorld(worldID:Int):Array<Pilot> 
 	{
-		var npc:NPC, transform:TransformNode, dynamics:DynamicsNode;
-		var output:Array<NPC> = new Array<NPC>();
+		var pilot:Pilot, transform:TransformNode, dynamics:DynamicsNode;
+		var output:Array<Pilot> = new Array<Pilot>();
 		
 		var result:ResultSet = query(new Query().select("*").from("npcs").where("world", worldID).getQuery());
 		
@@ -216,24 +216,24 @@ class Database
 				acceleration: 0,
 				angularAcceleration: 0,
 				vx: 0,
-				vy: 0
+				vy: 0,
+				target: null
 			}
 			
-			npc = {
+			pilot = {
 				id: row.id,
 				world: row.world,
 				ship: row.ship,
 				faction: row.faction,
 				transform: transform,
 				dynamics: dynamics,
-				state: EntityStates.IDLE,
-				destination: null
+				state: EntityStates.IDLE
 			}
 			
-			output.push(npc);
+			output.push(pilot);
 		}
 		
-		Debugger.database("NPCS: " + worldID + " -> " + output.length);
+		Debugger.database("Pilots: " + worldID + " -> " + output.length);
 		return output;
 	}
 	
