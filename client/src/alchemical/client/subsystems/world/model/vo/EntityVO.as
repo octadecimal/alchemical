@@ -15,7 +15,7 @@ package alchemical.client.subsystems.world.model.vo
 		public var transform:TransformNode;
 		public var dynamics:DynamicsNode;
 		
-		public function EntityVO(id:int, transform:TransformNode = null, dynamics:DynamicsNode = null) 
+		public function EntityVO(id:int = -1, transform:TransformNode = null, dynamics:DynamicsNode = null) 
 		{
 			this.id = id;
 			this.transform = transform;

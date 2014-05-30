@@ -378,7 +378,7 @@ class Server extends ThreadServer<Client, Message>
 			_builder.defineWorld(outPacket, world);
 			_builder.definePlayer(outPacket, client.player, ship);
 			//_builder.defineShip(outPacket, client.player, ship);
-			_builder.definePilots(outPacket, pilots);
+			//_builder.definePilots(outPacket, pilots);
 		}
 		else
 		{

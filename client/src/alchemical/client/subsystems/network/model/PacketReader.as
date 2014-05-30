@@ -61,9 +61,10 @@ package alchemical.client.subsystems.network.model
 			var vo:PlayerVO = new PlayerVO();
 			vo.id = bytes.readShort();
 			vo.name = bytes.readUTF();
-			vo.entity = bytes.readShort();
 			vo.x = bytes.readShort();
 			vo.y = bytes.readShort();
+			vo.r = bytes.readFloat();
+			vo.ship = defineShip(bytes);
 			
 			return vo;
 		}
@@ -82,6 +83,8 @@ package alchemical.client.subsystems.network.model
 			hullVO.id = bytes.readShort();
 			hullVO.mass = bytes.readFloat();
 			
+			trace("HULL: " + hullVO);
+			
 			var numEngines:int = bytes.readShort();
 			var engineVOs:Vector.<ShipEngineVO> = new Vector.<ShipEngineVO>(numEngines);
 			for (var i:int = 0; i < numEngines; i++)
@@ -92,6 +95,8 @@ package alchemical.client.subsystems.network.model
 				engineVO.torque = bytes.readFloat();
 				
 				engineVOs[i] = engineVO;
+				
+				trace("ENGINE: " + engineVO);
 			}
 			
 			vo.hull = hullVO;

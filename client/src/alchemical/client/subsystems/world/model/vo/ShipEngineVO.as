@@ -13,7 +13,7 @@ package alchemical.client.subsystems.world.model.vo
 		public var thrust:Number;
 		public var torque:Number;
 		
-		public function ShipEngineVO(id:int, thrust:Number = 1, torque:Number = 1) 
+		public function ShipEngineVO(id:int = -1, thrust:Number = 1, torque:Number = 1) 
 		{
 			this.id = id;
 			this.thrust = thrust;

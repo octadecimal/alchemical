@@ -255,7 +255,7 @@ package alchemical.client.subsystems.network.model
 			{
 				// Get next command
 				command = bytes.readShort();
-				//Debugger.log(this, "Executing command: " + command);
+				Debugger.log(this, "Executing command: " + command);
 				
 				// Execute mapped command
 				_commandMap[command](bytes);
