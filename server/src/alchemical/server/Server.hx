@@ -205,7 +205,7 @@ class Server extends ThreadServer<Client, Message>
 	 */
 	private function sendToClient(client:Client, packet:OutPacket):Void
 	{
-		packet.writeCommand(Commands.END);
+		//packet.writeCommand(Commands.END);
 		
 		var outBytes:Bytes = packet.getBytes();
 		
