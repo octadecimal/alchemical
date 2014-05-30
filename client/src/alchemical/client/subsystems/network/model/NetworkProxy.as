@@ -268,8 +268,6 @@ package alchemical.client.subsystems.network.model
 		 */
 		private function onSecondTimerTick(e:TimerEvent):void 
 		{
-			trace("IN: " + _inBytes + ", OUT: " + _outBytes);
-			
 			_inBytesPerSecond = _inBytes;
 			_outBytesPerSecond = _outBytes;
 			

@@ -9,6 +9,8 @@ package alchemical.client.subsystems.network.model
 	import alchemical.client.subsystems.world.model.vo.MovementVO;
 	import alchemical.client.subsystems.world.model.vo.NPCVo;
 	import alchemical.client.subsystems.world.model.vo.PlayerVO;
+	import alchemical.client.subsystems.world.model.vo.ShipEngineVO;
+	import alchemical.client.subsystems.world.model.vo.ShipHullVO;
 	import alchemical.client.subsystems.world.model.vo.ShipVO;
 	import alchemical.client.subsystems.world.model.vo.WorldVO;
 	import flash.sampler.NewObjectSample;
@@ -75,7 +77,25 @@ package alchemical.client.subsystems.network.model
 			var vo:ShipVO = new ShipVO();
 			vo.id = bytes.readShort();
 			vo.type = bytes.readShort();
-			vo.hull = bytes.readShort();
+			
+			var hullVO:ShipHullVO = new ShipHullVO();
+			hullVO.id = bytes.readShort();
+			hullVO.mass = bytes.readFloat();
+			
+			var numEngines:int = bytes.readShort();
+			var engineVOs:Vector.<ShipEngineVO> = new Vector.<ShipEngineVO>(numEngines);
+			for (var i:int = 0; i < numEngines; i++)
+			{
+				var engineVO:ShipEngineVO = new ShipEngineVO();
+				engineVO.id = bytes.readShort();
+				engineVO.thrust = bytes.readFloat();
+				engineVO.torque = bytes.readFloat();
+				
+				engineVOs[i] = engineVO;
+			}
+			
+			vo.hull = hullVO;
+			vo.engines = engineVOs;
 			
 			return vo;
 		}
