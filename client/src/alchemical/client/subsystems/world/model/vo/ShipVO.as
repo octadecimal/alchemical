@@ -14,7 +14,7 @@ package alchemical.client.subsystems.world.model.vo
 		public var hull:ShipHullVO;
 		public var engines:Vector.<ShipEngineVO>;
 		
-		public function ShipVO(id:int, type:int = 1, hull:ShipHullVO = null, engines:Vector.<ShipEngineVO> = null)
+		public function ShipVO(id:int = -1, type:int = -1, hull:ShipHullVO = null, engines:Vector.<ShipEngineVO> = null)
 		{
 			
 		}

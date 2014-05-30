@@ -4,18 +4,17 @@
 package alchemical.client.subsystems.world.model.vo 
 {
 	/**
-	 * ShipHullVO
+	 * PilotVO
 	 * @author Dylan Heyes
 	 */
-	public class ShipHullVO 
+	public class PilotVO 
 	{
 		public var id:int;
-		public var mass:Number;
+		public var 
 		
-		public function ShipHullVO(id:int = -1, mass:Number = 1) 
+		public function PilotVO() 
 		{
-			this.id = id;
-			this.mass = mass;
+			
 		}
 		
 	}

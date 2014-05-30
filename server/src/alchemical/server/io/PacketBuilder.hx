@@ -75,7 +75,7 @@ class PacketBuilder
 		packet.writeString(player.name);
 		packet.writeInt16(Std.int(player.transform.x));
 		packet.writeInt16(Std.int(player.transform.y));
-		packet.writeInt16(Std.int(player.transform.r));
+		packet.writeFloat(player.transform.r);
 		packet.writeShip(ship);
 	}
 	

@@ -14,5 +14,7 @@ package alchemical.client.subsystems.world.model.vo
 		public var entity:uint;
 		public var x:Number;
 		public var y:Number;
+		public var r:Number;
+		public var ship:ShipVO;
 	}
 }
