@@ -516,11 +516,13 @@ typedef Ship = {
 
 typedef ShipHull = {
 	var id:Int;
+	var view:Int;
 	var mass:Float;
 }
 
 typedef ShipEngine = {
 	var id:Int;
+	var view:Int;
 	var thrust:Float;
 	var torque:Float;
 }

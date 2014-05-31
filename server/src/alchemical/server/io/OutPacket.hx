@@ -109,12 +109,14 @@ class OutPacket
 		_bytes.writeInt16(ship.id);
 		_bytes.writeInt16(ship.type);
 		_bytes.writeInt16(ship.hull.id);
+		_bytes.writeInt16(ship.hull.view);
 		_bytes.writeFloat(ship.hull.mass);
 		_bytes.writeInt16(ship.engines.length);
 		
 		for (i in 0...ship.engines.length)
 		{
 			_bytes.writeInt16(ship.engines[i].id);
+			_bytes.writeInt16(ship.engines[i].view);
 			_bytes.writeFloat(ship.engines[i].thrust);
 			_bytes.writeFloat(ship.engines[i].torque);
 		}

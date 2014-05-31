@@ -291,6 +291,7 @@ class Database
 		{
 			hull = {
 				id: row.id,
+				view: row.id,
 				mass: row.mass
 			}
 		}
@@ -314,6 +315,7 @@ class Database
 		{
 			engine = {
 				id: row.id,
+				view: row.view,
 				thrust: row.thrust,
 				torque: row.torque
 			}
