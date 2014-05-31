@@ -1,4 +1,4 @@
-package alchemical.client.core.display
+package alchemical.core.display
 {
 	import flash.geom.Rectangle;
 	import starling.display.Image;

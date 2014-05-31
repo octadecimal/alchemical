@@ -7,6 +7,7 @@ package alchemical.core.controller.startup
 	import alchemical.core.controller.notify.CNotifySystemReady;
 	import alchemical.debug.Debugger;
 	import alchemical.debug.tests.MExecuteTestCases;
+	import alchemical.game.controller.MLaunchGame;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.AsyncMacroCommand;
 	
@@ -34,6 +35,9 @@ package alchemical.core.controller.startup
 			
 			// System ready
 			addSubCommand(CNotifySystemReady);
+			
+			// Launch game (note: this will later be executed after login success)
+			addSubCommand(MLaunchGame);
 		}
 	}
 

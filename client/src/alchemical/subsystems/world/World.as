@@ -21,6 +21,17 @@ package alchemical.subsystems.world
 			if (CONFIG::debug) Debugger.data(this, "Created.");
 		}
 		
+		
+		
+		// ACCESSORS
+		// =========================================================================================
+		
+		/**
+		 * World sky.
+		 */
+		public function set sky(a:Sky):void		{ _sky = a; }
+		public function get sky():Sky			{ return _sky; }
+		private var _sky:Sky;
 	}
 
 }

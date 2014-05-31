@@ -25,6 +25,14 @@ package alchemical.debug.console
 		
 		public function execute(overlay:DebuggerOverlay, args:Array = null):void
 		{
+			if (args && args[0] == "help")
+			{
+				help(overlay);
+			}
+		}
+		
+		public function help(overlay:DebuggerOverlay):void 
+		{
 			
 		}
 		

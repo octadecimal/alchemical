@@ -1,7 +1,7 @@
 /**
  * Copyright 2014, Dylan Heyes
  */
-package alchemical.subsystems.world.proxy 
+package alchemical.subsystems.world.model 
 {
 	import alchemical.core.enum.ComponentNames;
 	import alchemical.debug.Debugger;

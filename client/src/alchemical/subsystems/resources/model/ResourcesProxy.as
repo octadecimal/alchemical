@@ -6,8 +6,11 @@ package alchemical.subsystems.resources.model
 	import alchemical.core.enum.ComponentNames;
 	import alchemical.debug.Debugger;
 	import alchemical.subsystems.resources.model.vo.ResourceVO;
+	import alchemical.subsystems.resources.Resources;
+	import flash.filesystem.File;
 	import flash.utils.Dictionary;
 	import org.puremvc.as3.patterns.proxy.Proxy;
+	import starling.textures.Texture;
 	
 	/**
 	 * ResourcesProxy
@@ -15,11 +18,15 @@ package alchemical.subsystems.resources.model
 	 */
 	public class ResourcesProxy extends Proxy 
 	{
+		private var _resources:Resources;
+		
 		/**
 		 * Constructor.
 		 */
-		public function ResourcesProxy() 
+		public function ResourcesProxy(resources:Resources) 
 		{
+			_resources = resources;
+			
 			super(ComponentNames.RESOURCES);
 			
 			_paths = new Dictionary();
@@ -28,7 +35,71 @@ package alchemical.subsystems.resources.model
 		
 		
 		
-		// API
+		// LOADING API
+		// =========================================================================================
+		
+		public function load(onProgress:Function):void 
+		{
+			_resources.loadQueue(onProgress);
+		}
+		
+		public function declareSkyTexture(id:int):void 
+		{
+			if (id >= _skies.length)
+			{
+				if (CONFIG::debug) Debugger.error(this, "Sky texture not found in manifest: " + id);
+				return;
+			}
+			
+			var texture:String = _skies[id].texture;
+			
+			if (!_skies[id].exists)
+			{
+				if (CONFIG::debug) Debugger.data(this, "Sky texture not loaded, enqueuing: " + id + " -> " + _skies[id].texture);
+				
+				_skies[id].exists = true;
+				enqueue(_paths["skies"], texture);
+			}
+			else
+			{
+				if (CONFIG::debug) Debugger.data(this, "Sky texture already loaded: " + id + " -> " + _skies[id].texture);
+			}
+		}
+		
+		private function enqueue(path:String, texture:String):void
+		{
+			if (CONFIG::debug) Debugger.enqueue(this, "Enqueuing: " + path + texture);
+			_resources.enqueue(File.applicationDirectory.resolvePath(path + texture + ".png"));
+		}
+		
+		public function getSkyTexture(id:int):Texture
+		{
+			if (id < _skies.length)
+			{
+				return getTexture(_skies[id].texture);
+			}
+			else
+			{
+				if (CONFIG::debug) Debugger.log(this, "Failed to load sky texture: "+id);
+				return null;
+			}
+		}
+		
+		public function getTexture(name:String):Texture
+		{
+			var texture:Texture = _resources.getTexture(name);
+			
+			if (texture == null)
+			{
+				if (CONFIG::debug) Debugger.log(this, "Attempted to retrieve null texture: " + name);
+			}
+			
+			return texture;
+		}
+		
+		
+		
+		// REGISTRATION API
 		// =========================================================================================
 		
 		/**

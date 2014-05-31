@@ -3,8 +3,8 @@
  */
 package alchemical.debug 
 {
-	import alchemical.debug.console.ConsoleCommand;
-	import alchemical.debug.console.ConsoleCommandHelp;
+	import alchemical.debug.console.*;
+	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.FocusEvent;
 	import flash.events.KeyboardEvent;
@@ -27,6 +27,7 @@ package alchemical.debug
 		private var _showing:Boolean = false;
 		private var _inputting:Boolean = false;
 		private var _commands:Dictionary = new Dictionary();
+		private var _progress:Shape = new Shape();
 		
 		/**
 		 * Constructor.
@@ -37,6 +38,7 @@ package alchemical.debug
 			build();
 			
 			_commands["help"] = new ConsoleCommandHelp("help");
+			_commands["load_sky"] = new ConsoleCommandLoadSky("load_sky");
 		}
 		
 		
@@ -71,6 +73,11 @@ package alchemical.debug
 			_buffer.width = width - PADDING * 2;
 			_buffer.height = height - PADDING * 2 - _input.height;
 			
+			_progress.graphics.beginFill(0x555555);
+			_progress.graphics.drawRect(0, 0, width, 2);
+			_progress.graphics.endFill();
+			_progress.y = _input.y - 1;
+			
 			if (stage) stage.focus = _input;
 		}
 		
@@ -79,6 +86,20 @@ package alchemical.debug
 			//_buffer.appendText(string + "\n");
 			_buffer.htmlText += "<font color='"+color+"'>" + string + "</font>";
 			_buffer.scrollV = _buffer.maxScrollV;
+		}
+		
+		public function setProgress(ratio:Number):void 
+		{
+			if (ratio < 1 && ratio != 0)
+			{
+				addChild(_progress);
+				_progress.scaleX = ratio;
+			}
+			else
+			{
+				if (_progress.parent)
+					removeChild(_progress);
+			}
 		}
 		
 		
@@ -173,6 +194,7 @@ package alchemical.debug
 			
 			if (_commands[command])
 			{
+				if (CONFIG::debug) Debugger.data(this, "Executing console command: " + command + " (" + args + ")");
 				ConsoleCommand(_commands[command]).execute(this, args);
 			}
 			else

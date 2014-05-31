@@ -21,11 +21,11 @@ package alchemical.core.controller.startup
 		{
 			if(CONFIG::debug) Debugger.info(this, "Creating subsystem: " + ComponentNames.RESOURCES);
 			
-			var assetManager:Resources = new Resources();
-			assetManager.verbose = true;
+			var resources:Resources = new Resources();
+			resources.verbose = true;
 			
-			facade.registerProxy(new ResourcesProxy());
-			facade.registerMediator(new ResourcesMediator(assetManager));
+			facade.registerProxy(new ResourcesProxy(resources));
+			facade.registerMediator(new ResourcesMediator(resources));
 			
 			if(CONFIG::debug) Debugger.info(this, "Subsystem created: " + ComponentNames.RESOURCES);
 			commandComplete();

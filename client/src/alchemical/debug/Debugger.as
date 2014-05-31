@@ -137,7 +137,7 @@ package alchemical.debug
 		 */
 		static public function error(caller:*, message:*, args:*=null):void 
 		{
-			output(prefixWithWhitespace(caller.toString(), 50) + " !!  ERROR: " + message, "#FF0000");
+			output(prefixWithWhitespace(caller.toString(), 50) + " !!! ERROR: " + message, "#FF0000");
 		}
 		
 		/**
@@ -149,6 +149,26 @@ package alchemical.debug
 		static public function warn(caller:*, message:*, args:*=null):void 
 		{
 			output(prefixWithWhitespace(caller.toString(), 50) + "  !  WARNING: " + message, "#FFFF00");
+		}
+		
+		/**
+		 * Adds a debug log.
+		 * @param	caller
+		 * @param	message
+		 * @param	args
+		 */
+		public static function enqueue(caller:*, message:*, args:*=null):void
+		{
+			output(prefixWithWhitespace(caller.toString(), 50) + "   > "+ message, "#F3E8A5");
+		}
+		
+		/**
+		 * Outputs progress.
+		 * @param	ratio
+		 */
+		public static function progress(ratio:Number):void
+		{
+			_overlay.setProgress(ratio);
 		}
 		
 		/**

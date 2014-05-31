@@ -7,7 +7,9 @@ package alchemical.core
 	import alchemical.core.model.vo.StartupVO;
 	import alchemical.core.notifications.ApplicationNotifications;
 	import alchemical.core.notifications.InputNotifications;
+	import alchemical.core.notifications.WorldNotifications;
 	import alchemical.debug.Debugger;
+	import alchemical.subsystems.world.controller.load.CLoadSky;
 	import org.puremvc.as3.patterns.facade.Facade;
 	
 	/**
@@ -16,12 +18,18 @@ package alchemical.core
 	 */
 	public class ApplicationFacade extends Facade 
 	{
+		// Singleton reference. Only allowed in debug mode.
+		(CONFIG::debug) 
+		static public var instance:ApplicationFacade;
+		
 		/**
 		 * Constructor.
 		 */
 		public function ApplicationFacade() 
 		{
 			super();
+			
+			if (CONFIG::debug) instance = this;
 		}
 		
 		
@@ -51,6 +59,12 @@ package alchemical.core
 			
 			// Core
 			registerCommand(ApplicationNotifications.STARTUP, MStartup);
+			
+			// Debug console
+			if (CONFIG::debug)
+			{
+				registerCommand(WorldNotifications.LOAD_SKY, CLoadSky);
+			}
 		}
 		
 		/**
