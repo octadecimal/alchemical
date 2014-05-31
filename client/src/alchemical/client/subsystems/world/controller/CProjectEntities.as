@@ -27,10 +27,10 @@ package alchemical.client.subsystems.world.controller
 				player.project(world.camera);
 			}
 			
-			for (var i:int = 0; i < world.npcs.length; i++)
+			/*for (var i:int = 0; i < world.npcs.length; i++)
 			{
 				world.npcs[i].project(world.camera);
-			}
+			}*/
 		}
 	}
 

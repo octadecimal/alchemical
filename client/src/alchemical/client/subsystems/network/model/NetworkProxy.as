@@ -162,7 +162,10 @@ package alchemical.client.subsystems.network.model
 			var vo:PlayerVO = _reader.definePlayer(bytes);
 			Debugger.log(this, "Player defined: " + vo.id + " -> " + vo.name);
 			
+			trace("REMAINING: " + bytes.bytesAvailable);
+			
 			sendNotification(NetworkNotes.PLAYER_DEFINED, vo);
+			sendNotification(NetworkNotes.LOGIN_SUCCESSFUL);
 		}
 		
 		/**
@@ -187,7 +190,6 @@ package alchemical.client.subsystems.network.model
 			Debugger.log(this, "Defined NPCs: " + npcs.length);
 			
 			sendNotification(NetworkNotes.NPCS_DEFINED, npcs);
-			sendNotification(NetworkNotes.LOGIN_SUCCESSFUL);
 		}
 		
 		/**

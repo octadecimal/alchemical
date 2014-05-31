@@ -65,7 +65,7 @@ package alchemical.client.debugger
 		
 		public function updatePlayer(player:Player):void
 		{
-			_tfPlayer.text = label("player") + player.transform.x.toFixed(1) + "," + player.transform.y.toFixed(1);
+			_tfPlayer.text = label("player") + player.ship.transform.x.toFixed(1) + "," + player.ship.transform.y.toFixed(1);
 		}
 		
 		

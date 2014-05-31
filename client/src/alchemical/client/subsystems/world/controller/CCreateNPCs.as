@@ -38,7 +38,7 @@ package alchemical.client.subsystems.world.controller
 				
 				npc = new NPC(vo.id);
 				
-				ship = WorldFactory.createShip(vo.id);
+				ship = WorldFactory.createShip(vo);
 				npc.ship = ship;
 				Sprite(npc.view).addChild(ship.view);
 				

@@ -25,7 +25,7 @@ package alchemical.client.subsystems.world.entities
 			_id = id;
 			_view = view;
 			_transform = transform ? transform : new TransformNode();
-			_dynamics = dynamics;
+			_dynamics = dynamics ? dynamics : new DynamicsNode();
 		}
 		
 		

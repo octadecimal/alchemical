@@ -3,11 +3,8 @@
  */
 package alchemical.client.subsystems.world.entities 
 {
-	import alchemical.client.subsystems.world.controller.animation.ForwardAnimationController;
 	import alchemical.client.subsystems.world.model.TransformNode;
 	import flash.geom.Point;
-	import flash.utils.setTimeout;
-	import starling.display.Sprite;
 	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
 	
@@ -15,16 +12,16 @@ package alchemical.client.subsystems.world.entities
 	 * Player
 	 * @author Dylan Heyes
 	 */
-	public class Player extends Entity 
+	public class Player/* extends Entity */
 	{
 		public function Player(id:int) 
 		{
-			super(id);
+			super(/*id*/);
 			
-			view.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			//view.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			
 			// Temp
-			view.addEventListener(EnterFrameEvent.ENTER_FRAME, onUpdate);
+			//view.addEventListener(EnterFrameEvent.ENTER_FRAME, onUpdate);
 		}
 		
 		private function onUpdate(e:EnterFrameEvent):void 

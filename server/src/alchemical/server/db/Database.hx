@@ -291,12 +291,12 @@ class Database
 		{
 			hull = {
 				id: row.id,
-				view: row.id,
+				view: row.view,
 				mass: row.mass
 			}
 		}
 		
-		Debugger.database("HULL: id=" + hull.id + " mass=" + hull.mass);
+		Debugger.database("HULL: id=" + hull.id + " view=" + hull.view + " mass=" + hull.mass);
 		return hull;
 	}
 	

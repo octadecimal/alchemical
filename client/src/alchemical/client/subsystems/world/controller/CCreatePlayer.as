@@ -5,6 +5,7 @@ package alchemical.client.subsystems.world.controller
 {
 	import alchemical.client.core.enum.ComponentNames;
 	import alchemical.client.debugger.Debugger;
+	import alchemical.client.subsystems.resources.Resources;
 	import alchemical.client.subsystems.world.controller.animation.FollowAnimationController;
 	import alchemical.client.subsystems.world.entities.Player;
 	import alchemical.client.subsystems.world.entities.Ship;
@@ -29,13 +30,14 @@ package alchemical.client.subsystems.world.controller
 			Debugger.log(this, "Creating player...");
 			
 			var worldProxy:WorldProxy = facade.retrieveProxy(ComponentNames.WORLD) as WorldProxy;
+			var resources:Resources = facade.retrieveMediator(ComponentNames.RESOURCES).getViewComponent() as Resources;
 			
-			var player:Player = new Player(0);	// TODO: Properly pull player id
+			var ship:Ship = WorldFactory.createShip(worldProxy.playerDefinition.ship, resources);
+			
+			var player:Player = new Player(worldProxy.playerDefinition.id);
 			facade.registerMediator(new PlayerMediator(player));
 			
-			var ship:Ship = WorldFactory.createShip(ship.id);
-			player.ship = ship;
-			Sprite(player.view).addChild(ship.view);
+			player.view = ship.view;
 			
 			player.animationController = new FollowAnimationController(player);
 			worldProxy.animationControllers.push(player.animationController);

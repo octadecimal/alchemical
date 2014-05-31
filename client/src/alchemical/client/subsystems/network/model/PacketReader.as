@@ -13,7 +13,6 @@ package alchemical.client.subsystems.network.model
 	import alchemical.client.subsystems.world.model.vo.ShipHullVO;
 	import alchemical.client.subsystems.world.model.vo.ShipVO;
 	import alchemical.client.subsystems.world.model.vo.WorldVO;
-	import flash.sampler.NewObjectSample;
 	import flash.utils.IDataInput;
 	
 	/**
@@ -81,9 +80,8 @@ package alchemical.client.subsystems.network.model
 			
 			var hullVO:ShipHullVO = new ShipHullVO();
 			hullVO.id = bytes.readShort();
+			hullVO.view = bytes.readShort();
 			hullVO.mass = bytes.readFloat();
-			
-			trace("HULL: " + hullVO);
 			
 			var numEngines:int = bytes.readShort();
 			var engineVOs:Vector.<ShipEngineVO> = new Vector.<ShipEngineVO>(numEngines);
@@ -91,12 +89,11 @@ package alchemical.client.subsystems.network.model
 			{
 				var engineVO:ShipEngineVO = new ShipEngineVO();
 				engineVO.id = bytes.readShort();
+				engineVO.view = bytes.readShort();
 				engineVO.thrust = bytes.readFloat();
 				engineVO.torque = bytes.readFloat();
 				
 				engineVOs[i] = engineVO;
-				
-				trace("ENGINE: " + engineVO);
 			}
 			
 			vo.hull = hullVO;
