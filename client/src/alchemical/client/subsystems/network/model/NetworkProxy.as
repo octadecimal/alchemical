@@ -162,7 +162,10 @@ package alchemical.client.subsystems.network.model
 			var vo:PlayerVO = _reader.definePlayer(bytes);
 			Debugger.log(this, "Player defined: " + vo.id + " -> " + vo.name);
 			
+			trace("REMAINING: " + bytes.bytesAvailable);
+			
 			sendNotification(NetworkNotes.PLAYER_DEFINED, vo);
+			sendNotification(NetworkNotes.LOGIN_SUCCESSFUL);
 		}
 		
 		/**
@@ -187,7 +190,6 @@ package alchemical.client.subsystems.network.model
 			Debugger.log(this, "Defined NPCs: " + npcs.length);
 			
 			sendNotification(NetworkNotes.NPCS_DEFINED, npcs);
-			sendNotification(NetworkNotes.LOGIN_SUCCESSFUL);
 		}
 		
 		/**
@@ -255,7 +257,7 @@ package alchemical.client.subsystems.network.model
 			{
 				// Get next command
 				command = bytes.readShort();
-				//Debugger.log(this, "Executing command: " + command);
+				Debugger.log(this, "Executing command: " + command);
 				
 				// Execute mapped command
 				_commandMap[command](bytes);
@@ -268,8 +270,6 @@ package alchemical.client.subsystems.network.model
 		 */
 		private function onSecondTimerTick(e:TimerEvent):void 
 		{
-			trace("IN: " + _inBytes + ", OUT: " + _outBytes);
-			
 			_inBytesPerSecond = _inBytes;
 			_outBytesPerSecond = _outBytes;
 			

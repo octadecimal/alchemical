@@ -43,7 +43,7 @@ class Physics
 			entity = entities[i];
 			transform = entity.transform;
 			dynamics = entity.dynamics;
-			destination = entity.destination;
+			destination = entity.dynamics.target;
 			
 			// Step toward target destination
 			if (destination != null)

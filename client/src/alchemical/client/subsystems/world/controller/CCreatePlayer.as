@@ -5,6 +5,7 @@ package alchemical.client.subsystems.world.controller
 {
 	import alchemical.client.core.enum.ComponentNames;
 	import alchemical.client.debugger.Debugger;
+	import alchemical.client.subsystems.resources.Resources;
 	import alchemical.client.subsystems.world.controller.animation.FollowAnimationController;
 	import alchemical.client.subsystems.world.entities.Player;
 	import alchemical.client.subsystems.world.entities.Ship;
@@ -15,6 +16,7 @@ package alchemical.client.subsystems.world.controller
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.SimpleCommand;
 	import starling.display.MovieClip;
+	import starling.display.Sprite;
 	import starling.utils.AssetManager;
 	
 	/**
@@ -28,13 +30,14 @@ package alchemical.client.subsystems.world.controller
 			Debugger.log(this, "Creating player...");
 			
 			var worldProxy:WorldProxy = facade.retrieveProxy(ComponentNames.WORLD) as WorldProxy;
+			var resources:Resources = facade.retrieveMediator(ComponentNames.RESOURCES).getViewComponent() as Resources;
 			
-			var player:Player = new Player();
+			var ship:Ship = WorldFactory.createShip(worldProxy.playerDefinition.ship, resources);
+			
+			var player:Player = new Player(worldProxy.playerDefinition.id);
 			facade.registerMediator(new PlayerMediator(player));
 			
-			var ship:Ship = WorldFactory.createShip(/*worldProxy.playerShipDefinition*/);
-			player.ship = ship;
-			player.view.addChild(ship.view);
+			player.view = ship.view;
 			
 			player.animationController = new FollowAnimationController(player);
 			worldProxy.animationControllers.push(player.animationController);

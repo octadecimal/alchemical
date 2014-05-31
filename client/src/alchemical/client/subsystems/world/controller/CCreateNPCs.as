@@ -14,6 +14,7 @@ package alchemical.client.subsystems.world.controller
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.AsyncCommand;
 	import starling.display.MovieClip;
+	import starling.display.Sprite;
 	import starling.textures.TextureAtlas;
 	import starling.utils.AssetManager;
 	
@@ -37,9 +38,9 @@ package alchemical.client.subsystems.world.controller
 				
 				npc = new NPC(vo.id);
 				
-				ship = WorldFactory.createShip(/*vo.ship*/);
+				ship = WorldFactory.createShip(vo);
 				npc.ship = ship;
-				npc.view.addChild(ship.view);
+				Sprite(npc.view).addChild(ship.view);
 				
 				npc.animationController = new FollowAnimationController(npc);
 				worldProxy.animationControllers.push(npc.animationController);

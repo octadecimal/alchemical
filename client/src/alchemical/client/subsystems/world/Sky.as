@@ -4,22 +4,18 @@
 package alchemical.client.subsystems.world 
 {
 	import alchemical.client.subsystems.world.entities.Camera;
-	import alchemical.client.subsystems.world.entities.Entity;
 	import starling.display.Sprite;
-	import starling.events.EnterFrameEvent;
 	import starling.textures.Texture;
 	
 	/**
 	 * Sky
 	 * @author Dylan Heyes
 	 */
-	public class Sky extends Entity 
+	public class Sky extends Sprite 
 	{
 		
-		public function Sky(view:Sprite = null) 
+		public function Sky() 
 		{
-			super(view);
-			
 			refresh(4);
 		}
 		
@@ -38,7 +34,7 @@ package alchemical.client.subsystems.world
 			if (_layers[index] == null)
 			{
 				_layers[index] = new SkyLayer(texture);
-				view.addChild(_layers[index]);
+				addChild(_layers[index]);
 			}
 			else
 			{
@@ -46,7 +42,7 @@ package alchemical.client.subsystems.world
 			}
 		}
 		
-		override public function project(camera:Camera):void
+		public function project(camera:Camera):void
 		{
 			var layer:SkyLayer;
 			

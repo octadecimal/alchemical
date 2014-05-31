@@ -15,9 +15,9 @@ package alchemical.client.subsystems.world.entities
 		/**
 		 * Constructor.
 		 */
-		public function Camera() 
+		public function Camera(id:int) 
 		{
-			super();
+			super(id);
 		}
 		
 		

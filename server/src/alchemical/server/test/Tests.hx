@@ -52,7 +52,7 @@ class Tests
 			r: Math.random() * Math.PI,
 		}
 		
-		var destination:TransformNode = {
+		var target:TransformNode = {
 			x: Math.random() * 1920,
 			y: Math.random() * 1080,
 			r: Math.random() * Math.PI,
@@ -65,7 +65,8 @@ class Tests
 			acceleration: 0,
 			angularAcceleration: 0,
 			vx: 0,
-			vy: 0
+			vy: 0,
+			target: target
 		}
 		
 		var entity:DynamicEntity = {
@@ -74,7 +75,6 @@ class Tests
 			transform: transform,
 			dynamics: dynamics,
 			state: 0,
-			destination: destination 
 		}
 		
 		return entity;

@@ -8,7 +8,6 @@ import alchemical.server.io.OutPacket;
 import alchemical.server.io.PacketBuilder;
 import alchemical.server.physics.Physics;
 import alchemical.server.Server.Client;
-import alchemical.server.Server.NPC;
 import alchemical.server.Server.World;
 import alchemical.server.test.Tests;
 import alchemical.server.util.Debugger;
@@ -99,12 +98,12 @@ class Server extends ThreadServer<Client, Message>
 		// Initialize npcs
 		for (i in 0..._worldMap.length)
 		{
-			var npcs:Array<NPC> = _database.getNPCsByWorld(i);
-			_worldMap[i].npcs = npcs;
+			var pilots:Array<Pilot> = _database.getPilotsByWorld(i);
+			_worldMap[i].pilots = pilots;
 			
-			for (j in 0...npcs.length)
+			for (j in 0...pilots.length)
 			{
-				_worldMap[i].entities.push(npcs[j]);
+				_worldMap[i].entities.push(pilots[j]);
 			}
 		}
 		
@@ -141,7 +140,7 @@ class Server extends ThreadServer<Client, Message>
 		
 		_clientMap[c.id] = null; // TODO: Splice from array?
 		
-		Debugger.server("Client disconnected: " + Std.string(c.id));
+		Debugger.info("Client disconnected: " + Std.string(c.id));
 		Debugger.server("Total connections: " + _numConnectedClients);
 		Debugger.server("Clients buffer: " + _clientMap.length);
 	}
@@ -206,11 +205,11 @@ class Server extends ThreadServer<Client, Message>
 	 */
 	private function sendToClient(client:Client, packet:OutPacket):Void
 	{
-		packet.writeCommand(Commands.END);
+		//packet.writeCommand(Commands.END);
 		
 		var outBytes:Bytes = packet.getBytes();
 		
-		Debugger.data("Sending " + outBytes.length + " bytes to client: " + client.id);
+		//Debugger.data("Sending " + outBytes.length + " bytes to client: " + client.id);
 		
 		client.sock.output.writeBytes(outBytes, 0, outBytes.length);
 		client.sock.output.flush();
@@ -253,7 +252,7 @@ class Server extends ThreadServer<Client, Message>
 	{	
 		super.update();
 		
-		var worldNPCs:Array<NPC>, npc:NPC;
+		var worldPilots:Array<Pilot>, pilot:Pilot;
 		
 		_passedTime = Timer.stamp() - _lastUpdateTime;
 		
@@ -273,12 +272,12 @@ class Server extends ThreadServer<Client, Message>
 			_physics.step(_worldMap[i].entities, _passedTime);
 			
 			// Update world NPCs
-			updateWorldNPCs(_worldMap[i]);
+			//updateWorldPilots(_worldMap[i]);
 			
 			// Send world outpacket
 			if (_worldMap[i].outPacket != null)
 			{
-				sendToWorldPlayers(_worldMap[i].id, _worldMap[i].outPacket);
+				//sendToWorldPlayers(_worldMap[i].id, _worldMap[i].outPacket);
 			}
 			
 			// Dispose outpacket
@@ -288,60 +287,51 @@ class Server extends ThreadServer<Client, Message>
 		_lastUpdateTime = Timer.stamp();
 	}
 	
-	private function updateWorldNPCs(world:World):Void
+	private function updateWorldPilots(world:World):Void
 	{
-		var currentNPC:NPC;
+		var currentPilot:Pilot;
 		
-		for (i in 0...world.npcs.length)
+		for (i in 0...world.pilots.length)
 		{
 			// Get current npc
-			currentNPC = world.npcs[i];
+			currentPilot = world.pilots[i];
 			
 			// Patrolling
-			if (currentNPC.state == EntityStates.IDLE)
+			if (currentPilot.state == EntityStates.IDLE)
 			{
 				// Has no target position
-				if (currentNPC.destination == null)
+				if (currentPilot.dynamics.target == null)
 				{
 					// Generate random target
-					moveWorldNPCTo(world, currentNPC, Math.random() * 1920, Math.random() * 1080);
+					moveEntityTo(world, currentPilot, Math.random() * 1920, Math.random() * 1080);
 				}
 			}
 				
 			// Handle target near
-			if (Math.abs(currentNPC.transform.x - currentNPC.destination.x) < 100)
+			if (Math.abs(currentPilot.transform.x - currentPilot.dynamics.target.x) < 100)
 			{
-				if (Math.abs(currentNPC.transform.y - currentNPC.destination.y) < 100)
+				if (Math.abs(currentPilot.transform.y - currentPilot.dynamics.target.y) < 100)
 				{
-					currentNPC.destination = null;
+					currentPilot.dynamics.target = null;
 					
 					//_delays.add(10, function ():Void {
-						currentNPC.state = EntityStates.IDLE;
+						currentPilot.state = EntityStates.IDLE;
 					//});
 				}
 			}
 			
 			// DEBUG: Write NPC position to packet
-			_builder.entityTransform(world, currentNPC);
+			_builder.entityTransform(world, currentPilot);
 		}
 	}
 	
-	private function moveWorldNPCTo(world:World, npc:NPC, x:Float, y:Float):Void
+	private function moveEntityTo(world:World, entity:DynamicEntity, x:Float, y:Float):Void
 	{
-		// Set state
-		npc.state = EntityStates.PATROLLING;
-		
 		// Set npc target position
-		npc.destination = { x: x, y: y, r: 0 };
+		entity.dynamics.target = { x: x, y: y, r: 0 };
 		
 		// Add to world outpacket
-		_builder.moveWorldNPCTo(world, npc, npc.destination);
-		
-		/*_delays.add(10, function ():Void
-		{
-			npc.destination = null;
-			npc.state = EntityStates.IDLE;
-		});*/
+		_builder.moveEntityTo(world, entity, entity.dynamics.target);
 	}
 	
 	
@@ -350,7 +340,7 @@ class Server extends ThreadServer<Client, Message>
 	// =========================================================================================
 	
 	/**
-	 * request: LOGIN
+	 * Handles a client login request.
 	 */
 	private function handleLoginRequest(client:Client, packet:InPacket):Void
 	{
@@ -378,17 +368,17 @@ class Server extends ThreadServer<Client, Message>
 			client.player.world = world.id;
 			
 			// Get player ship
-			var ship:Ship = _database.getPlayerShip(client.player.ship);
+			var ship:Ship = _database.getShip(client.player.ship);
 			
 			// Get world NPCS
-			var npcs:Array<NPC> = world.npcs;
+			var pilots:Array<Pilot> = world.pilots;
 			
 			// Build out packet
 			_builder.loginSuccess(outPacket);
 			_builder.defineWorld(outPacket, world);
-			_builder.definePlayer(outPacket, client.player);
-			_builder.definePlayerShip(outPacket, client.player, ship);
-			_builder.defineNPCs(outPacket, npcs);
+			_builder.definePlayer(outPacket, client.player, ship);
+			//_builder.defineShip(outPacket, client.player, ship);
+			//_builder.definePilots(outPacket, pilots);
 		}
 		else
 		{
@@ -411,7 +401,7 @@ class Server extends ThreadServer<Client, Message>
 	
 	
 	
-// TYPEDEFS
+// SERVER TYPEDEFS
 // =========================================================================================
 
 // Client type
@@ -427,26 +417,51 @@ typedef Message = {
 	var packet:InPacket;
 }
 
-// World type
-typedef World = {
-	var id:UInt;
+// Player
+typedef Player = {> DynamicEntity,
+	var user:Int;
 	var name:String;
-	var width:Int;
-	var height:Int;
-	var numSkyLayers:Int;
-	var skyLayers:Array<Int>;
-	var players:Array<Player>;
-	var npcs:Array<NPC>;
-	var entities:Array<DynamicEntity>;
-	var outPacket:OutPacket;
+	var ship:Int;
 }
 
-// Ship type
-typedef Ship = {
+
+
+// ENTITY TYPEDEFS
+// =========================================================================================
+
+// Entity
+typedef Entity = {
 	var id:Int;
-	var type:UInt;
-	var hull:UInt;
+	var world:Int;
+	var transform:TransformNode;
+	var state:Int;
 }
+
+// Dynamic Entity
+typedef DynamicEntity = {> Entity,
+	var dynamics:DynamicsNode;
+}
+
+// Pilot
+typedef Pilot = {> DynamicEntity,
+	var ship:Ship;
+	var faction:Int;
+}
+
+// Projectile
+typedef Projectile = {> DynamicEntity,
+	
+}
+
+// Structure
+typedef Structure = {> Entity,
+
+}
+
+
+
+// ENTITY SUBCOMPONENTS
+// =========================================================================================
 
 // Transform
 typedef TransformNode = {
@@ -464,41 +479,50 @@ typedef DynamicsNode = {
 	var angularAcceleration:Float;
 	var vx:Float;
 	var vy:Float;
+	var target:TransformNode;
 }
+	
 
-// Entity
-typedef Entity = {
-	var id:Int;
-	var world:Int;
-	var transform:TransformNode;
-	var state:Int;
-}
 
-// Dynamic Entity
-typedef DynamicEntity = {> Entity,
-	var dynamics:DynamicsNode;
-	var destination:TransformNode;
-}
+// WORLD TYPEDEFS
+// =========================================================================================
 
-// Player
-typedef Player = {> DynamicEntity,
-	var user:Int;
+// World type
+typedef World = {
+	var id:UInt;
 	var name:String;
-	var ship:Int;
+	var width:Int;
+	var height:Int;
+	var numSkyLayers:Int;
+	var skyLayers:Array<Int>;
+	var players:Array<Player>;
+	var pilots:Array<Pilot>;
+	var entities:Array<DynamicEntity>;
+	var outPacket:OutPacket;
 }
 
-// NPC
-typedef NPC = {> DynamicEntity,
-	 var ship:Int;
-	 var faction:Int;
+
+
+// SHIP TYPEDEFS
+// =========================================================================================
+
+// Ship type
+typedef Ship = {
+	var id:Int;
+	var type:Int;
+	var hull:ShipHull;
+	var engines:Array<ShipEngine>;
 }
 
-// Projectile
-typedef Projectile = {> DynamicEntity,
-	
+typedef ShipHull = {
+	var id:Int;
+	var view:Int;
+	var mass:Float;
 }
 
-// Structure
-typedef Structure = {> Entity,
-	
+typedef ShipEngine = {
+	var id:Int;
+	var view:Int;
+	var thrust:Float;
+	var torque:Float;
 }

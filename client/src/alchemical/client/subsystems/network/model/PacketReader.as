@@ -9,9 +9,10 @@ package alchemical.client.subsystems.network.model
 	import alchemical.client.subsystems.world.model.vo.MovementVO;
 	import alchemical.client.subsystems.world.model.vo.NPCVo;
 	import alchemical.client.subsystems.world.model.vo.PlayerVO;
+	import alchemical.client.subsystems.world.model.vo.ShipEngineVO;
+	import alchemical.client.subsystems.world.model.vo.ShipHullVO;
 	import alchemical.client.subsystems.world.model.vo.ShipVO;
 	import alchemical.client.subsystems.world.model.vo.WorldVO;
-	import flash.sampler.NewObjectSample;
 	import flash.utils.IDataInput;
 	
 	/**
@@ -59,11 +60,12 @@ package alchemical.client.subsystems.network.model
 			var vo:PlayerVO = new PlayerVO();
 			vo.id = bytes.readShort();
 			vo.name = bytes.readUTF();
-			vo.entity = bytes.readShort();
 			vo.x = bytes.readShort();
 			vo.y = bytes.readShort();
+			vo.r = bytes.readFloat();
+			vo.ship = defineShip(bytes);
 			
-			return vo;
+			return vo; 
 		}
 		
 		/**
@@ -75,7 +77,27 @@ package alchemical.client.subsystems.network.model
 			var vo:ShipVO = new ShipVO();
 			vo.id = bytes.readShort();
 			vo.type = bytes.readShort();
-			vo.hull = bytes.readShort();
+			
+			var hullVO:ShipHullVO = new ShipHullVO();
+			hullVO.id = bytes.readShort();
+			hullVO.view = bytes.readShort();
+			hullVO.mass = bytes.readFloat();
+			
+			var numEngines:int = bytes.readShort();
+			var engineVOs:Vector.<ShipEngineVO> = new Vector.<ShipEngineVO>(numEngines);
+			for (var i:int = 0; i < numEngines; i++)
+			{
+				var engineVO:ShipEngineVO = new ShipEngineVO();
+				engineVO.id = bytes.readShort();
+				engineVO.view = bytes.readShort();
+				engineVO.thrust = bytes.readFloat();
+				engineVO.torque = bytes.readFloat();
+				
+				engineVOs[i] = engineVO;
+			}
+			
+			vo.hull = hullVO;
+			vo.engines = engineVOs;
 			
 			return vo;
 		}

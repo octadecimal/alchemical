@@ -1,13 +1,13 @@
 package alchemical.server.io;
 import alchemical.server.const.Commands;
+import alchemical.server.io.OutPacket;
+import alchemical.server.Server.DynamicEntity;
 import alchemical.server.Server.Entity;
-import alchemical.server.Server.NPC;
+import alchemical.server.Server.Pilot;
 import alchemical.server.Server.Player;
 import alchemical.server.Server.Ship;
 import alchemical.server.Server.TransformNode;
 import alchemical.server.Server.World;
-import alchemical.server.io.OutPacket;
-import alchemical.server.util.Debugger;
 
 /**
  * ...
@@ -15,26 +15,39 @@ import alchemical.server.util.Debugger;
  */
 class PacketBuilder
 {
+	/**
+	 * Constructor.
+	 */
 	public function new()
 	{
 		
 	}
 	
-	
+	/**
+	 * Writes a login success responseto the input packet.
+	 * @param	packet
+	 */
 	public function loginSuccess(packet:OutPacket):Void
 	{
 		packet.writeCommand(Commands.LOGIN);
 		packet.writeBool(1);					// success
 	}
 	
-	
+	/**
+	 * Writes a login failure response to the input packet.
+	 * @param	packet
+	 */
 	public function loginFailure(packet:OutPacket):Void
 	{
 		packet.writeCommand(Commands.LOGIN);// LOGIN
 		packet.writeInt16(0);					// failure
 	}
 	
-	
+	/**
+	 * Writes a world definition in the input packet.
+	 * @param	packet
+	 * @param	world
+	 */
 	public function defineWorld(packet:OutPacket, world:World):Void
 	{
 		packet.writeCommand(Commands.DEFINE_WORLD);
@@ -50,45 +63,72 @@ class PacketBuilder
 		}
 	}
 	
-	
-	public function definePlayer(packet:OutPacket, player:Player) 
+	/**
+	 * Writes a player definition to the input packet.
+	 * @param	packet
+	 * @param	player
+	 */
+	public function definePlayer(packet:OutPacket, player:Player, ship:Ship) 
 	{
 		packet.writeCommand(Commands.DEFINE_PLAYER);
 		packet.writeInt16(player.id);
 		packet.writeString(player.name);
-		packet.writeInt16(player.ship);
 		packet.writeInt16(Std.int(player.transform.x));
 		packet.writeInt16(Std.int(player.transform.y));
+		packet.writeFloat(player.transform.r);
+		packet.writeShip(ship);
 	}
 	
-	public function definePlayerShip(packet:OutPacket, player:Player, ship:Ship) 
+	/**
+	 * Writes a ship definition to the input packet.
+	 * @param	packet
+	 * @param	player
+	 * @param	ship
+	 */
+	public function defineShip(packet:OutPacket, ship:Ship) 
 	{
-		packet.writeCommand(Commands.DEFINE_PLAYER_SHIP);
-		packet.writeInt16(ship.id);
-		packet.writeInt16(ship.type);
-		packet.writeInt16(ship.hull);
+		packet.writeCommand(Commands.DEFINE_SHIP);
+		packet.writeShip(ship);
 	}
 	
-	public function defineNPCs(packet:OutPacket, npcs:Array<NPC>) 
+	/**
+	 * Writes npc definitions to the input packet.
+	 * @param	packet
+	 * @param	npcs
+	 */
+	public function definePilots(packet:OutPacket, pilots:Array<Pilot>) 
 	{
-		var npc:NPC;
+		packet.writeCommand(Commands.DEFINE_PILOTS);
+		packet.writeInt16(pilots.length);				// num total npcs
 		
-		packet.writeCommand(Commands.DEFINE_NPCS);
-		packet.writeInt16(npcs.length);				// num total npcs
-		
-		for (i in 0...npcs.length)
+		for (i in 0...pilots.length)
 		{
-			npc = npcs[i];
-			packet.writeInt16(npc.id);
-			packet.writeInt16(npc.world);
-			packet.writeInt16(npc.ship);
-			packet.writeInt16(Std.int(npc.transform.x));
-			packet.writeInt16(Std.int(npc.transform.y));
-			packet.writeInt16(npc.faction);
+			definePilot(packet, pilots[i]);
 		}
 	}
 	
-	public function moveWorldNPCTo(world:World, npc:NPC, target:TransformNode) 
+	/**
+	 * Writes a pilot definition to the inputted packet.
+	 * @param	packet
+	 * @param	pilot
+	 */
+	public function definePilot(packet:OutPacket, pilot:Pilot)
+	{
+		packet.writeInt16(pilot.id);
+		packet.writeInt16(pilot.state);
+		packet.writeInt16(pilot.faction);
+		packet.writeTransform(pilot.transform);
+		packet.writeDynamics(pilot.dynamics);
+		packet.writeShip(pilot.ship);
+	}
+	
+	/**
+	 * Writes a move npc command to the input world 's out packet.
+	 * @param	world
+	 * @param	npc
+	 * @param	target
+	 */
+	public function moveEntityTo(world:World, entity:DynamicEntity, target:TransformNode) 
 	{
 		if (world.outPacket == null)
 		{
@@ -98,11 +138,18 @@ class PacketBuilder
 		var packet:OutPacket = world.outPacket;
 		
 		packet.writeCommand(Commands.MOVE_NPC);
-		packet.writeInt16(npc.id);
+		packet.writeInt16(entity.id);
 		packet.writeInt16(Std.int(target.x));
 		packet.writeInt16(Std.int(target.y));
 	}
 	
+	/**
+	 * Writes a chat message to the input world's out packet.
+	 * @param	world
+	 * @param	type
+	 * @param	msg
+	 * @param	name
+	 */
 	public function chatMessage(world:World, type:Int, msg:String, name:String) 
 	{
 		if (world.outPacket == null)
@@ -116,6 +163,11 @@ class PacketBuilder
 		world.outPacket.writeString(name);
 	}
 	
+	/**
+	 * Writes a entity transformation to the input world's out packet.
+	 * @param	world
+	 * @param	entity
+	 */
 	public function entityTransform(world:World, entity:Entity) 
 	{
 		if (world.outPacket == null)

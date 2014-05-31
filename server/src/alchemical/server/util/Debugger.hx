@@ -31,13 +31,13 @@ class Debugger
 	
 	static public function raw(msg:String) 
 	{
-		//Lib.println("   "+msg);
+		Lib.println("   "+msg);
 	}
 	
 	static public function rawCommand(msg:Dynamic) 
 	{
-		//Lib.println("");
-		//Lib.println("-- [CMD] " + msg);
+		Lib.println("");
+		Lib.println("-- [CMD] " + msg);
 	}
 	
 	static public function exec(msg:String) 
