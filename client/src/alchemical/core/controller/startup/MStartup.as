@@ -28,7 +28,7 @@ package alchemical.core.controller.startup
 			// Initialize subsystems
 			addSubCommand(MInitializeSubsystems);
 			
-			if (CONFIG::debug) addSubCommand(MExecuteTestCases);
+			//if (CONFIG::debug) addSubCommand(MExecuteTestCases);
 		}
 	}
 

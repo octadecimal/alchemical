@@ -22,6 +22,12 @@ package alchemical.subsystems.resources
 			super(scaleFactor, useMipmaps);
 			if (CONFIG::debug) Debugger.data(this, "Created.");
 		}
+		
+		
+		
+		// API
+		// =========================================================================================
+		
 	}
 
 }
