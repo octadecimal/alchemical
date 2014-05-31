@@ -75,7 +75,7 @@ package alchemical.debug
 		private static function output(string:String, color:String):void
 		{
 			if (!CONFIG::debug) throw new Error("Attempted debug operation on release settings.");
-			_overlay.addLine(string, color);
+			if(_overlay) _overlay.addLine(string, color);
 			trace(string);
 		}
 		
@@ -121,11 +121,11 @@ package alchemical.debug
 		{
 			if (body)
 			{
-				output(prefixWithWhitespace("~ ", 46) + notification + " (" + body + ")", "#444444");
+				output(prefixWithWhitespace("NOTIFICATION    ", 54) + " " + notification + " (" + body + ")", "#444488");
 			}
 			else
 			{
-				output(prefixWithWhitespace("~ ", 46) + notification, "#444444");
+				output(prefixWithWhitespace("NOTIFICATION    ", 54) + " " +  notification, "#444488");
 			}
 		}
 		

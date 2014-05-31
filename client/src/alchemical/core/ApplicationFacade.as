@@ -6,6 +6,8 @@ package alchemical.core
 	import alchemical.core.controller.startup.MStartup;
 	import alchemical.core.model.vo.StartupVO;
 	import alchemical.core.notifications.ApplicationNotifications;
+	import alchemical.core.notifications.InputNotifications;
+	import alchemical.debug.Debugger;
 	import org.puremvc.as3.patterns.facade.Facade;
 	
 	/**
@@ -49,6 +51,22 @@ package alchemical.core
 			
 			// Core
 			registerCommand(ApplicationNotifications.STARTUP, MStartup);
+		}
+		
+		/**
+		 * Send notification.
+		 * @param	notificationName
+		 * @param	body
+		 * @param	type
+		 */
+		override public function sendNotification(notificationName:String, body:Object = null, type:String = null):void 
+		{
+			if (notificationName != InputNotifications.MOUSE_WHEEL && notificationName != InputNotifications.KEY_DOWN && notificationName != InputNotifications.KEY_UP)
+			{
+				if(CONFIG::debug) Debugger.note(notificationName, body, type);
+			}
+			
+			super.sendNotification(notificationName, body, type);
 		}
 	}
 

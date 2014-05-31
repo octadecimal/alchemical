@@ -9,10 +9,10 @@ package alchemical.core.notifications
 	 */
 	public class ApplicationNotifications 
 	{
-		/**
-		 * Starts the application.
-		 */
 		static public const STARTUP:String = "startup";
+		static public const SUBSYSTEMS_CREATED:String = "subsystemsCreated";
+		static public const SUBSYSTEMS_INITIALIZED:String = "subsystemsInitialized";		
+		static public const SYSTEM_READY:String = "systemReady";
 	}
 
 }

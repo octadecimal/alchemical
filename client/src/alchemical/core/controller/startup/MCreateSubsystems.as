@@ -3,6 +3,7 @@
  */
 package alchemical.core.controller.startup 
 {
+	import alchemical.core.controller.notify.CNotifySubsystemsCreated;
 	import alchemical.debug.Debugger;
 	import org.puremvc.as3.patterns.command.AsyncMacroCommand;
 	
@@ -17,6 +18,8 @@ package alchemical.core.controller.startup
 			addSubCommand(CCreateSubsystemGraphics);
 			addSubCommand(CCreateSubsystemResources);
 			addSubCommand(CCreateSubsystemInput);
+			addSubCommand(CCreateSubsystemWorld);
+			addSubCommand(CNotifySubsystemsCreated);
 		}
 	}
 

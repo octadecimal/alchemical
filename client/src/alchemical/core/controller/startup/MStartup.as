@@ -4,6 +4,7 @@
 package alchemical.core.controller.startup 
 {
 	import alchemical.core.controller.initialize.MInitializeSubsystems;
+	import alchemical.core.controller.notify.CNotifySystemReady;
 	import alchemical.debug.Debugger;
 	import alchemical.debug.tests.MExecuteTestCases;
 	import org.puremvc.as3.interfaces.INotification;
@@ -28,7 +29,11 @@ package alchemical.core.controller.startup
 			// Initialize subsystems
 			addSubCommand(MInitializeSubsystems);
 			
-			//if (CONFIG::debug) addSubCommand(MExecuteTestCases);
+			// Debug test cases
+			if (CONFIG::debug) addSubCommand(MExecuteTestCases);
+			
+			// System ready
+			addSubCommand(CNotifySystemReady);
 		}
 	}
 
