@@ -3,17 +3,15 @@
  */
 package alchemical.debug 
 {
+	import alchemical.debug.console.ConsoleCommand;
+	import alchemical.debug.console.ConsoleCommandHelp;
 	import flash.display.Sprite;
 	import flash.events.FocusEvent;
 	import flash.events.KeyboardEvent;
-	import flash.events.MouseEvent;
-	import flash.events.TextEvent;
-	import flash.geom.Point;
 	import flash.text.TextField;
-	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFieldType;
 	import flash.text.TextFormat;
-	import flash.ui.Keyboard;
+	import flash.utils.Dictionary;
 	
 	/**
 	 * DebugOverlay
@@ -28,6 +26,7 @@ package alchemical.debug
 		private var _input:TextField;
 		private var _showing:Boolean = false;
 		private var _inputting:Boolean = false;
+		private var _commands:Dictionary = new Dictionary();
 		
 		/**
 		 * Constructor.
@@ -36,6 +35,8 @@ package alchemical.debug
 		{
 			super();
 			build();
+			
+			_commands["help"] = new ConsoleCommandHelp("help");
 		}
 		
 		
@@ -167,7 +168,17 @@ package alchemical.debug
 		
 		private function execute():void
 		{
-			Debugger.log(this, "EXECUTE: " + _input.text);
+			var args:Array = _input.text.split(" ");
+			var command:String = args.shift();
+			
+			if (_commands[command])
+			{
+				ConsoleCommand(_commands[command]).execute(this, args);
+			}
+			else
+			{
+				addLine("Command not found: " + command);
+			}
 		}
 	}
 
