@@ -161,9 +161,9 @@ package alchemical.subsystems.resources.model
 			}
 		}
 		
-		public function getShipEnginebayTextures(id:int):Vector.<Texture>
+		public function getShipEngineTextures(name:String):Vector.<Texture>
 		{
-			return _resources.getTextures(_enginebays[id].texture);
+			return _resources.getTextures(name);
 		}
 		
 		

@@ -5,6 +5,7 @@ package alchemical.subsystems.world.model
 {
 	import alchemical.core.enum.ComponentNames;
 	import alchemical.debug.Debugger;
+	import alchemical.subsystems.world.model.vo.ships.ShipEngineVO;
 	import alchemical.subsystems.world.model.vo.ships.ShipHullVO;
 	import org.puremvc.as3.patterns.proxy.Proxy;
 	
@@ -20,6 +21,7 @@ package alchemical.subsystems.world.model
 		public function WorldProxy() 
 		{
 			_shipHullDefinitions = new Vector.<ShipHullVO>();
+			_shipEngineDefinitions = new Vector.<ShipEngineVO>();
 			
 			super(ComponentNames.WORLD);
 			if (CONFIG::debug) Debugger.data(this, "Created.");
@@ -42,6 +44,12 @@ package alchemical.subsystems.world.model
 		 */
 		public function get shipHullDefinitions():Vector.<ShipHullVO>		{ return _shipHullDefinitions; }
 		private var _shipHullDefinitions:Vector.<ShipHullVO>;
+		
+		/**
+		 * Ship engine definitions.
+		 */
+		public function get shipEngineDefinitions():Vector.<ShipEngineVO>	{ return _shipEngineDefinitions; }
+		private var _shipEngineDefinitions:Vector.<ShipEngineVO>;
 	}
 
 }

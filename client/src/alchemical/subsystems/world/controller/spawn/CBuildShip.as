@@ -4,6 +4,7 @@
 package alchemical.subsystems.world.controller.spawn 
 {
 	import alchemical.core.enum.ComponentNames;
+	import alchemical.debug.Debugger;
 	import alchemical.subsystems.resources.model.ResourcesProxy;
 	import alchemical.subsystems.world.model.nodes.DynamicsNode;
 	import alchemical.subsystems.world.model.nodes.TransformNode;
@@ -42,10 +43,18 @@ package alchemical.subsystems.world.controller.spawn
 			ship.setHullTexture(hullTexture);
 			
 			// Engines
-			for (var i:int = 0; i < definition.enginebays.length; i++)
+			for (var i:int = 0; i < vo.engines.length; i++)
 			{
-				var engineTexture:Vector.<Texture> = resourcesProxy.getShipEnginebayTextures(vo.id);
-				ship.setEngineTextureAt(i, engineTexture);
+				if (i < definition.enginebays.length)
+				{
+					var textureName:String = worldProxy.shipEngineDefinitions[vo.engines[i]].texture;
+					var engineTexture:Vector.<Texture> = resourcesProxy.getShipEngineTextures(textureName);
+					ship.setEngineTextureAt(i, engineTexture, definition.enginebays[i].x, definition.enginebays[i].y);
+				}
+				else
+				{
+					if (CONFIG::debug) Debugger.warn(this, "Attempted to attach engine " + vo.engines[i] + " to a ship with no enginebays remaining: " + ship.id);
+				}
 			}
 			
 			// Add to world

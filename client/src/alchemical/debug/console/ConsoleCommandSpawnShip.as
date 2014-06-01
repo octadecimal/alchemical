@@ -49,6 +49,16 @@ package alchemical.debug.console
 				}
 			}
 			
+			if (args.length > 2)
+			{
+				var engines:Array = String(args[2]).split(",");
+				
+				for (var i:int = 0; i < engines.length; i++)
+				{
+					vo.engines.push(engines[i]);
+				}
+			}
+			
 			ApplicationFacade.instance.sendNotification(WorldNotifications.SPAWN_SHIP, vo);
 		}
 		
