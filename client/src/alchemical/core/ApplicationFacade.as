@@ -11,6 +11,7 @@ package alchemical.core
 	import alchemical.debug.Debugger;
 	import alchemical.subsystems.world.controller.load.CLoadSky;
 	import alchemical.subsystems.world.controller.spawn.MSpawnShip;
+	import alchemical.subsystems.world.controller.update.MUpdateWorld;
 	import org.puremvc.as3.patterns.facade.Facade;
 	
 	/**
@@ -61,6 +62,9 @@ package alchemical.core
 			// Core
 			registerCommand(ApplicationNotifications.STARTUP, MStartup);
 			
+			// World
+			registerCommand(WorldNotifications.UDPATE_WORLD, MUpdateWorld);
+			
 			// Debug console
 			if (CONFIG::debug)
 			{
@@ -77,7 +81,8 @@ package alchemical.core
 		 */
 		override public function sendNotification(notificationName:String, body:Object = null, type:String = null):void 
 		{
-			if (notificationName != InputNotifications.MOUSE_WHEEL && notificationName != InputNotifications.KEY_DOWN && notificationName != InputNotifications.KEY_UP)
+			if (notificationName != InputNotifications.MOUSE_WHEEL && notificationName != InputNotifications.KEY_DOWN && notificationName != InputNotifications.KEY_UP
+				&& notificationName != WorldNotifications.UDPATE_WORLD)
 			{
 				if(CONFIG::debug) Debugger.note(notificationName, body, type);
 			}

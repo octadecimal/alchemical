@@ -31,14 +31,14 @@ package alchemical.subsystems.world.controller.spawn
 			var resourcesProxy:ResourcesProxy = facade.retrieveProxy(ComponentNames.RESOURCES) as ResourcesProxy;
 			
 			// Ship entity
-			var ship:Ship = new Ship(new Sprite(), new TransformNode(), new DynamicsNode());
+			var ship:Ship = new Ship(new Sprite(), new TransformNode(vo.x, vo.y, vo.r), new DynamicsNode());
 			
 			// Hull
 			var hullTexture:Texture = resourcesProxy.getShipHullTexture(vo.id);
 			ship.setHullTexture(hullTexture);
 			
 			// Add to world
-			world.addChild(ship.view);
+			world.addEntity(ship);
 			
 		}
 	}

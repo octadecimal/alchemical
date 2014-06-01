@@ -10,10 +10,16 @@ package alchemical.subsystems.world.model.vo.spawn
 	public class SpawnShipVO 
 	{
 		public var id:int;
+		public var x:Number;
+		public var y:Number;
+		public var r:Number;
 		
-		public function SpawnShipVO(id:int) 
+		public function SpawnShipVO(id:int, x:Number = 0, y:Number = 0, r:Number = 0) 
 		{
 			this.id = id;
+			this.x = x;
+			this.y = y;
+			this.r = r;
 		}
 		
 	}

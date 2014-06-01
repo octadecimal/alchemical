@@ -11,6 +11,7 @@ package alchemical.core.notifications
 	{
 		static public const LOAD_SKY:String = "loadSky";
 		static public const SPAWN_SHIP:String = "spawnShip";
+		static public const UDPATE_WORLD:String = "udpateWorld";
 	}
 
 }
