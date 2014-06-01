@@ -21,7 +21,7 @@ package alchemical.core.controller.startup
 	{
 		override public function execute(notification:INotification):void 
 		{
-			Debugger.info(this, "Creating: " + ComponentNames.GAME);
+			if (CONFIG::debug) Debugger.info(this, "Creating: " + ComponentNames.GAME);
 			
 			// Get reference to game from starling
 			var starling:Starling = facade.retrieveMediator(ComponentNames.GRAPHICS).getViewComponent() as Starling;
@@ -34,7 +34,7 @@ package alchemical.core.controller.startup
 			facade.registerMediator(new GameMediator(game));
 			
 			// Complete
-			Debugger.info(this, "Created: " + ComponentNames.GAME);
+			if (CONFIG::debug) Debugger.info(this, "Created: " + ComponentNames.GAME);
 			commandComplete();
 		}
 	}

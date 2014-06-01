@@ -20,7 +20,7 @@ package alchemical.game.model
 		public function GameProxy(data:Object=null) 
 		{
 			super(ComponentNames.GAME, data);
-			Debugger.data(this, "Created.");
+			if (CONFIG::debug) Debugger.data(this, "Created.");
 		}
 	}
 }
