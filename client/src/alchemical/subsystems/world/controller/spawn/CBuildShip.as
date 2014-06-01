@@ -7,6 +7,7 @@ package alchemical.subsystems.world.controller.spawn
 	import alchemical.subsystems.resources.model.ResourcesProxy;
 	import alchemical.subsystems.world.model.nodes.DynamicsNode;
 	import alchemical.subsystems.world.model.nodes.TransformNode;
+	import alchemical.subsystems.world.model.vo.ships.ShipHullVO;
 	import alchemical.subsystems.world.model.vo.spawn.SpawnShipVO;
 	import alchemical.subsystems.world.model.WorldProxy;
 	import alchemical.subsystems.world.ships.Ship;
@@ -30,12 +31,22 @@ package alchemical.subsystems.world.controller.spawn
 			var worldProxy:WorldProxy = facade.retrieveProxy(ComponentNames.WORLD) as WorldProxy;
 			var resourcesProxy:ResourcesProxy = facade.retrieveProxy(ComponentNames.RESOURCES) as ResourcesProxy;
 			
+			// Get ship definition
+			var definition:ShipHullVO = worldProxy.shipHullDefinitions[vo.id];
+			
 			// Ship entity
 			var ship:Ship = new Ship(new Sprite(), new TransformNode(vo.x, vo.y, vo.r), new DynamicsNode());
 			
 			// Hull
 			var hullTexture:Texture = resourcesProxy.getShipHullTexture(vo.id);
 			ship.setHullTexture(hullTexture);
+			
+			// Engines
+			for (var i:int = 0; i < definition.enginebays.length; i++)
+			{
+				var engineTexture:Vector.<Texture> = resourcesProxy.getShipEnginebayTextures(vo.id);
+				ship.setEngineTextureAt(i, engineTexture);
+			}
 			
 			// Add to world
 			world.addEntity(ship);

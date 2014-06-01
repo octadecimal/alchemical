@@ -128,8 +128,7 @@ package alchemical.subsystems.resources.model
 				return;
 			}
 			
-			var atlasID:int = getAtlasIDByName(_hulls[id].atlas);
-			var atlas:ResourceVO = _atlases[atlasID];
+			var atlas:ResourceVO = _atlases[getAtlasIDByName(_hulls[id].atlas)];
 			
 			if (!atlas.exists)
 			{
@@ -145,6 +144,26 @@ package alchemical.subsystems.resources.model
 		public function getShipHullTexture(id:int):Texture
 		{
 			return _resources.getTexture(_hulls[id].texture);
+		}
+		
+		public function declareShipEngineTexture(id:int):void
+		{
+			var atlas:ResourceVO = _atlases[getAtlasIDByName(_enginebays[id].atlas)];
+			
+			if (!atlas.exists)
+			{
+				atlas.exists = true;
+				enqueue(_paths["ships"], atlas.texture, true);
+			}
+			else
+			{
+				if (CONFIG::debug) Debugger.data(this, "Ship engine texture already loaded: " + id + " -> " + enginebays[id].texture);
+			}
+		}
+		
+		public function getShipEnginebayTextures(id:int):Vector.<Texture>
+		{
+			return _resources.getTextures(_enginebays[id].texture);
 		}
 		
 		

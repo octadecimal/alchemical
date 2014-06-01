@@ -8,6 +8,7 @@ package alchemical.subsystems.world.ships
 	import alchemical.subsystems.world.model.nodes.TransformNode;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
+	import starling.display.MovieClip;
 	import starling.display.Sprite;
 	import starling.textures.Texture;
 	
@@ -18,6 +19,7 @@ package alchemical.subsystems.world.ships
 	public class Ship extends Entity 
 	{
 		private var _hull:Image;
+		private var _engines:Vector.<MovieClip>;
 		
 		/**
 		 * Constructor.
@@ -25,9 +27,11 @@ package alchemical.subsystems.world.ships
 		 * @param	transform
 		 * @param	dynamics
 		 */
-		public function Ship(view:DisplayObject=null, transform:TransformNode=null, dynamics:DynamicsNode=null) 
+		public function Ship(view:DisplayObject=null, transform:TransformNode=null, dynamics:DynamicsNode=null, numEnginebays:int = 0) 
 		{
 			super(view, transform, dynamics);
+			
+			_engines = new Vector.<MovieClip>(numEnginebays);
 		}
 		
 		
@@ -39,7 +43,19 @@ package alchemical.subsystems.world.ships
 		{
 			_hull = new Image(texture);
 			
+			_hull.pivotX = _hull.width / 2;
+			
 			Sprite(view).addChild(_hull);
+		}
+		
+		public function setEngineTextureAt(index:int, textures:Vector.<Texture>):void
+		{
+			var mc:MovieClip = new MovieClip(textures, 12);
+			_engines[index] = mc;
+			
+			mc.pivotX = mc.width / 2;
+			
+			Sprite(view).addChildAt(mc, 0);
 		}
 		
 	}
