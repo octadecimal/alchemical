@@ -11,7 +11,6 @@ package alchemical.subsystems.world.controller.spawn
 	import alchemical.subsystems.world.model.WorldProxy;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.AsyncCommand;
-	import starling.textures.Texture;
 	
 	/**
 	 * CSpawnShip

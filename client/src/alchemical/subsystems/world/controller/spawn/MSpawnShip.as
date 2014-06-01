@@ -14,6 +14,7 @@ package alchemical.subsystems.world.controller.spawn
 		override protected function initializeAsyncMacroCommand():void 
 		{
 			addSubCommand(CLoadShipTextures);
+			addSubCommand(CBuildShip);
 		}
 	}
 
