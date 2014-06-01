@@ -10,6 +10,7 @@ package alchemical.core
 	import alchemical.core.notifications.WorldNotifications;
 	import alchemical.debug.Debugger;
 	import alchemical.subsystems.world.controller.load.CLoadSky;
+	import alchemical.subsystems.world.controller.spawn.MSpawnShip;
 	import org.puremvc.as3.patterns.facade.Facade;
 	
 	/**
@@ -64,6 +65,7 @@ package alchemical.core
 			if (CONFIG::debug)
 			{
 				registerCommand(WorldNotifications.LOAD_SKY, CLoadSky);
+				registerCommand(WorldNotifications.SPAWN_SHIP, MSpawnShip);
 			}
 		}
 		

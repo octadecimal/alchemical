@@ -17,6 +17,7 @@ package alchemical.core.controller.initialize
 			addSubCommand(MInitializeSubsystemGraphics);
 			addSubCommand(MInitializeSubsystemInput);
 			addSubCommand(MInitializeSubsystemResources);
+			addSubCommand(MInitializeSubsystemWorld);
 			addSubCommand(CNotifySubsystemsInitialized);
 		}
 	}

@@ -4,6 +4,7 @@
 package alchemical.subsystems.resources 
 {
 	import alchemical.debug.Debugger;
+	import flash.filesystem.File;
 	import starling.utils.AssetManager;
 	
 	/**
@@ -28,6 +29,12 @@ package alchemical.subsystems.resources
 		// API
 		// =========================================================================================
 		
+		override public function enqueue(...rawAssets):void 
+		{
+			var file:File = rawAssets.concat()[0] as File;
+			if (CONFIG::debug) Debugger.enqueue(this, "Enqueuing: " + file.nativePath);
+			super.enqueue(file);
+		}
 	}
 
 }

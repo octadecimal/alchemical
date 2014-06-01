@@ -30,9 +30,10 @@ package alchemical.subsystems.resources.controller
 			}
 			
 			// Parse atlases
+			resourcesProxy.initializeAtlases(manifest.atlases.children().length());
 			for each(var atlas:XML in manifest.atlases.children())
 			{
-				resourcesProxy.registerAtlas(atlas.@name, atlas.@texture);
+				resourcesProxy.registerAtlas(new ResourceVO(atlas.@id, atlas.@texture, atlas.@atlas));
 			}
 			
 			// Parse skies

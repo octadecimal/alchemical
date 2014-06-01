@@ -30,7 +30,6 @@ package alchemical.subsystems.resources.model
 			super(ComponentNames.RESOURCES);
 			
 			_paths = new Dictionary();
-			_atlases = new Dictionary();
 		}
 		
 		
@@ -42,6 +41,43 @@ package alchemical.subsystems.resources.model
 		{
 			_resources.loadQueue(onProgress);
 		}
+		
+		private function enqueue(path:String, texture:String, isAtlas:Boolean = false):void
+		{
+			_resources.enqueue(File.applicationDirectory.resolvePath(path + texture + ".png"));
+			
+			if (isAtlas)
+			{
+				_resources.enqueue(File.applicationDirectory.resolvePath(path + texture + ".xml"));
+			}
+		}
+		
+		public function getTexture(name:String):Texture
+		{
+			var texture:Texture = _resources.getTexture(name);
+			
+			if (texture == null)
+			{
+				if (CONFIG::debug) Debugger.log(this, "Attempted to retrieve null texture: " + name);
+			}
+			
+			return texture;
+		}
+		
+		private function getAtlasIDByName(name:String):int 
+		{
+			for (var i:int = 0; i < _atlases.length; i++)
+				if (_atlases[i].atlas == name)
+					return _atlases[i].id;
+			
+			if (CONFIG::debug) Debugger.warn(this, "Texture atlas not found: " + name);
+			return -1;
+		}
+		
+		
+		
+		// SKY API
+		// =========================================================================================
 		
 		public function declareSkyTexture(id:int):void 
 		{
@@ -66,12 +102,6 @@ package alchemical.subsystems.resources.model
 			}
 		}
 		
-		private function enqueue(path:String, texture:String):void
-		{
-			if (CONFIG::debug) Debugger.enqueue(this, "Enqueuing: " + path + texture);
-			_resources.enqueue(File.applicationDirectory.resolvePath(path + texture + ".png"));
-		}
-		
 		public function getSkyTexture(id:int):Texture
 		{
 			if (id < _skies.length)
@@ -85,16 +115,36 @@ package alchemical.subsystems.resources.model
 			}
 		}
 		
-		public function getTexture(name:String):Texture
+		
+		
+		// SHIP API
+		// =========================================================================================
+		
+		public function declareShipHullTexture(id:int):void
 		{
-			var texture:Texture = _resources.getTexture(name);
-			
-			if (texture == null)
+			if (id >= _hulls.length)
 			{
-				if (CONFIG::debug) Debugger.log(this, "Attempted to retrieve null texture: " + name);
+				if (CONFIG::debug) Debugger.log(this, "Ship hull texture not found in manifest: " + id);
+				return;
 			}
 			
-			return texture;
+			var atlasID:int = getAtlasIDByName(_hulls[id].atlas);
+			var atlas:ResourceVO = _atlases[atlasID];
+			
+			if (!atlas.exists)
+			{
+				atlas.exists = true;
+				enqueue(_paths["ships"], atlas.texture, true);
+			}
+			else
+			{
+				if (CONFIG::debug) Debugger.data(this, "Ship hull texture already loaded: " + id + " -> " + _hulls[id].texture);
+			}
+		}
+		
+		public function getShipHullTexture(id:int):Texture
+		{
+			return _resources.getTexture(_hulls[id].texture);
 		}
 		
 		
@@ -114,14 +164,24 @@ package alchemical.subsystems.resources.model
 		}
 		
 		/**
+		 * Initializes texture atlas lookup storage.
+		 * @param	length
+		 */
+		public function initializeAtlases(length:int):void
+		{
+			_atlases = new Vector.<ResourceVO>(length);
+			if (CONFIG::debug) Debugger.log(this, "Initializing texture atlases: "+length);
+		}
+		
+		/**
 		 * Registers a texture atlas.
 		 * @param	name
 		 * @param	texture
 		 */
-		public function registerAtlas(name:String, texture:String):void 
+		public function registerAtlas(vo:ResourceVO):void 
 		{
-			_atlases[name] = texture;
-			if (CONFIG::debug) Debugger.data(this, "Atlas registered: " + name + " -> " + texture);
+			_atlases[vo.id] = vo;
+			if (CONFIG::debug) Debugger.data(this, "Atlas registered: " + vo.id + " -> " + vo.atlas + " -> " + vo.texture);
 		}
 		
 		/**
@@ -205,8 +265,8 @@ package alchemical.subsystems.resources.model
 		/**
 		 * Texture atlases.
 		 */
-		public function get atlases():Dictionary				{ return _atlases; }
-		private var _atlases:Dictionary;
+		public function get atlases():Vector.<ResourceVO>		{ return _atlases; }
+		private var _atlases:Vector.<ResourceVO>;
 		
 		/**
 		 * Sky textures.
