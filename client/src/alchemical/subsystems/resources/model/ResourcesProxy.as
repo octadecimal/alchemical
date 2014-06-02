@@ -6,6 +6,8 @@ package alchemical.subsystems.resources.model
 	import alchemical.core.enum.ComponentNames;
 	import alchemical.debug.Debugger;
 	import alchemical.subsystems.resources.model.vo.ResourceVO;
+	import alchemical.subsystems.resources.model.vo.TextureAtlasVO;
+	import alchemical.subsystems.resources.model.vo.TextureVO;
 	import alchemical.subsystems.resources.Resources;
 	import flash.filesystem.File;
 	import flash.utils.Dictionary;
@@ -30,12 +32,29 @@ package alchemical.subsystems.resources.model
 			super(ComponentNames.RESOURCES);
 			
 			_paths = new Dictionary();
+			_textures = new Dictionary();
 		}
 		
 		
 		
 		// LOADING API
 		// =========================================================================================
+		
+		public function declareTexture(name:String):void
+		{
+			var vo:TextureVO = TextureVO(_textures[name]);
+			var atlas:TextureAtlasVO = _atlases[vo.atlas];
+			
+			if (!atlas.loaded)
+			{
+				atlas.loaded = true;
+				enqueue(_paths["ships"], atlas.texture, true);
+			}
+			else
+			{
+				if (CONFIG::debug) Debugger.data(this, "Texture already loaded: " + name + " -> " + vo.subtexture + " -> " + vo.atlas);
+			}
+		}
 		
 		public function load(onProgress:Function):void 
 		{
@@ -54,7 +73,7 @@ package alchemical.subsystems.resources.model
 		
 		public function getTexture(name:String):Texture
 		{
-			var texture:Texture = _resources.getTexture(name);
+			var texture:Texture = _resources.getTexture(TextureVO(_textures[name]).subtexture);
 			
 			if (texture == null)
 			{
@@ -64,14 +83,9 @@ package alchemical.subsystems.resources.model
 			return texture;
 		}
 		
-		private function getAtlasIDByName(name:String):int 
+		public function getTextures(name:String):Vector.<Texture>
 		{
-			for (var i:int = 0; i < _atlases.length; i++)
-				if (_atlases[i].atlas == name)
-					return _atlases[i].id;
-			
-			if (CONFIG::debug) Debugger.warn(this, "Texture atlas not found: " + name);
-			return -1;
+			return _resources.getTextures(name);
 		}
 		
 		
@@ -117,57 +131,6 @@ package alchemical.subsystems.resources.model
 		
 		
 		
-		// SHIP API
-		// =========================================================================================
-		
-		public function declareShipHullTexture(id:int):void
-		{
-			if (id >= _hulls.length)
-			{
-				if (CONFIG::debug) Debugger.log(this, "Ship hull texture not found in manifest: " + id);
-				return;
-			}
-			
-			var atlas:ResourceVO = _atlases[getAtlasIDByName(_hulls[id].atlas)];
-			
-			if (!atlas.exists)
-			{
-				atlas.exists = true;
-				enqueue(_paths["ships"], atlas.texture, true);
-			}
-			else
-			{
-				if (CONFIG::debug) Debugger.data(this, "Ship hull texture already loaded: " + id + " -> " + _hulls[id].texture);
-			}
-		}
-		
-		public function getShipHullTexture(id:int):Texture
-		{
-			return _resources.getTexture(_hulls[id].texture);
-		}
-		
-		public function declareShipEngineTexture(id:int):void
-		{
-			var atlas:ResourceVO = _atlases[getAtlasIDByName(_enginebays[id].atlas)];
-			
-			if (!atlas.exists)
-			{
-				atlas.exists = true;
-				enqueue(_paths["ships"], atlas.texture, true);
-			}
-			else
-			{
-				if (CONFIG::debug) Debugger.data(this, "Ship engine texture already loaded: " + id + " -> " + enginebays[id].texture);
-			}
-		}
-		
-		public function getShipEngineTextures(name:String):Vector.<Texture>
-		{
-			return _resources.getTextures(name);
-		}
-		
-		
-		
 		// REGISTRATION API
 		// =========================================================================================
 		
@@ -188,7 +151,7 @@ package alchemical.subsystems.resources.model
 		 */
 		public function initializeAtlases(length:int):void
 		{
-			_atlases = new Vector.<ResourceVO>(length);
+			_atlases = new Vector.<TextureAtlasVO>(length);
 			if (CONFIG::debug) Debugger.log(this, "Initializing texture atlases: "+length);
 		}
 		
@@ -197,10 +160,20 @@ package alchemical.subsystems.resources.model
 		 * @param	name
 		 * @param	texture
 		 */
-		public function registerAtlas(vo:ResourceVO):void 
+		public function registerAtlas(vo:TextureAtlasVO):void 
 		{
 			_atlases[vo.id] = vo;
-			if (CONFIG::debug) Debugger.data(this, "Atlas registered: " + vo.id + " -> " + vo.atlas + " -> " + vo.texture);
+			if (CONFIG::debug) Debugger.data(this, "Atlas registered: " + vo.id + " -> " + vo.texture);
+		}
+		
+		/**
+		 * Registers a texture.
+		 * @param	resourceVO
+		 */
+		public function registerTexture(vo:TextureVO):void 
+		{
+			_textures[vo.name] = vo;
+			if (CONFIG::debug) Debugger.data(this, "Texture registered: " + vo.id + " -> " + vo.name + " -> " + vo.subtexture + " -> " + vo.atlas);
 		}
 		
 		/**
@@ -221,46 +194,6 @@ package alchemical.subsystems.resources.model
 		{
 			_skies[vo.id] = vo;
 			if (CONFIG::debug) Debugger.data(this, "Sky registered: " + vo.id + " -> " + vo.texture);
-		}
-		
-		/**
-		 * Initializes hull lookup storage.
-		 * @param	length
-		 */
-		public function initializeHulls(length:int):void 
-		{
-			_hulls = new Vector.<ResourceVO>(length);
-			if (CONFIG::debug) Debugger.log(this, "Initializing hulls: "+length);
-		}
-		
-		/**
-		 * Registers a hull texture lookup.
-		 * @param	vo
-		 */
-		public function registerHull(vo:ResourceVO):void
-		{
-			_hulls[vo.id] = vo;
-			if (CONFIG::debug) Debugger.data(this, "Hull registered: " + vo.id + " -> " + vo.texture + " -> " + vo.atlas);
-		}
-		
-		/**
-		 * Initializes enginebay lookup storage.
-		 * @param	length
-		 */
-		public function initializeEnginebays(length:int):void 
-		{
-			_enginebays = new Vector.<ResourceVO>(length);
-			if (CONFIG::debug) Debugger.log(this, "Initializing enginebays: "+length);
-		}
-		
-		/**
-		 * Registers a enginebay texture lookup.
-		 * @param	vo
-		 */
-		public function registerEnginebay(vo:ResourceVO):void
-		{
-			_enginebays[vo.id] = vo;
-			if (CONFIG::debug) Debugger.data(this, "Enginebay registered: " + vo.id + " -> " + vo.texture + " -> " + vo.atlas);
 		}
 		
 		
@@ -284,26 +217,20 @@ package alchemical.subsystems.resources.model
 		/**
 		 * Texture atlases.
 		 */
-		public function get atlases():Vector.<ResourceVO>		{ return _atlases; }
-		private var _atlases:Vector.<ResourceVO>;
+		public function get atlases():Vector.<TextureAtlasVO>	{ return _atlases; }
+		private var _atlases:Vector.<TextureAtlasVO>;
+		
+		/**
+		 * Textures.
+		 */
+		public function get textures():Dictionary				{ return _textures; }
+		private var _textures:Dictionary;
 		
 		/**
 		 * Sky textures.
 		 */
 		public function get skies():Vector.<ResourceVO>			{ return _skies; }
 		private var _skies:Vector.<ResourceVO>;
-		
-		/**
-		 * Hull textures.
-		 */
-		public function get hulls():Vector.<ResourceVO>			{ return _hulls; }
-		private var _hulls:Vector.<ResourceVO>;
-		
-		/**
-		 * Enginebay textures.
-		 */
-		public function get enginebays():Vector.<ResourceVO>	{ return _enginebays; }
-		private var _enginebays:Vector.<ResourceVO>;
 	}
 
 }

@@ -7,6 +7,8 @@ package alchemical.subsystems.resources.controller
 	import alchemical.debug.Debugger;
 	import alchemical.subsystems.resources.model.ResourcesProxy;
 	import alchemical.subsystems.resources.model.vo.ResourceVO;
+	import alchemical.subsystems.resources.model.vo.TextureAtlasVO;
+	import alchemical.subsystems.resources.model.vo.TextureVO;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.AsyncCommand;
 	
@@ -33,7 +35,7 @@ package alchemical.subsystems.resources.controller
 			resourcesProxy.initializeAtlases(manifest.atlases.children().length());
 			for each(var atlas:XML in manifest.atlases.children())
 			{
-				resourcesProxy.registerAtlas(new ResourceVO(atlas.@id, atlas.@texture, atlas.@atlas));
+				resourcesProxy.registerAtlas(new TextureAtlasVO(atlas.@id, atlas.@texture));
 			}
 			
 			// Parse skies
@@ -43,18 +45,10 @@ package alchemical.subsystems.resources.controller
 				resourcesProxy.registerSky(new ResourceVO(int(sky.@id), sky.@texture));
 			}
 			
-			// Parse hulls
-			resourcesProxy.initializeHulls(manifest.hulls.children().length());
-			for each(var hull:XML in manifest.hulls.children())
+			// Parse textures
+			for each(var texture:XML in manifest.textures.children())
 			{
-				resourcesProxy.registerHull(new ResourceVO(int(hull.@id), hull.@texture, hull.@atlas));
-			}
-			
-			// Parse enginebays
-			resourcesProxy.initializeEnginebays(manifest.enginebays.children().length());
-			for each(var enginebay:XML in manifest.enginebays.children())
-			{
-				resourcesProxy.registerEnginebay(new ResourceVO(int(enginebay.@id), enginebay.@texture, enginebay.@atlas));
+				resourcesProxy.registerTexture(new TextureVO(texture.@name, texture.@subtexture, texture.@atlas));
 			}
 			
 			// Complete

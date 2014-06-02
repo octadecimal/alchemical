@@ -39,7 +39,8 @@ package alchemical.subsystems.world.controller.spawn
 			var ship:Ship = new Ship(new Sprite(), new TransformNode(vo.x, vo.y, vo.r), new DynamicsNode());
 			
 			// Hull
-			var hullTexture:Texture = resourcesProxy.getShipHullTexture(vo.id);
+			var hullTextureName:String = worldProxy.shipHullDefinitions[vo.id].texture;
+			var hullTexture:Texture = resourcesProxy.getTexture(hullTextureName);
 			ship.setHullTexture(hullTexture);
 			
 			// Engines
@@ -48,7 +49,7 @@ package alchemical.subsystems.world.controller.spawn
 				if (i < definition.enginebays.length)
 				{
 					var textureName:String = worldProxy.shipEngineDefinitions[vo.engines[i]].texture;
-					var engineTexture:Vector.<Texture> = resourcesProxy.getShipEngineTextures(textureName);
+					var engineTexture:Vector.<Texture> = resourcesProxy.getTextures(textureName);
 					ship.setEngineTextureAt(i, engineTexture, definition.enginebays[i].x, definition.enginebays[i].y);
 				}
 				else

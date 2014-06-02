@@ -28,7 +28,7 @@ package alchemical.subsystems.world.controller.spawn
 			
 			var hullDefinition:ShipHullVO = worldProxy.shipHullDefinitions[vo.id];
 			
-			resourcesProxy.declareShipHullTexture(hullDefinition.id);
+			resourcesProxy.declareTexture(hullDefinition.texture);
 			
 			resourcesProxy.load(function onProgress(ratio:Number):void
 			{
