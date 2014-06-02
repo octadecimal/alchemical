@@ -4,6 +4,7 @@
 package alchemical.subsystems.world 
 {
 	import alchemical.debug.Debugger;
+	import org.osflash.signals.Signal;
 	import starling.display.Sprite;
 	import starling.textures.Texture;
 	
@@ -13,6 +14,8 @@ package alchemical.subsystems.world
 	 */
 	public class Sky extends Sprite 
 	{
+		public var sigLayerDisposed:Signal = new Signal(SkyLayer);
+		
 		/**
 		 * Constructor.
 		 */
@@ -60,7 +63,8 @@ package alchemical.subsystems.world
 				
 				for (i = 0; i < _layers.length; i++)
 				{
-					_layers[i] = new SkyLayer(textures[i]);
+					_layers[i] = new SkyLayer(i, textures[i]);
+					_layers[i].sigOnDispose.add(onLayerDisposed);
 				}
 			}
 			else
@@ -88,9 +92,20 @@ package alchemical.subsystems.world
 				for (i = copy.length; i < textures.length; i++)
 				{
 					if (CONFIG::debug) Debugger.data(this, "Filling: " + i);
-					_layers[i] = new SkyLayer(textures[i]);
+					_layers[i] = new SkyLayer(i, textures[i]);
+					_layers[i].sigOnDispose.add(onLayerDisposed);
 				}
 			}
+		}
+		
+		
+		
+		// SIGNALS
+		// =========================================================================================
+		
+		private function onLayerDisposed(layer:SkyLayer):void 
+		{
+			sigLayerDisposed.dispatch(layer);
 		}
 		
 		

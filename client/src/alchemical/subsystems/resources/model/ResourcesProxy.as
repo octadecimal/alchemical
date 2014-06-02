@@ -9,6 +9,7 @@ package alchemical.subsystems.resources.model
 	import alchemical.subsystems.resources.model.vo.TextureAtlasVO;
 	import alchemical.subsystems.resources.model.vo.TextureVO;
 	import alchemical.subsystems.resources.Resources;
+	import alchemical.subsystems.world.SkyLayer;
 	import flash.filesystem.File;
 	import flash.utils.Dictionary;
 	import org.puremvc.as3.patterns.proxy.Proxy;
@@ -40,6 +41,10 @@ package alchemical.subsystems.resources.model
 		// LOADING API
 		// =========================================================================================
 		
+		/**
+		 * Declares a texture for usage.
+		 * @param	name
+		 */
 		public function declareTexture(name:String):void
 		{
 			var vo:TextureVO = TextureVO(_textures[name]);
@@ -56,11 +61,21 @@ package alchemical.subsystems.resources.model
 			}
 		}
 		
+		/**
+		 * Loads any enqueud textures.
+		 * @param	onProgress
+		 */
 		public function load(onProgress:Function):void 
 		{
 			_resources.loadQueue(onProgress);
 		}
 		
+		/**
+		 * Enqueues a texture for loading.
+		 * @param	path
+		 * @param	texture
+		 * @param	isAtlas
+		 */
 		private function enqueue(path:String, texture:String, isAtlas:Boolean = false):void
 		{
 			_resources.enqueue(File.applicationDirectory.resolvePath(path + texture + ".png"));
@@ -71,6 +86,11 @@ package alchemical.subsystems.resources.model
 			}
 		}
 		
+		/**
+		 * Retrieves a texture by name.
+		 * @param	name
+		 * @return
+		 */
 		public function getTexture(name:String):Texture
 		{
 			var texture:Texture = _resources.getTexture(TextureVO(_textures[name]).subtexture);
@@ -83,9 +103,14 @@ package alchemical.subsystems.resources.model
 			return texture;
 		}
 		
+		/**
+		 * Retrieves a set of textures by name.
+		 * @param	name
+		 * @return
+		 */
 		public function getTextures(name:String):Vector.<Texture>
 		{
-			return _resources.getTextures(name);
+			return _resources.getTextures(TextureVO(_textures[name]).subtexture);
 		}
 		
 		
@@ -93,6 +118,10 @@ package alchemical.subsystems.resources.model
 		// SKY API
 		// =========================================================================================
 		
+		/**
+		 * Declares a sky texture.
+		 * @param	id
+		 */
 		public function declareSkyTexture(id:int):void 
 		{
 			if (id >= _skies.length)
@@ -116,11 +145,34 @@ package alchemical.subsystems.resources.model
 			}
 		}
 		
+		/**
+		 * Undeclares a sky texture.
+		 * @param	skyLayer
+		 */
+		public function undeclareSkyTexture(skyLayer:SkyLayer):void 
+		{
+			if (CONFIG::debug) Debugger.data(this, "Disposing sky layer: "+skyLayer.id + " -> " + _skies[skyLayer.id].texture);
+			_skies[skyLayer.id].exists = false;
+			skyLayer.texture.dispose();
+		}
+		
+		/**
+		 * Retrieves a sky texture.
+		 * @param	id
+		 * @return
+		 */
 		public function getSkyTexture(id:int):Texture
 		{
 			if (id < _skies.length)
 			{
-				return getTexture(_skies[id].texture);
+				var texture:Texture = _resources.getTexture(_skies[id].texture);
+			
+				if (texture == null)
+				{
+					if (CONFIG::debug) Debugger.log(this, "Attempted to retrieve null texture: " + id);
+				}
+				
+				return texture;
 			}
 			else
 			{

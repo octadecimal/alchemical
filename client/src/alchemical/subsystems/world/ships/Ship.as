@@ -60,6 +60,15 @@ package alchemical.subsystems.world.ships
 			
 			Sprite(view).addChildAt(mc, 0);
 			
+			//temp
+			mc.rotation = Math.PI;
+			mc.currentFrame = int(Math.random() * 20);
+			mc.y += 37;
+			mc.x += 0.5;
+			mc.scaleY = 0.75;
+			mc.fps = Math.random() * 12 + 12;
+			//temp
+			
 			mc.play();
 			Starling.juggler.add(mc);
 		}

@@ -4,6 +4,7 @@
 package alchemical.subsystems.world 
 {
 	import alchemical.debug.Debugger;
+	import org.osflash.signals.Signal;
 	import starling.display.Sprite;
 	
 	/**
@@ -12,6 +13,8 @@ package alchemical.subsystems.world
 	 */
 	public class World extends Sprite 
 	{
+		public var sigSkyLayerDisposed:Signal = new Signal(SkyLayer);
+		
 		/**
 		 * Constructor.
 		 */
@@ -35,13 +38,23 @@ package alchemical.subsystems.world
 		
 		
 		
+		// SIGNALS
+		// =========================================================================================
+		
+		private function onSkyLayerDisposed(skyLayer:SkyLayer):void 
+		{
+			sigSkyLayerDisposed.dispatch(skyLayer);
+		}
+		
+		
+		
 		// ACCESSORS
 		// =========================================================================================
 		
 		/**
 		 * World sky.
 		 */
-		public function set sky(a:Sky):void		{ _sky = a; }
+		public function set sky(a:Sky):void		{ _sky = a; sky.sigLayerDisposed.add(onSkyLayerDisposed); }
 		public function get sky():Sky			{ return _sky; }
 		private var _sky:Sky;
 		
