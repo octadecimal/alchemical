@@ -28,6 +28,8 @@ package alchemical.debug
 		private var _inputting:Boolean = false;
 		private var _commands:Dictionary = new Dictionary();
 		private var _progress:Shape = new Shape();
+		private var _inputHistory:Vector.<String> = new Vector.<String>();
+		private var _inputHistoryPointer:int = 0;
 		
 		/**
 		 * Constructor.
@@ -36,6 +38,8 @@ package alchemical.debug
 		{
 			super();
 			build();
+			
+			_inputHistory.push("");
 			
 			_commands["help"] = new ConsoleCommandHelp("help");
 			_commands["load_sky"] = new ConsoleCommandLoadSky("load_sky");
@@ -117,14 +121,31 @@ package alchemical.debug
 			
 			if (e.keyCode == 13)
 			{
-				if (_inputting)
+				if (_showing)
 				{
-					execute();
-					disableInput();
+					if (_inputting)
+					{
+						execute();
+						disableInput();
+					}
+					else
+					{
+						enableInput();
+					}
 				}
-				else
+			}
+			
+			if (_inputting)
+			{
+				if (e.keyCode == 38)
 				{
-					enableInput();
+					_input.text = _inputHistory[_inputHistoryPointer];
+					_inputHistoryPointer = Math.max(0, --_inputHistoryPointer);
+				}
+				else if (e.keyCode == 40)
+				{
+					_inputHistoryPointer = Math.min(_inputHistory.length - 1, ++_inputHistoryPointer);
+					_input.text = _inputHistory[_inputHistoryPointer];
 				}
 			}
 		}
@@ -193,8 +214,13 @@ package alchemical.debug
 			var args:Array = _input.text.split(" ");
 			var command:String = args.shift();
 			
+			_inputHistory.push(_input.text);
+			_inputHistoryPointer++;
+			
 			if (_commands[command])
 			{
+				_inputHistoryPointer = _inputHistory.length - 1;
+				addLine("> " + _input.text);
 				if (CONFIG::debug) Debugger.data(this, "Executing console command: " + command + " (" + args + ")");
 				ConsoleCommand(_commands[command]).execute(this, args);
 			}
