@@ -22,6 +22,7 @@ package alchemical.subsystems.resources.model
 	public class ResourcesProxy extends Proxy 
 	{
 		private var _resources:Resources;
+		private var _atlasDependencies:Vector.<int>;
 		
 		/**
 		 * Constructor.
@@ -38,6 +39,16 @@ package alchemical.subsystems.resources.model
 		
 		
 		
+		// INITIALIZE
+		// =========================================================================================
+		
+		public function initialize():void
+		{
+			_atlasDependencies = new Vector.<int>(_atlases.length);
+		}
+		
+		
+		
 		// LOADING API
 		// =========================================================================================
 		
@@ -50,15 +61,36 @@ package alchemical.subsystems.resources.model
 			var vo:TextureVO = TextureVO(_textures[name]);
 			var atlas:TextureAtlasVO = _atlases[vo.atlas];
 			
-			if (!atlas.loaded)
+			if (_atlasDependencies[int(vo.atlas)] == 0)
 			{
+				_atlasDependencies[int(vo.atlas)] = 1;
 				atlas.loaded = true;
 				enqueue(_paths["ships"], atlas.texture, true);
 			}
 			else
 			{
-				if (CONFIG::debug) Debugger.data(this, "Texture already loaded: " + name + " -> " + vo.subtexture + " -> " + vo.atlas);
+				_atlasDependencies[int(vo.atlas)]++;
+				if (CONFIG::debug) Debugger.data(this, "Texture already loaded: " + name + " -> " + vo.subtexture + " -> " + vo.atlas + " (" + _atlasDependencies[int(vo.atlas)] + " dependencies)");
 			}
+		}
+		
+		public function undeclareTexture(name:String):void
+		{
+			var vo:TextureVO = TextureVO(_textures[name]);
+			var atlas:TextureAtlasVO = _atlases[vo.atlas];
+			
+			_atlasDependencies[int(vo.atlas)]--;
+			
+			if (_atlasDependencies[int(vo.atlas)] == 0)
+			{
+				_resources.removeTextureAtlas(atlas.texture);
+				if (CONFIG::debug) Debugger.data(this, "Texture unloaded: " + name + " -> " + vo.subtexture + " -> " + vo.atlas + " (" + _atlasDependencies[int(vo.atlas)] + " dependencies)");
+			}
+			else
+			{
+				if (CONFIG::debug) Debugger.data(this, "Texture undeclared: " + name + " -> " + vo.subtexture + " -> " + vo.atlas + " (" + _atlasDependencies[int(vo.atlas)] + " dependencies)");
+			}
+			
 		}
 		
 		/**
@@ -283,6 +315,7 @@ package alchemical.subsystems.resources.model
 		 */
 		public function get skies():Vector.<ResourceVO>			{ return _skies; }
 		private var _skies:Vector.<ResourceVO>;
+		
 	}
 
 }

@@ -29,6 +29,17 @@ package alchemical.subsystems.world
 			_dynamics = dynamics;
 		}
 		
+		/**
+		 * Dispose routine.
+		 */
+		public function dispose():void
+		{
+			_view.dispose();
+			_view = null;
+			_transform = null;
+			_dynamics = null;
+		}
+		
 		
 		
 		// API

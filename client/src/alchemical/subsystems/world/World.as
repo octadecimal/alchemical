@@ -41,9 +41,15 @@ package alchemical.subsystems.world
 		public function removeEntity(worldID:int):void
 		{
 			var entity:Entity = _entities[worldID];
-			_entities.splice(worldID, 1);
+			//_entities.splice(worldID, 1);
+			_entities[worldID] = null;
 			removeChild(entity.view);
 			if (CONFIG::debug) Debugger.log(this, "Entity removed: " + entity.worldID + " (" + entity.id+ ")");
+		}
+		
+		public function getEntity(worldID:int):Entity
+		{
+			return _entities[worldID];
 		}
 		
 		

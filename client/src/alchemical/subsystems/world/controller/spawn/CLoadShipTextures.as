@@ -6,6 +6,7 @@ package alchemical.subsystems.world.controller.spawn
 	import alchemical.core.enum.ComponentNames;
 	import alchemical.debug.Debugger;
 	import alchemical.subsystems.resources.model.ResourcesProxy;
+	import alchemical.subsystems.world.model.vo.ships.ShipEngineVO;
 	import alchemical.subsystems.world.model.vo.ships.ShipHullVO;
 	import alchemical.subsystems.world.model.vo.spawn.SpawnShipVO;
 	import alchemical.subsystems.world.model.WorldProxy;
@@ -28,7 +29,15 @@ package alchemical.subsystems.world.controller.spawn
 			
 			var hullDefinition:ShipHullVO = worldProxy.shipHullDefinitions[vo.id];
 			
+			// Declare hull textures
 			resourcesProxy.declareTexture(hullDefinition.texture);
+			
+			// Declare engine textures
+			for (var i:int = 0, c:int = vo.engines.length; i < c;  i++)
+			{
+				var engineDefinition:ShipEngineVO = worldProxy.shipEngineDefinitions[vo.engines[i]];
+				resourcesProxy.declareTexture(engineDefinition.texture);
+			}
 			
 			resourcesProxy.load(function onProgress(ratio:Number):void
 			{

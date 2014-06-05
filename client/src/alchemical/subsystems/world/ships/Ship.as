@@ -19,8 +19,8 @@ package alchemical.subsystems.world.ships
 	 */
 	public class Ship extends Entity 
 	{
-		private var _hull:Image;
-		private var _engines:Vector.<MovieClip>;
+		private var _hullImage:Image;
+		private var _engineImages:Vector.<MovieClip>;
 		
 		/**
 		 * Constructor.
@@ -32,7 +32,27 @@ package alchemical.subsystems.world.ships
 		{
 			super(view, transform, dynamics);
 			
-			_engines = new Vector.<MovieClip>(numEnginebays);
+			_engines = new Vector.<int>(numEnginebays);
+			_engineImages = new Vector.<MovieClip>(numEnginebays);
+		}
+		
+		/**
+		 * Dispose routine.
+		 */
+		override public function dispose():void 
+		{
+			_hullImage.dispose();
+			_hullImage = null;
+			
+			for (var i:int = 0, c:int = _engines.length; i < c; i++)
+			{
+				_engineImages[i].dispose();
+				_engineImages[i] = null;
+			}
+			
+			_engineImages = null
+			
+			super.dispose();
 		}
 		
 		
@@ -40,19 +60,22 @@ package alchemical.subsystems.world.ships
 		// API
 		// =========================================================================================
 		
-		public function setHullTexture(texture:Texture):void
+		public function setHull(type:int, texture:Texture):void
 		{
-			_hull = new Image(texture);
+			_hull = type;
+			_hullImage = new Image(texture);
 			
-			_hull.pivotX = _hull.width / 2;
+			_hullImage.pivotX = _hullImage.width / 2;
 			
-			Sprite(view).addChild(_hull);
+			Sprite(view).addChild(_hullImage);
 		}
 		
-		public function setEngineTextureAt(index:int, textures:Vector.<Texture>, x:int, y:int):void
+		public function setEngineAt(type:int, index:int, textures:Vector.<Texture>, x:int, y:int):void
 		{
+			_engines[index] = type;
+			
 			var mc:MovieClip = new MovieClip(textures, 12);
-			_engines[index] = mc;
+			_engineImages[index] = mc;
 			
 			mc.pivotX = mc.width / 2;
 			mc.x = x;
@@ -72,6 +95,23 @@ package alchemical.subsystems.world.ships
 			mc.play();
 			Starling.juggler.add(mc);
 		}
+		
+		
+		
+		// ACCESSORS
+		// =========================================================================================
+		
+		/**
+		 * Hull type.
+		 */
+		public function get hull():int					{ return _hull; }
+		private var _hull:int;
+		
+		/**
+		 * Engine types.
+		 */
+		public function get engines():Vector.<int>		{ return _engines; }
+		private var _engines:Vector.<int>;
 		
 	}
 

@@ -34,6 +34,7 @@ package alchemical.subsystems.world.controller.build
 				hullVO.mass = Number(hull.stats.@mass);
 				hullVO.armor = Number(hull.stats.@armor);
 				
+				// Hull enginebays
 				for each(var enginebay:XML in hull.enginebays.children())
 				{
 					hullVO.enginebays.push(new ShipEnginebayVO(enginebay.@x, enginebay.@y));

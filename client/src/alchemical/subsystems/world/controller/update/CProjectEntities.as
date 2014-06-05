@@ -23,11 +23,14 @@ package alchemical.subsystems.world.controller.update
 			
 			for (var i:int = 0, c:int = world.entities.length; i < c; i++)
 			{
-				entity = world.entities[i];
-				
-				entity.view.x = entity.transform.x;
-				entity.view.y = entity.transform.y;
-				entity.view.rotation = entity.transform.rotation;
+				if (world.entities[i] != null)
+				{
+					entity = world.entities[i];
+					
+					entity.view.x = entity.transform.x;
+					entity.view.y = entity.transform.y;
+					entity.view.rotation = entity.transform.rotation;
+				}
 			}
 		}
 	}

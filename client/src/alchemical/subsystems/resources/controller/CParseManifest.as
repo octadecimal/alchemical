@@ -51,6 +51,9 @@ package alchemical.subsystems.resources.controller
 				resourcesProxy.registerTexture(new TextureVO(texture.@name, texture.@subtexture, texture.@atlas));
 			}
 			
+			// Initialize resources proxy
+			resourcesProxy.initialize();
+			
 			// Complete
 			if (CONFIG::debug) Debugger.log(this, "Parsed manifest.");
 			commandComplete();

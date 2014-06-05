@@ -8,6 +8,7 @@ package alchemical.subsystems.world.controller.spawn
 	import alchemical.subsystems.resources.model.ResourcesProxy;
 	import alchemical.subsystems.world.model.nodes.DynamicsNode;
 	import alchemical.subsystems.world.model.nodes.TransformNode;
+	import alchemical.subsystems.world.model.vo.ships.ShipEngineVO;
 	import alchemical.subsystems.world.model.vo.ships.ShipHullVO;
 	import alchemical.subsystems.world.model.vo.spawn.SpawnShipVO;
 	import alchemical.subsystems.world.model.WorldProxy;
@@ -32,25 +33,24 @@ package alchemical.subsystems.world.controller.spawn
 			var worldProxy:WorldProxy = facade.retrieveProxy(ComponentNames.WORLD) as WorldProxy;
 			var resourcesProxy:ResourcesProxy = facade.retrieveProxy(ComponentNames.RESOURCES) as ResourcesProxy;
 			
-			// Get ship definition
-			var definition:ShipHullVO = worldProxy.shipHullDefinitions[vo.id];
-			
 			// Ship entity
 			var ship:Ship = new Ship(new Sprite(), new TransformNode(vo.x, vo.y, vo.r), new DynamicsNode());
 			
 			// Hull
+			var hullDefinition:ShipHullVO = worldProxy.shipHullDefinitions[vo.id];
 			var hullTextureName:String = worldProxy.shipHullDefinitions[vo.id].texture;
 			var hullTexture:Texture = resourcesProxy.getTexture(hullTextureName);
-			ship.setHullTexture(hullTexture);
+			ship.setHull(hullDefinition.id, hullTexture);
 			
 			// Engines
 			for (var i:int = 0; i < vo.engines.length; i++)
 			{
-				if (i < definition.enginebays.length)
+				if (i < hullDefinition.enginebays.length)
 				{
-					var textureName:String = worldProxy.shipEngineDefinitions[vo.engines[i]].texture;
-					var engineTexture:Vector.<Texture> = resourcesProxy.getTextures(textureName);
-					ship.setEngineTextureAt(i, engineTexture, definition.enginebays[i].x, definition.enginebays[i].y);
+					var engineDefinition:ShipEngineVO = worldProxy.shipEngineDefinitions[vo.engines[i]];
+					var engineTextureName:String = engineDefinition.texture;
+					var engineTexture:Vector.<Texture> = resourcesProxy.getTextures(engineTextureName);
+					ship.setEngineAt(engineDefinition.id, i, engineTexture, hullDefinition.enginebays[i].x, hullDefinition.enginebays[i].y);
 				}
 				else
 				{
