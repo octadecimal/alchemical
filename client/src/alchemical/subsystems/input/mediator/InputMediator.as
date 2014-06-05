@@ -29,7 +29,7 @@ package alchemical.subsystems.input.mediator
 		{
 			_view = viewComponent as Stage;
 			super(ComponentNames.INPUT, viewComponent);
-			if (CONFIG::debug) Debugger.log(this, "Created.");
+			if (CONFIG::debug) Debugger.data(this, "Created.");
 		}
 		
 		
