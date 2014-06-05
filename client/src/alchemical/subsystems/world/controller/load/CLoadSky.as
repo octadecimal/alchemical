@@ -48,6 +48,7 @@ package alchemical.subsystems.world.controller.load
 						skyTextures[i] = resourcesProxy.getSkyTexture(vo.layers[i]);
 					}
 					
+					// Set textures
 					world.sky.setLayerTextures(skyTextures);
 				}
 			});

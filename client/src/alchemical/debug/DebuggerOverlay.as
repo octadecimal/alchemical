@@ -44,6 +44,7 @@ package alchemical.debug
 			_commands["help"] = new ConsoleCommandHelp("help");
 			_commands["load_sky"] = new ConsoleCommandLoadSky("load_sky");
 			_commands["spawn_ship"] = new ConsoleCommandSpawnShip("spawn_ship");
+			_commands["despawn_ship"] = new ConsoleCommandDespawnShip("despawn_ship");
 		}
 		
 		

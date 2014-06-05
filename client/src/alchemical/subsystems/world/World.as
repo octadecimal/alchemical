@@ -32,8 +32,18 @@ package alchemical.subsystems.world
 		
 		public function addEntity(entity:Entity):void
 		{
+			entity.worldID = _entities.length;
 			_entities.push(entity);
 			addChild(entity.view);
+			if (CONFIG::debug) Debugger.log(this, "Entity added: " + entity.worldID + " (" + entity.id+ ")");
+		}
+		
+		public function removeEntity(worldID:int):void
+		{
+			var entity:Entity = _entities[worldID];
+			_entities.splice(worldID, 1);
+			removeChild(entity.view);
+			if (CONFIG::debug) Debugger.log(this, "Entity removed: " + entity.worldID + " (" + entity.id+ ")");
 		}
 		
 		

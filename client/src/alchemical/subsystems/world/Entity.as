@@ -55,10 +55,17 @@ package alchemical.subsystems.world
 		// =========================================================================================
 		
 		/**
-		 * Entity id.
+		 * Unique entity id.
 		 */
 		public function get id():int					{ return _id; }
 		private var _id:int;
+		
+		/**
+		 * The entity id within the world, also serves as the lookup index for the entity.
+		 */
+		public function set worldID(a:int):void			{ _worldID = a; }
+		public function get worldID():int				{ return _worldID; }
+		private var _worldID:int;
 		
 		/**
 		 * Entity view.
