@@ -64,7 +64,6 @@ package alchemical.subsystems.world
 				for (i = 0; i < _layers.length; i++)
 				{
 					_layers[i] = new SkyLayer(i, textures[i]);
-					_layers[i].sigOnDispose.add(onLayerDisposed);
 				}
 			}
 			else
@@ -85,7 +84,7 @@ package alchemical.subsystems.world
 				{
 					if (CONFIG::debug) Debugger.data(this, "Disposing: " + i);
 					removeChild(copy[i]);
-					copy[i].dispose();
+					//copy[i].dispose();
 				}
 				
 				// Fill new skylayers
@@ -93,7 +92,6 @@ package alchemical.subsystems.world
 				{
 					if (CONFIG::debug) Debugger.data(this, "Filling: " + i);
 					_layers[i] = new SkyLayer(i, textures[i]);
-					_layers[i].sigOnDispose.add(onLayerDisposed);
 				}
 			}
 		}
