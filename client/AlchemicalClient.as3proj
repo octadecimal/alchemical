@@ -56,6 +56,7 @@
     <element path="lib\starling.swc" />
     <element path="lib\Utility_AS3_AsyncCommand_1_0.swc" />
     <element path="lib\as3-signals-v0.9-BETA.swc" />
+    <element path="lib\feathers_1.3.0.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>
