@@ -14,6 +14,7 @@ package alchemical.subsystems.world
 	public class World extends Sprite 
 	{
 		public var sigSkyLayerDisposed:Signal = new Signal(SkyLayer);
+		private var _availableWorldIDs:Vector.<int>;
 		
 		/**
 		 * Constructor.
@@ -21,6 +22,7 @@ package alchemical.subsystems.world
 		public function World() 
 		{
 			_entities = new Vector.<Entity>();
+			_availableWorldIDs = new Vector.<int>();
 			super();
 			if (CONFIG::debug) Debugger.data(this, "Created.");
 		}
@@ -32,8 +34,8 @@ package alchemical.subsystems.world
 		
 		public function addEntity(entity:Entity):void
 		{
-			entity.worldID = _entities.length;
-			_entities.push(entity);
+			entity.worldID = getNextAvailableWorldID();
+			_entities[entity.worldID] = entity;
 			addChild(entity.view);
 			if (CONFIG::debug) Debugger.log(this, "Entity added: " + entity.worldID + " (" + entity.id+ ")");
 		}
@@ -41,15 +43,32 @@ package alchemical.subsystems.world
 		public function removeEntity(worldID:int):void
 		{
 			var entity:Entity = _entities[worldID];
-			//_entities.splice(worldID, 1);
 			_entities[worldID] = null;
 			removeChild(entity.view);
+			_availableWorldIDs.push(worldID);
 			if (CONFIG::debug) Debugger.log(this, "Entity removed: " + entity.worldID + " (" + entity.id+ ")");
 		}
 		
 		public function getEntity(worldID:int):Entity
 		{
 			return _entities[worldID];
+		}
+		
+		
+		
+		// INTERNAL
+		// =========================================================================================
+		
+		private function getNextAvailableWorldID():int
+		{
+			if (_availableWorldIDs.length == 0)
+			{
+				return _entities.length;
+			}
+			else
+			{
+				return _availableWorldIDs.pop();
+			}
 		}
 		
 		
